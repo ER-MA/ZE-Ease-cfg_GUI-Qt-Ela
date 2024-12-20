@@ -1,0 +1,706 @@
+[
+	{
+		"Server": {
+			"Id": "cs2home1",
+			"Sort": 1,
+			"Ip": "202.189.5.118",
+			"Port": 27001,
+			"IsPublic": true,
+			"DisplayName": "挂机大厅",
+			"DisplayNameCN": "大厅",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2home1",
+			"Map": "exgrp",
+			"MapDisplayName": "",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 62,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2home2",
+			"Sort": 2,
+			"Ip": "202.189.5.118",
+			"Port": 27002,
+			"IsPublic": true,
+			"DisplayName": "挂机大厅 #2",
+			"DisplayNameCN": "大厅",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2home2",
+			"Map": "exgrp",
+			"MapDisplayName": "",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 41,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2ze1",
+			"Sort": 101,
+			"Ip": "202.189.15.68",
+			"Port": 27001,
+			"IsPublic": true,
+			"DisplayName": "ZE #1",
+			"DisplayNameCN": "生化模式",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2ze1",
+			"Map": "ze_mkzk_scarab_v4",
+			"MapDisplayName": "重生之我在ZE倒斗-究极无敌折磨之圣甲虫法老王金字塔V4",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 63,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2ze2",
+			"Sort": 102,
+			"Ip": "202.189.15.68",
+			"Port": 27002,
+			"IsPublic": true,
+			"DisplayName": "ZE #2",
+			"DisplayNameCN": "生化模式",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2ze2",
+			"Map": "ze_antartika_p",
+			"MapDisplayName": "南极基地",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 3,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2ze3",
+			"Sort": 103,
+			"Ip": "202.189.6.129",
+			"Port": 27001,
+			"IsPublic": true,
+			"DisplayName": "ZE #3",
+			"DisplayNameCN": "生化模式",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2ze3",
+			"Map": "ze_atix_panic_2017_p",
+			"MapDisplayName": "牢大逃亡2017",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 63,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2ze4",
+			"Sort": 104,
+			"Ip": "202.189.6.129",
+			"Port": 27002,
+			"IsPublic": true,
+			"DisplayName": "ZE #4",
+			"DisplayNameCN": "生化模式",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2ze4",
+			"Map": "ze_panic_escape_p",
+			"MapDisplayName": "跳刀仓库",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 1,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2ze5",
+			"Sort": 105,
+			"Ip": "202.189.15.252",
+			"Port": 27001,
+			"IsPublic": true,
+			"DisplayName": "ZE #5",
+			"DisplayNameCN": "生化模式",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2ze5",
+			"Map": "ze_popkart_b3",
+			"MapDisplayName": "卡卡跑车丁",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 0,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2ze6",
+			"Sort": 106,
+			"Ip": "202.189.15.252",
+			"Port": 27002,
+			"IsPublic": true,
+			"DisplayName": "ZE #6",
+			"DisplayNameCN": "生化模式",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2ze6",
+			"Map": "ze_atix_panic_2017_p",
+			"MapDisplayName": "牢大逃亡2017",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 63,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2ze7",
+			"Sort": 107,
+			"Ip": "202.189.15.61",
+			"Port": 27001,
+			"IsPublic": true,
+			"DisplayName": "ZE #7",
+			"DisplayNameCN": "生化模式",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2ze7",
+			"Map": "ze_showdown_p",
+			"MapDisplayName": "巅峰对决",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 1,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2ze8",
+			"Sort": 108,
+			"Ip": "202.189.15.61",
+			"Port": 27002,
+			"IsPublic": true,
+			"DisplayName": "ZE #8",
+			"DisplayNameCN": "生化模式",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2ze8",
+			"Map": "ze_illusory_world",
+			"MapDisplayName": "虚空幻界",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 53,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2ze9",
+			"Sort": 109,
+			"Ip": "202.189.10.39",
+			"Port": 27001,
+			"IsPublic": true,
+			"DisplayName": "ZE #9",
+			"DisplayNameCN": "生化模式",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2ze9",
+			"Map": "ze_blackmesa_remix_cs2",
+			"MapDisplayName": "黑山基地 remix：重装上阵",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 4,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2ze10",
+			"Sort": 110,
+			"Ip": "202.189.10.39",
+			"Port": 27002,
+			"IsPublic": true,
+			"DisplayName": "ZE #10",
+			"DisplayNameCN": "生化模式",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2ze10",
+			"Map": "ze_mountain_escape_snow",
+			"MapDisplayName": "雪山大逃亡",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 6,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2ze11",
+			"Sort": 112,
+			"Ip": "180.188.24.32",
+			"Port": 27001,
+			"IsPublic": true,
+			"DisplayName": "ZE #11",
+			"DisplayNameCN": "生化模式",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2ze11",
+			"Map": "ze_interception_p",
+			"MapDisplayName": "拦截行动",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 51,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2ze12",
+			"Sort": 113,
+			"Ip": "180.188.24.32",
+			"Port": 27002,
+			"IsPublic": true,
+			"DisplayName": "ZE #12",
+			"DisplayNameCN": "生化模式",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2ze12",
+			"Map": "ze_jurassic_park_story_p",
+			"MapDisplayName": "侏罗纪公园：故事篇",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 1,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2zm1",
+			"Sort": 115,
+			"Ip": "202.189.7.69",
+			"Port": 27001,
+			"IsPublic": true,
+			"DisplayName": "ZM #1",
+			"DisplayNameCN": "僵尸感染",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2zm1",
+			"Map": "de_inferno",
+			"MapDisplayName": "",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 63,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2zm2",
+			"Sort": 116,
+			"Ip": "202.189.7.69",
+			"Port": 27002,
+			"IsPublic": true,
+			"DisplayName": "ZM #2",
+			"DisplayNameCN": "僵尸感染",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2zm2",
+			"Map": "zm_estate",
+			"MapDisplayName": "玫瑰庄园",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 0,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2zm3",
+			"Sort": 117,
+			"Ip": "202.189.7.69",
+			"Port": 27003,
+			"IsPublic": true,
+			"DisplayName": "ZM #3",
+			"DisplayNameCN": "僵尸感染",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2zm3",
+			"Map": "zm_ice_cave_v1_p",
+			"MapDisplayName": "重生之我是动力小子生在溜冰村",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 5,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2ph1",
+			"Sort": 151,
+			"Ip": "202.189.15.60",
+			"Port": 27001,
+			"IsPublic": true,
+			"DisplayName": "躲猫猫 #1",
+			"DisplayNameCN": "躲猫猫 #1",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2ph1",
+			"Map": "de_dust2_night",
+			"MapDisplayName": "",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 52,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2ph2",
+			"Sort": 152,
+			"Ip": "202.189.15.60",
+			"Port": 27002,
+			"IsPublic": true,
+			"DisplayName": "躲猫猫 #2",
+			"DisplayNameCN": "躲猫猫 #2",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2ph2",
+			"Map": "de_cache",
+			"MapDisplayName": "",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 61,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2ph3",
+			"Sort": 153,
+			"Ip": "202.189.15.60",
+			"Port": 27003,
+			"IsPublic": true,
+			"DisplayName": "躲猫猫 #3",
+			"DisplayNameCN": "躲猫猫 #3",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2ph3",
+			"Map": "de_mirage_fun",
+			"MapDisplayName": "",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 12,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2ph4",
+			"Sort": 154,
+			"Ip": "202.189.15.60",
+			"Port": 27004,
+			"IsPublic": true,
+			"DisplayName": "躲猫猫 #4",
+			"DisplayNameCN": "躲猫猫 #4",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2ph4",
+			"Map": "de_maginot",
+			"MapDisplayName": "",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 6,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2mg1",
+			"Sort": 161,
+			"Ip": "202.189.5.118",
+			"Port": 27003,
+			"IsPublic": true,
+			"DisplayName": "MG #1",
+			"DisplayNameCN": "娱乐闯关",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2mg1",
+			"Map": "mg_modern_dev",
+			"MapDisplayName": "",
+			"MaxPlayers": 40,
+			"CurrentPlayers": 0,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2mg2",
+			"Sort": 162,
+			"Ip": "202.189.5.118",
+			"Port": 27004,
+			"IsPublic": true,
+			"DisplayName": "MG #2",
+			"DisplayNameCN": "娱乐闯关",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2mg2",
+			"Map": "mg_bobiii_reborn",
+			"MapDisplayName": "[高难]BOB3：REBORN CS2",
+			"MaxPlayers": 40,
+			"CurrentPlayers": 0,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2fun1",
+			"Sort": 165,
+			"Ip": "202.189.5.118",
+			"Port": 27007,
+			"IsPublic": true,
+			"DisplayName": "混战",
+			"DisplayNameCN": "娱乐混战",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2fun1",
+			"Map": "de_ravine",
+			"MapDisplayName": "",
+			"MaxPlayers": 64,
+			"CurrentPlayers": 0,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2mz1",
+			"Sort": 190,
+			"Ip": "202.189.5.118",
+			"Port": 27005,
+			"IsPublic": true,
+			"DisplayName": "满十 #1",
+			"DisplayNameCN": "满十 #1",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2mz1",
+			"Map": "de_nuke",
+			"MapDisplayName": "",
+			"MaxPlayers": 10,
+			"CurrentPlayers": 0,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "cs2mz2",
+			"Sort": 191,
+			"Ip": "202.189.5.118",
+			"Port": 27006,
+			"IsPublic": true,
+			"DisplayName": "满十 #2",
+			"DisplayNameCN": "满十 #2",
+			"WorkshopId": 0,
+			"Category": "cs2",
+			"ViewLogRole": "cs2_log"
+		},
+		"Status": {
+			"Name": "cs2mz2",
+			"Map": "de_dust2",
+			"MapDisplayName": "",
+			"MaxPlayers": 10,
+			"CurrentPlayers": 10,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "darkrp",
+			"Sort": 1000,
+			"Ip": "45.125.44.79",
+			"Port": 27805,
+			"IsPublic": true,
+			"DisplayName": "黑暗之城",
+			"DisplayNameCN": "RP 黑暗之城",
+			"WorkshopId": 647571564,
+			"Category": "gmod",
+			"ViewLogRole": "gmod_log"
+		},
+		"Status": {
+			"Name": "darkrp",
+			"Map": "gm_construct",
+			"MapDisplayName": "",
+			"MaxPlayers": 128,
+			"CurrentPlayers": 0,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "gmod_ze",
+			"Sort": 1002,
+			"Ip": "202.189.15.68",
+			"Port": 12345,
+			"IsPublic": true,
+			"DisplayName": "僵尸逃跑",
+			"DisplayNameCN": "僵尸逃跑",
+			"WorkshopId": 2445863088,
+			"Category": "gmod",
+			"ViewLogRole": "gmodze"
+		},
+		"Status": {
+			"Name": "gmod_ze",
+			"Map": "",
+			"MapDisplayName": "",
+			"MaxPlayers": 0,
+			"CurrentPlayers": 0,
+			"IsFromA2S": false
+		}
+	},
+	{
+		"Server": {
+			"Id": "horde_27265",
+			"Sort": 1011,
+			"Ip": "45.125.44.79",
+			"Port": 27265,
+			"IsPublic": true,
+			"DisplayName": "Horde #1",
+			"DisplayNameCN": "尸潮生存 65",
+			"WorkshopId": 3001241992,
+			"Category": "gmod",
+			"ViewLogRole": "gmod_horde"
+		},
+		"Status": {
+			"Name": "horde_27265",
+			"Map": "hr_overband",
+			"MapDisplayName": "",
+			"MaxPlayers": 16,
+			"CurrentPlayers": 0,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "horde_27275",
+			"Sort": 1012,
+			"Ip": "45.125.44.79",
+			"Port": 27275,
+			"IsPublic": true,
+			"DisplayName": "Horde #2",
+			"DisplayNameCN": "尸潮生存 75",
+			"WorkshopId": 3001241992,
+			"Category": "gmod",
+			"ViewLogRole": "gmod_horde"
+		},
+		"Status": {
+			"Name": "horde_27275",
+			"Map": "hr_sig_v1",
+			"MapDisplayName": "",
+			"MaxPlayers": 10,
+			"CurrentPlayers": 0,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "horde_27105",
+			"Sort": 1013,
+			"Ip": "45.125.44.79",
+			"Port": 27105,
+			"IsPublic": true,
+			"DisplayName": "Horde #3",
+			"DisplayNameCN": "尸潮生存 05",
+			"WorkshopId": 3001241992,
+			"Category": "gmod",
+			"ViewLogRole": "gmod_horde"
+		},
+		"Status": {
+			"Name": "horde_27105",
+			"Map": "hr_castle_keep",
+			"MapDisplayName": "",
+			"MaxPlayers": 24,
+			"CurrentPlayers": 20,
+			"IsFromA2S": true
+		}
+	},
+	{
+		"Server": {
+			"Id": "ttt2",
+			"Sort": 1020,
+			"Ip": "45.125.44.79",
+			"Port": 27025,
+			"IsPublic": true,
+			"DisplayName": "TTT",
+			"DisplayNameCN": "叛徒模式",
+			"WorkshopId": 2851954162,
+			"Category": "gmod",
+			"ViewLogRole": "ttt_log"
+		},
+		"Status": {
+			"Name": "ttt2",
+			"Map": "gm_japan",
+			"MapDisplayName": "",
+			"MaxPlayers": 36,
+			"CurrentPlayers": 0,
+			"IsFromA2S": true
+		}
+	}
+]

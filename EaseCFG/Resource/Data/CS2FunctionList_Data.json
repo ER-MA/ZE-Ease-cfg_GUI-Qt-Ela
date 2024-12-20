@@ -1,0 +1,268 @@
+﻿{
+    "items": [
+        {
+            "en_key": "sceneopti",
+            "zh_text": "场景优化",
+            "children": [
+                {
+                    "en_key": "matbright",
+                    "zh_text": "材质亮度(夜视仪)"
+                },
+                {
+                    "en_key": "postprocess",
+                    "zh_text": "后处理体积(光影)"
+                },
+                {
+                    "en_key": "draw_particles",
+                    "zh_text": "粒子特效"
+                },
+                {
+                    "en_key": "draw_skybox",
+                    "zh_text": "天空盒"
+                },
+                {
+                    "en_key": "render_decals",
+                    "zh_text": "贴花(血迹|弹孔|喷漆)"
+                },
+                {
+                    "en_key": "music_volume_switch",
+                    "zh_text": "音乐音量(开/关)"
+                },
+                {
+                    "en_key": "music_volume",
+                    "zh_text": "音乐音量(20/50/70)%"
+                }
+            ]
+        },
+        {
+            "en_key": "weapon",
+            "zh_text": "武器道具",
+            "children": [
+                {
+                    "en_key": "throwables",
+                    "zh_text": "投掷物",
+                    "children": [
+                        {
+                            "en_key": "hegrenade",
+                            "zh_text": "购买手雷"
+                        },
+                        {
+                            "en_key": "incgrenade",
+                            "zh_text": "购买燃烧瓶"
+                        },
+                        {
+                            "en_key": "decoy",
+                            "zh_text": "购买诱饵弹"
+                        },
+                        {
+                            "en_key": "flashbang",
+                            "zh_text": "购买闪光弹"
+                        },
+                        {
+                            "en_key": "smokegrenade",
+                            "zh_text": "购买烟雾弹"
+                        }
+                    ]
+                },
+                {
+                    "en_key": "pistols",
+                    "zh_text": "手枪",
+                    "children": [
+                        {
+                            "en_key": "usp_silencer",
+                            "zh_text": "购买USP-S"
+                        },
+                        {
+                            "en_key": "glock",
+                            "zh_text": "购买Glock18"
+                        },
+                        {
+                            "en_key": "p250",
+                            "zh_text": "购买P250"
+                        },
+                        {
+                            "en_key": "hkp2000",
+                            "zh_text": "购买P2000"
+                        },
+                        {
+                            "en_key": "fiveseven",
+                            "zh_text": "购买FN57"
+                        },
+                        {
+                            "en_key": "tec9",
+                            "zh_text": "购买Tec9"
+                        },
+                        {
+                            "en_key": "elite",
+                            "zh_text": "购买双枪"
+                        },
+                        {
+                            "en_key": "cz75a",
+                            "zh_text": "购买CZ75-Auto"
+                        },
+                        {
+                            "en_key": "deagle",
+                            "zh_text": "购买沙漠之鹰"
+                        },
+                        {
+                            "en_key": "revolver",
+                            "zh_text": "购买R8左轮"
+                        }
+                    ]
+                },
+                {
+                    "en_key": "shotguns",
+                    "zh_text": "喷子",
+                    "children": [
+                        {
+                            "en_key": "nova",
+                            "zh_text": "购买新星"
+                        },
+                        {
+                            "en_key": "mag7",
+                            "zh_text": "购买警喷"
+                        },
+                        {
+                            "en_key": "sawedoff",
+                            "zh_text": "购买匪喷"
+                        },
+                        {
+                            "en_key": "xm1014",
+                            "zh_text": "购买连喷"
+                        }
+                    ]
+                },
+                {
+                    "en_key": "rifles",
+                    "zh_text": "步枪",
+                    "children": [
+                        {
+                            "en_key": "galilar",
+                            "zh_text": "购买加利尔"
+                        },
+                        {
+                            "en_key": "famas",
+                            "zh_text": "购买法玛斯"
+                        },
+                        {
+                            "en_key": "ak47",
+                            "zh_text": "购买AK47"
+                        },
+                        {
+                            "en_key": "m4a1",
+                            "zh_text": "购买M4A4"
+                        },
+                        {
+                            "en_key": "m4a1_silence",
+                            "zh_text": "购买M4A1-S"
+                        }
+                    ]
+                },
+                {
+                    "en_key": "smgs",
+                    "zh_text": "冲锋枪",
+                    "children": [
+                        {
+                            "en_key": "mp9",
+                            "zh_text": "购买小蜜蜂"
+                        },
+                        {
+                            "en_key": "mac10",
+                            "zh_text": "购买吹风机"
+                        },
+                        {
+                            "en_key": "mp7",
+                            "zh_text": "购买MP7"
+                        },
+                        {
+                            "en_key": "mp5sd",
+                            "zh_text": "购买MP5"
+                        },
+                        {
+                            "en_key": "ump45",
+                            "zh_text": "购买UMP45"
+                        },
+                        {
+                            "en_key": "bizon",
+                            "zh_text": "购买PP野牛"
+                        },
+                        {
+                            "en_key": "p90",
+                            "zh_text": "购买P90"
+                        }
+                    ]
+                },
+                {
+                    "en_key": "heavymachineguns",
+                    "zh_text": "机枪",
+                    "children": [
+                        {
+                            "en_key": "m249",
+                            "zh_text": "购买M249"
+                        },
+                        {
+                            "en_key": "negev",
+                            "zh_text": "购买内格夫"
+                        }
+                    ]
+                },
+                {
+                    "en_key": "scopes",
+                    "zh_text": "带镜枪械",
+                    "children": [
+                        {
+                            "en_key": "aug",
+                            "zh_text": "购买AUG"
+                        },
+                        {
+                            "en_key": "sg556",
+                            "zh_text": "购买带镜AK"
+                        },
+                        {
+                            "en_key": "ssg08",
+                            "zh_text": "购买鸟狙"
+                        },
+                        {
+                            "en_key": "awp",
+                            "zh_text": "购买大狙"
+                        },
+                        {
+                            "en_key": "g3sg1",
+                            "zh_text": "购买弯连狙"
+                        },
+                        {
+                            "en_key": "scar20",
+                            "zh_text": "购买直连狙"
+                        }
+                    ]
+                },
+                {
+                    "en_key": "others",
+                    "zh_text": "其他道具",
+                    "children": [
+                        {
+                            "en_key": "vest",
+                            "zh_text": "购买半甲"
+                        },
+                        {
+                            "en_key": "vesthelm",
+                            "zh_text": "购买全甲"
+                        },
+                        {
+                            "en_key": "healthshot",
+                            "zh_text": "购买血针"
+                        },
+                        {
+                            "en_key": "taser",
+                            "zh_text": "购买电击枪"
+                        },
+                        {
+                            "en_key": "defuser",
+                            "zh_text": "购买拆弹器"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

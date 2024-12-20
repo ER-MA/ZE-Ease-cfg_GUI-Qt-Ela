@@ -1,0 +1,52 @@
+[
+    {
+        "mouse1": {
+            "en_name": "Left Button",
+            "cn_name": "鼠标左键",
+            "keyboard_desplay": "",
+            "keyboard_description": "",
+            "cs2_keyname": "mouse1",
+            "cs2_scancode": ""
+        }
+    },
+    {
+        "q": {
+            "en_name": "",
+            "cn_name": "字母 Q",
+            "keyboard_desplay": "Q",
+            "keyboard_description": "",
+            "cs2_keyname": "mouse1",
+            "cs2_scancode": ""
+        }
+    },
+    {
+        "1": {
+            "en_name": "1",
+            "cn_name": "数字 1",
+            "keyboard_desplay": "1/ !",
+            "keyboard_description": "",
+            "cs2_keyname": "mouse1",
+            "cs2_scancode": ""
+        }
+    },
+    {
+        "kp_plus": {
+            "en_name": "Number Pad Plus",
+            "cn_name": "小键盘 +",
+            "keyboard_desplay": "+",
+            "keyboard_description": "",
+            "cs2_keyname": "kp_plus",
+            "cs2_scancode": ""
+        }
+    },
+    {
+        "capslock": {
+            "en_name": "Capital Lock",
+            "cn_name": "大写锁定",
+            "keyboard_desplay": "Caps",
+            "keyboard_description": "Caps Lock",
+            "cs2_keyname": "capslock",
+            "cs2_scancode": ""
+        }
+    }
+]

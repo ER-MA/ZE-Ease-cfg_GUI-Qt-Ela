@@ -1,0 +1,515 @@
+[
+    {
+        "mouse1": {
+            "show_name": "鼠标 1",
+            "show_intro": "鼠标左键",
+            "cs2_keyname": "mouse1"
+        }
+    },
+    {
+        "mouse2": {
+            "show_name": "鼠标 2",
+            "show_intro": "鼠标右键",
+            "cs2_keyname": "mouse2"
+        }
+    },
+    {
+        "mouse3": {
+            "show_name": "鼠标 3",
+            "show_intro": "鼠标中键",
+            "cs2_keyname": "mouse3"
+        }
+    },
+    {
+        "mouse4": {
+            "show_name": "鼠标 4",
+            "show_intro": "鼠标后侧键",
+            "cs2_keyname": "mouse4"
+        }
+    },
+    {
+        "mouse5": {
+            "show_name": "鼠标5",
+            "show_intro": "鼠标前侧键",
+            "cs2_keyname": "mouse5"
+        }
+    },
+    {
+        "mwheelup": {
+            "show_name": "滚轮上",
+            "show_intro": "鼠标滚轮上",
+            "cs2_keyname": "mwheelup"
+        }
+    },
+    {
+        "mwheeldown": {
+            "show_name": "滚轮下",
+            "show_intro": "鼠标滚轮下",
+            "cs2_keyname": "mwheeldown"
+        }
+    },
+    {
+        "mouse_x": {
+            "show_name": "鼠标横向移动",
+            "show_intro": "鼠标移动，横向",
+            "cs2_keyname": "mouse_x"
+        }
+    },
+    {
+        "mouse_y": {
+            "show_name": "鼠标纵向移动",
+            "show_intro": "鼠标移动，纵向",
+            "cs2_keyname": "mouse_y"
+        }
+    },
+    {
+        "f1": {
+            "show_name": "F1",
+            "show_intro": "功能键 F1",
+            "cs2_keyname": "f1"
+        }
+    },
+    {
+        "f2": {
+            "show_name": "F2",
+            "show_intro": "功能键 F2",
+            "cs2_keyname": "f2"
+        }
+    },
+    {
+        "f3": {
+            "show_name": "F3",
+            "show_intro": "功能键 F3",
+            "cs2_keyname": "f3"
+        }
+    },
+    {
+        "f4": {
+            "show_name": "F4",
+            "show_intro": "功能键 F4",
+            "cs2_keyname": "f4"
+        }
+    },
+    {
+        "f5": {
+            "show_name": "F5",
+            "show_intro": "功能键 F5",
+            "cs2_keyname": "f5"
+        }
+    },
+    {
+        "f6": {
+            "show_name": "F6",
+            "show_intro": "功能键 F6",
+            "cs2_keyname": "f6"
+        }
+    },
+    {
+        "f7": {
+            "show_name": "F7",
+            "show_intro": "功能键 F7",
+            "cs2_keyname": "f7"
+        }
+    },
+    {
+        "f8": {
+            "show_name": "F8",
+            "show_intro": "功能键 F8",
+            "cs2_keyname": "f8"
+        }
+    },
+    {
+        "f9": {
+            "show_name": "F9",
+            "show_intro": "功能键 F9",
+            "cs2_keyname": "f9"
+        }
+    },
+    {
+        "f10": {
+            "show_name": "F10",
+            "show_intro": "功能键 F10",
+            "cs2_keyname": "f10"
+        }
+    },
+    {
+        "f11": {
+            "show_name": "F11",
+            "show_intro": "功能键 F11",
+            "cs2_keyname": "f11"
+        }
+    },
+    {
+        "f12": {
+            "show_name": "F12",
+            "show_intro": "功能键 F12",
+            "cs2_keyname": "f12"
+        }
+    },
+    {
+        "1": {
+            "show_name": "1",
+            "show_intro": "数字键 1",
+            "cs2_keyname": "1"
+        }
+    },
+    {
+        "2": {
+            "show_name": "2",
+            "show_intro": "数字键 2",
+            "cs2_keyname": "2"
+        }
+    },
+    {
+        "3": {
+            "show_name": "3",
+            "show_intro": "数字键 3",
+            "cs2_keyname": "3"
+        }
+    },
+    {
+        "4": {
+            "show_name": "4",
+            "show_intro": "数字键 4",
+            "cs2_keyname": "4"
+        }
+    },
+    {
+        "5": {
+            "show_name": "5",
+            "show_intro": "数字键 5",
+            "cs2_keyname": "5"
+        }
+    },
+    {
+        "6": {
+            "show_name": "6",
+            "show_intro": "数字键 6",
+            "cs2_keyname": "6"
+        }
+    },
+    {
+        "7": {
+            "show_name": "7",
+            "show_intro": "数字键 7",
+            "cs2_keyname": "7"
+        }
+    },
+    {
+        "8": {
+            "show_name": "8",
+            "show_intro": "数字键 8",
+            "cs2_keyname": "8"
+        }
+    },
+    {
+        "9": {
+            "show_name": "9",
+            "show_intro": "数字键 9",
+            "cs2_keyname": "9"
+        }
+    },
+    {
+        "0": {
+            "show_name": "0",
+            "show_intro": "数字键 0",
+            "cs2_keyname": "0"
+        }
+    },
+    {
+        "q": {
+            "show_name": "Q",
+            "show_intro": "字母键 Q",
+            "cs2_keyname": "q"
+        }
+    },
+    {
+        "w": {
+            "show_name": "W",
+            "show_intro": "字母键 W",
+            "cs2_keyname": "w"
+        }
+    },
+    {
+        "e": {
+            "show_name": "E",
+            "show_intro": "字母键 E",
+            "cs2_keyname": "e"
+        }
+    },
+    {
+        "r": {
+            "show_name": "R",
+            "show_intro": "字母键 R",
+            "cs2_keyname": "r"
+        }
+    },
+    {
+        "t": {
+            "show_name": "T",
+            "show_intro": "字母键 T",
+            "cs2_keyname": "t"
+        }
+    },
+    {
+        "y": {
+            "show_name": "Y",
+            "show_intro": "字母键 Y",
+            "cs2_keyname": "y"
+        }
+    },
+    {
+        "u": {
+            "show_name": "U",
+            "show_intro": "字母键 U",
+            "cs2_keyname": "u"
+        }
+    },
+    {
+        "i": {
+            "show_name": "I",
+            "show_intro": "字母键 I",
+            "cs2_keyname": "i"
+        }
+    },
+    {
+        "o": {
+            "show_name": "O",
+            "show_intro": "字母键 O",
+            "cs2_keyname": "o"
+        }
+    },
+    {
+        "p": {
+            "show_name": "P",
+            "show_intro": "字母键 P",
+            "cs2_keyname": "p"
+        }
+    },
+    {
+        "a": {
+            "show_name": "A",
+            "show_intro": "字母键 A",
+            "cs2_keyname": "a"
+        }
+    },
+    {
+        "s": {
+            "show_name": "S",
+            "show_intro": "字母键 S",
+            "cs2_keyname": "s"
+        }
+    },
+    {
+        "d": {
+            "show_name": "D",
+            "show_intro": "字母键 D",
+            "cs2_keyname": "d"
+        }
+    },
+    {
+        "f": {
+            "show_name": "F",
+            "show_intro": "字母键 F",
+            "cs2_keyname": "f"
+        }
+    },
+    {
+        "g": {
+            "show_name": "G",
+            "show_intro": "字母键 G",
+            "cs2_keyname": "g"
+        }
+    },
+    {
+        "h": {
+            "show_name": "H",
+            "show_intro": "字母键 H",
+            "cs2_keyname": "h"
+        }
+    },
+    {
+        "j": {
+            "show_name": "J",
+            "show_intro": "字母键 J",
+            "cs2_keyname": "j"
+        }
+    },
+    {
+        "k": {
+            "show_name": "K",
+            "show_intro": "字母键 K",
+            "cs2_keyname": "k"
+        }
+    },
+    {
+        "l": {
+            "show_name": "L",
+            "show_intro": "字母键 L",
+            "cs2_keyname": "l"
+        }
+    },
+    {
+        "z": {
+            "show_name": "Z",
+            "show_intro": "字母键 Z",
+            "cs2_keyname": "z"
+        }
+    },
+    {
+        "x": {
+            "show_name": "X",
+            "show_intro": "字母键 X",
+            "cs2_keyname": "x"
+        }
+    },
+    {
+        "c": {
+            "show_name": "C",
+            "show_intro": "字母键 C",
+            "cs2_keyname": "c"
+        }
+    },
+    {
+        "v": {
+            "show_name": "V",
+            "show_intro": "字母键 V",
+            "cs2_keyname": "v"
+        }
+    },
+    {
+        "b": {
+            "show_name": "B",
+            "show_intro": "字母键 B",
+            "cs2_keyname": "b"
+        }
+    },
+    {
+        "n": {
+            "show_name": "N",
+            "show_intro": "字母键 N",
+            "cs2_keyname": "n"
+        }
+    },
+    {
+        "m": {
+            "show_name": "M",
+            "show_intro": "字母键 M",
+            "cs2_keyname": "m"
+        }
+    },
+    {
+        "capslock": {
+            "show_name": "Caps",
+            "show_intro": "大写锁定键",
+            "cs2_keyname": "capslock"
+        }
+    },
+    {
+        "kpplus": {
+            "show_name": "小键盘 +",
+            "show_intro": "小键盘 加号键",
+            "cs2_keyname": "kpplus"
+        }
+    },
+    {
+        "kpminus": {
+            "show_name": "小键盘 -",
+            "show_intro": "小键盘 减号键",
+            "cs2_keyname": "kpminus"
+        }
+    },
+    {
+        "kpasterisk": {
+            "show_name": "小键盘 *",
+            "show_intro": "小键盘 星号键",
+            "cs2_keyname": "kpasterisk"
+        }
+    },
+    {
+        "kpdivide": {
+            "show_name": "小键盘 /",
+            "show_intro": "小键盘 除号键",
+            "cs2_keyname": "kpdivide"
+        }
+    },
+    {
+        "kpequal": {
+            "show_name": "小键盘 =",
+            "show_intro": "小键盘 等于键",
+            "cs2_keyname": "kpequal"
+        }
+    },
+    {
+        "kpenter": {
+            "show_name": "小键盘 Enter",
+            "show_intro": "小键盘 回车键",
+            "cs2_keyname": "kpenter"
+        }
+    },
+    {
+        "insert": {
+            "show_name": "Insert",
+            "show_intro": "插入键",
+            "cs2_keyname": "insert"
+        }
+    },
+    {
+        "home": {
+            "show_name": "Home",
+            "show_intro": "主页键",
+            "cs2_keyname": "home"
+        }
+    },
+    {
+        "pageup": {
+            "show_name": "Page Up",
+            "show_intro": "向上翻页键",
+            "cs2_keyname": "pageup"
+        }
+    },
+    {
+        "delete": {
+            "show_name": "Delete",
+            "show_intro": "删除键",
+            "cs2_keyname": "delete"
+        }
+    },
+    {
+        "end": {
+            "show_name": "End",
+            "show_intro": "结束键",
+            "cs2_keyname": "end"
+        }
+    },
+    {
+        "pagedown": {
+            "show_name": "Page Down",
+            "show_intro": "向下翻页键",
+            "cs2_keyname": "pagedown"
+        }
+    },
+    {
+        "up": {
+            "show_name": "↑",
+            "show_intro": "向上箭头键",
+            "cs2_keyname": "up"
+        }
+    },
+    {
+        "left": {
+            "show_name": "←",
+            "show_intro": "向左箭头键",
+            "cs2_keyname": "left"
+        }
+    },
+    {
+        "down": {
+            "show_name": "↓",
+            "show_intro": "向下箭头键",
+            "cs2_keyname": "down"
+        }
+    },
+    {
+        "right": {
+            "show_name": "→",
