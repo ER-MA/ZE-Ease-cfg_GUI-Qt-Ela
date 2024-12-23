@@ -3,6 +3,7 @@
 #include <QApplication>
 
 #include <QDebug>
+#include <QFile>
 
 #include "ElaContentDialog.h"
 #include "ElaEventBus.h"
@@ -22,6 +23,17 @@ MainWindow::MainWindow(QWidget* parent)
     initConnections();  // 连接信号槽
 
     updateCurrentPage(_serverListPageKey);  // 修复初始化的Page不会触发navigationNodeClicked信号的问题
+
+    // 程序测试代码
+    // TODO: 在根目录下创建一个文本文件，用于确认根目录位置
+    //QFile file("test1001.txt");
+    //if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    //    qDebug() << "Cannot open file for writing";
+    //    return;
+    //}
+    //QTextStream out(&file);
+    //out << "Hello, world!";
+    //file.close();
 }
 
 MainWindow::~MainWindow()

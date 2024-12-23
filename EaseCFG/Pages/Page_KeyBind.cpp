@@ -14,6 +14,7 @@
 #include "ElaTreeView.h"
 #include "ElaText.h"
 
+#include "KeybindTree_Proc.h"
 #include "KeybindTable_Model.h"
 #include "T_TreeViewModel.h"
 #include "Ovr_ElaTreeView.h"
@@ -23,6 +24,8 @@
 Page_KeyBind::Page_KeyBind(QWidget* parent)
     : Page_BasePage(parent)
 {
+    KeybindTree_Proc* keybindProc = new KeybindTree_Proc(this);
+
     setWindowTitle("Key Bind");  // 窗口标题
     //setTitleVisible(false);  // 隐藏标题栏
     setContentsMargins(20, 20, 20, 7);
