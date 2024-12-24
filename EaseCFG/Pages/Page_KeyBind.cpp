@@ -34,71 +34,78 @@ Page_KeyBind::~Page_KeyBind()
 
 void Page_KeyBind::initUI()
 {
-    KeybindTree_Proc* keybindProc = new KeybindTree_Proc(this);
-
-    setWindowTitle("Key Bind");  // 窗口标题
-    //setTitleVisible(false);  // 隐藏标题栏
+    setWindowTitle("Key Bind"); // 窗口标题
+    //setTitleVisible(false); // 隐藏标题栏
     setContentsMargins(20, 20, 20, 7);
 
     createCustomWidget("你可以在这里为按键分配功能; 你还可以添加多套按键配置, 以便游戏内随时切换 (v0.9)");
 
-    // testText(测试文本)
-    //ElaText* testText = new ElaText("测试文本", this);
+    // CentralWidget
+    // ├── ToolBarWidget
+    // ├── KeybindWidget
+    // │   ├── KeybindTableView
+    // │   ├── FunctionEditWidget
+    // │   ├── FunctionSelectWidget
+    // │       ├── FunctionTreeView
+    // │       └── FunctionImagePreview
 
+    createFunctionImagePreview();
+    createFunctionTreeView();
+    createFunctionSelectWidget();
+    createKeyFunctionEditWidget();
+    createKeybindTableView();
+    createKeybindWidget();
+    createToolBarWidget();
+    setupCentralWidget();
+}
 
-    // toolBarWidget(工具栏)
-    ElaComboBox* modeComboBox = new ElaComboBox(this);
-    QStringList comboList{
-        "竞技模式",
-        "跑图模式",
-        "ZE 模式",
-        "KZ 模式" };
-    modeComboBox->addItems(comboList);
+void Page_KeyBind::createFunctionImagePreview() // [功能预览] ※
+{
 
-    ElaPushButton* saveButton = new ElaPushButton(this);
-    saveButton->setText("保存");
-    ElaPushButton* writeButton = new ElaPushButton(this);
-    writeButton->setText("写入");
-    QString floderPath = QCoreApplication::applicationDirPath() + "/config/output";
-    QFileInfo steamCfgDir(floderPath);
-    connect(writeButton, &ElaPushButton::clicked, this, [keybindProc, steamCfgDir]() {
-        keybindProc->writeConfigFile(steamCfgDir);
-    });
+}
 
-    QWidget* toolBarWidget = new QWidget(this);
-    QHBoxLayout* toolBarHLayout = new QHBoxLayout(toolBarWidget);
-    toolBarHLayout->setContentsMargins(0, 0, 0, 0);
-    toolBarHLayout->addWidget(modeComboBox);
-    toolBarHLayout->addStretch();
-    toolBarHLayout->addWidget(saveButton);
-    toolBarHLayout->addWidget(writeButton);
+void Page_KeyBind::createFunctionTreeView() // [功能选择] ※
+{
+    T_TreeViewModel* treeModel = new T_TreeViewModel(this);
+    QFile file(":/Resource/Data/FunctionTreeView.json");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+    QByteArray jsonData = file.readAll();  // 读取文件内容到QByteArray中
+    file.close();
+    const QByteArray& jsonDataRef = jsonData;  // 返回jsonData
+    treeModel->loadJsonData(jsonDataRef);
+    //QModelIndex index = treeModel->index(0, 0);
+    //QModelIndex index0_0 = treeModel->index(0, 0, index);
+    //QString title = (treeModel->data(index, Qt::DisplayRole)).toString();
+    //QString title0_0 = (treeModel->data(index0_0, Qt::DisplayRole)).toString();
+    //qDebug() << "treeModel_Index_Title:" << title;
+    //qDebug() << "treeModel_Index0_0_Title:" << title0_0;
+    _functionTreeView = new ElaTreeView(this);
+    //Ovr_ElaTreeView* _functionTreeView = new Ovr_ElaTreeView(this);
+    _functionTreeView->setModel(treeModel);
+    //_functionTreeView->setFixedHeight(450);
+    //_functionTreeView->setUniformRowHeights(false);
+    _functionTreeView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    _functionTreeView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+    _functionTreeView->setItemHeight(37);
+    _functionTreeView->setHeaderMargin(10);
+    _functionTreeView->setIndentation(23);
+    QFont headerFont = _functionTreeView->header()->font();
+    headerFont.setPixelSize(13); // 设置标题字体大小（全局默认字体大小为13）
+    _functionTreeView->header()->setFont(headerFont); // 应用字体
+}
 
+void Page_KeyBind::createFunctionSelectWidget() // [功能选择] 布局
+{
+    _functionSelectWidget = new QWidget(this);
+    QVBoxLayout* functionSelectVLayout = new QVBoxLayout(_functionSelectWidget);
+    functionSelectVLayout->setContentsMargins(0, 0, 0, 0);
+    functionSelectVLayout->addWidget(_functionTreeView);
+}
 
-    // keybindWidget(按键绑定窗口)
-    // keybindTableView(按键绑定表)
-    ElaTableView* keybindTableView = new ElaTableView(this);
-    keybindTableView->setHeaderMargin(10);  // 设置表头边距
-    KeybindTableModel* model = new KeybindTableModel(this);
-    //Keybind_DataFetcher* fetcher = new Keybind_DataFetcher();
-    //connect(fetcher, &Keybind_DataFetcher::dataFetched, model, &KeybindTableModel::fetchData);
-    //fetcher->startFetch();
-    keybindTableView->setModel(model); // 设置模型
-    keybindTableView->horizontalHeader()->setStretchLastSection(true);  // 自动拉伸最后一列
-    keybindTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);  // 自动拉伸所有列
-    keybindTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);  // 允许拖动调整列宽
-    //keybindTableView->horizontalHeader()->setMinimumSectionSize(60);  // 设置最小列宽
-    //keybindTableView->verticalHeader()->setMinimumSectionSize(46);  // 设置最小行高
-    //keybindTableView->verticalHeader()->setVisible(false);  // 隐藏左侧序列号
-    keybindTableView->setSelectionBehavior(QAbstractItemView::SelectRows);  // 选择行为为行选择
-    keybindTableView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);  // 大小策略为扩展
-    //keybindTableView->setShowGrid(true);  // 显示网格线
-    connect(keybindTableView, &ElaTableView::tableViewShow, this, [=]() {
-        keybindTableView->setColumnWidth(0, 100);
-        keybindTableView->setColumnWidth(1, 150);
-    });
-
-
-    // keyFunctionEditWidget(按键功能编辑窗口)
+void Page_KeyBind::createKeyFunctionEditWidget() // [按键功能编辑] ※
+{
     ElaText* selectedKeyTitleLable = new ElaText(this);
     selectedKeyTitleLable->setText("选中按键：");
     selectedKeyTitleLable->setTextPixelSize(15);
@@ -175,75 +182,94 @@ void Page_KeyBind::initUI()
     functionDetailsVLayout->addWidget(functionDetailsNoteLabel);
 
 
-    QWidget* keyFunctionEditWidget = new QWidget(this);
-    QVBoxLayout* keyFunctionEditVLayout = new QVBoxLayout(keyFunctionEditWidget);
+    _keyFunctionEditWidget = new QWidget(this);
+    QVBoxLayout* keyFunctionEditVLayout = new QVBoxLayout(_keyFunctionEditWidget);
     keyFunctionEditVLayout->setContentsMargins(0, 0, 0, 0);
     keyFunctionEditVLayout->addWidget(selectKeybindWidget);
     keyFunctionEditVLayout->addWidget(replaceFunctionWidget);
     keyFunctionEditVLayout->addWidget(functionDetailsWidget);
+}
 
-    // functionSelectWidget(功能选择窗口)
-    T_TreeViewModel* treeModel = new T_TreeViewModel(this);
-    QFile file(":/Resource/Data/FunctionTreeView.json");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        return;
-    }
-    QByteArray jsonData = file.readAll();  // 读取文件内容到QByteArray中
-    file.close();
-    const QByteArray& jsonDataRef = jsonData;  // 返回jsonData
-    treeModel->loadJsonData(jsonDataRef);
-    //QModelIndex index = treeModel->index(0, 0);
-    //QModelIndex index0_0 = treeModel->index(0, 0, index);
-    //QString title = (treeModel->data(index, Qt::DisplayRole)).toString();
-    //QString title0_0 = (treeModel->data(index0_0, Qt::DisplayRole)).toString();
-    //qDebug() << "treeModel_Index_Title:" << title;
-    //qDebug() << "treeModel_Index0_0_Title:" << title0_0;
-    ElaTreeView* functionTreeView = new ElaTreeView(this);
-    //Ovr_ElaTreeView* functionTreeView = new Ovr_ElaTreeView(this);
-    functionTreeView->setModel(treeModel);
-    //functionTreeView->setFixedHeight(450);
-    //functionTreeView->setUniformRowHeights(false);
-    functionTreeView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-    functionTreeView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
-    functionTreeView->setItemHeight(37);
-    functionTreeView->setHeaderMargin(10);
-    functionTreeView->setIndentation(23);
-    QFont headerFont = functionTreeView->header()->font();
-    headerFont.setPixelSize(13); // 设置标题字体大小（全局默认字体大小为13）
-    functionTreeView->header()->setFont(headerFont); // 应用字体
+void Page_KeyBind::createKeybindTableView() // [按键绑定列表] ※
+{
+    _keybindTableView = new ElaTableView(this);
+    _keybindTableView->setHeaderMargin(10);  // 设置表头边距
+    KeybindTableModel* model = new KeybindTableModel(this);
+    //Keybind_DataFetcher* fetcher = new Keybind_DataFetcher();
+    //connect(fetcher, &Keybind_DataFetcher::dataFetched, model, &KeybindTableModel::fetchData);
+    //fetcher->startFetch();
+    _keybindTableView->setModel(model); // 设置模型
+    _keybindTableView->horizontalHeader()->setStretchLastSection(true);  // 自动拉伸最后一列
+    _keybindTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);  // 自动拉伸所有列
+    _keybindTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);  // 允许拖动调整列宽
+    //_keybindTableView->horizontalHeader()->setMinimumSectionSize(60);  // 设置最小列宽
+    //_keybindTableView->verticalHeader()->setMinimumSectionSize(46);  // 设置最小行高
+    //_keybindTableView->verticalHeader()->setVisible(false);  // 隐藏左侧序列号
+    _keybindTableView->setSelectionBehavior(QAbstractItemView::SelectRows);  // 选择行为为行选择
+    _keybindTableView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);  // 大小策略为扩展
+    //_keybindTableView->setShowGrid(true);  // 显示网格线
+    connect(_keybindTableView, &ElaTableView::tableViewShow, this, [=]() {
+        _keybindTableView->setColumnWidth(0, 100);
+        _keybindTableView->setColumnWidth(1, 150);
+    });
+}
 
-
-    QWidget* functionSelectWidget = new QWidget(this);
-    QVBoxLayout* functionSelectVLayout = new QVBoxLayout(functionSelectWidget);
-    functionSelectVLayout->setContentsMargins(0, 0, 0, 0);
-    functionSelectVLayout->addWidget(functionTreeView);
-
-
-    QWidget* keybindWidget = new QWidget(this);
-    QHBoxLayout* keybindHLayout = new QHBoxLayout(keybindWidget);
+void Page_KeyBind::createKeybindWidget() // [按键绑定] 布局
+{
+    _keybindWidget = new QWidget(this);
+    QHBoxLayout* keybindHLayout = new QHBoxLayout(_keybindWidget);
     keybindHLayout->setContentsMargins(0, 0, 0, 0);
-    keybindHLayout->addWidget(keybindTableView);
-    keybindHLayout->addWidget(keyFunctionEditWidget);
-    keybindHLayout->addWidget(functionSelectWidget);
+    keybindHLayout->addWidget(_keybindTableView);
+    keybindHLayout->addWidget(_keyFunctionEditWidget);
+    keybindHLayout->addWidget(_functionSelectWidget);
+}
 
+void Page_KeyBind::createToolBarWidget() // [工具栏] ※
+{
+    ElaComboBox* modeComboBox = new ElaComboBox(this);
+    QStringList comboList{
+        "竞技模式",
+        "跑图模式",
+        "ZE 模式",
+        "KZ 模式" };
+    modeComboBox->addItems(comboList);
 
-    // centralWidget(中心窗口)
+    _saveButton = new ElaPushButton(this);
+    _saveButton->setText("保存");
+    _writeButton = new ElaPushButton(this);
+    _writeButton->setText("写入");
+
+    _toolBarWidget = new QWidget(this);
+    QHBoxLayout* toolBarHLayout = new QHBoxLayout(_toolBarWidget);
+    toolBarHLayout->setContentsMargins(0, 0, 0, 0);
+    toolBarHLayout->addWidget(modeComboBox);
+    toolBarHLayout->addStretch();
+    toolBarHLayout->addWidget(_saveButton);
+    toolBarHLayout->addWidget(_writeButton);
+}
+
+void Page_KeyBind::setupCentralWidget() // [中心窗口] 布局
+{
     QWidget* centralWidget = new QWidget(this);
     centralWidget->setWindowTitle("按键配置");
     this->addCentralWidget(centralWidget, true, false, 0);
     QVBoxLayout* centerVLayout = new QVBoxLayout(centralWidget);
     centerVLayout->setContentsMargins(0, 0, 0, 0);
     //centerVLayout->addWidget(testText);
-    centerVLayout->addWidget(toolBarWidget);
-    centerVLayout->addWidget(keybindWidget);
-};
+    centerVLayout->addWidget(_toolBarWidget);
+    centerVLayout->addWidget(_keybindWidget);
+}
 
 void Page_KeyBind::initData()
 {
-
+    _keybindProc = new KeybindTree_Proc(this);
 };
 
 void Page_KeyBind::initConnect()
 {
-
+    QString floderPath = QCoreApplication::applicationDirPath() + "/config/output";
+    QFileInfo steamCfgDir(floderPath);
+    connect(_writeButton, &ElaPushButton::clicked, this, [this, steamCfgDir]() {
+        _keybindProc->writeConfigFile(steamCfgDir);
+    });
 };
