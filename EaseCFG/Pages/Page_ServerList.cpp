@@ -131,7 +131,7 @@ void Page_ServerList::initConnection()
     // 服务器TableView - 连接数据更新信号
     connect(_fetcher, &Server_DataFetcher::dataFetched, _model, &Model_ServerTable::fetchData);
     // 处理数据填充后选中行恢复逻辑
-    connect(_fetcher, &Server_DataFetcher::dataFetched, this, [=]() {
+    connect(_fetcher, &Server_DataFetcher::dataFetched, this, [this]() {
         _isRestoringSelection = true; // 设置标志为true，表示正在恢复选中状态
         if (_currentSelectedRow >= 0 && _currentSelectedRow < _model->rowCount()) {
             _serverTableView->selectRow(_currentSelectedRow); // 恢复选中行

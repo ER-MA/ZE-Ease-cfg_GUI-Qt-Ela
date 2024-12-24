@@ -6,8 +6,6 @@
 #include <QMouseEvent>
 #include <QHeaderView>
 
-#include <QFile>
-
 #include "ElaComboBox.h"
 #include "ElaPushButton.h"
 #include "ElaTableView.h"
@@ -49,6 +47,11 @@ Page_KeyBind::Page_KeyBind(QWidget* parent)
     saveButton->setText("保存");
     ElaPushButton* writeButton = new ElaPushButton(this);
     writeButton->setText("写入");
+    QString floderPath = QCoreApplication::applicationDirPath() + "/config/output";
+    QFileInfo steamCfgDir(floderPath);
+    connect(writeButton, &ElaPushButton::clicked, this, [keybindProc, steamCfgDir]() {
+        keybindProc->writeConfigFile(steamCfgDir);
+    });
 
     QWidget* toolBarWidget = new QWidget(this);
     QHBoxLayout* toolBarHLayout = new QHBoxLayout(toolBarWidget);
