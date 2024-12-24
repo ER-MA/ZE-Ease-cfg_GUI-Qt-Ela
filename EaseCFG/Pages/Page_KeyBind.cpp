@@ -22,6 +22,18 @@
 Page_KeyBind::Page_KeyBind(QWidget* parent)
     : Page_BasePage(parent)
 {
+    initUI();
+    initData();
+    initConnect();
+};
+
+Page_KeyBind::~Page_KeyBind()
+{
+
+};
+
+void Page_KeyBind::initUI()
+{
     KeybindTree_Proc* keybindProc = new KeybindTree_Proc(this);
 
     setWindowTitle("Key Bind");  // 窗口标题
@@ -40,7 +52,7 @@ Page_KeyBind::Page_KeyBind(QWidget* parent)
         "竞技模式",
         "跑图模式",
         "ZE 模式",
-        "KZ 模式"};
+        "KZ 模式" };
     modeComboBox->addItems(comboList);
 
     ElaPushButton* saveButton = new ElaPushButton(this);
@@ -125,7 +137,7 @@ Page_KeyBind::Page_KeyBind(QWidget* parent)
 
 
     ElaText* selectedFunctionLable = new ElaText(this);
-    selectedFunctionLable ->setText("选中功能：");
+    selectedFunctionLable->setText("选中功能：");
     selectedFunctionLable->setTextPixelSize(15);
     ElaText* mousePointFunctionLable = new ElaText(this);
     mousePointFunctionLable->setText("Null");
@@ -226,7 +238,12 @@ Page_KeyBind::Page_KeyBind(QWidget* parent)
     centerVLayout->addWidget(keybindWidget);
 };
 
-Page_KeyBind::~Page_KeyBind()
+void Page_KeyBind::initData()
+{
+
+};
+
+void Page_KeyBind::initConnect()
 {
 
 };

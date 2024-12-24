@@ -17,6 +17,9 @@ protected:
 
 
 private:
+    void initUI();
+    void initData();
+    void initConnect();
 
 };
 

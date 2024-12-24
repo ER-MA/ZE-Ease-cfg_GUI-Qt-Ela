@@ -1,8 +1,8 @@
 #include "Page_BasePage.h"
 
 #include <QHBoxLayout>
-//#include <QPainter>
 #include <QVBoxLayout>
+//#include <QPainter>
 
 #include "ElaMenu.h"
 #include "ElaText.h"
@@ -36,7 +36,7 @@ void Page_BasePage::createCustomWidget(QString description)
 
     ElaText* descText = new ElaText(this);
     descText->setText(description);
-    descText->setTextInteractionFlags(Qt::TextSelectableByMouse);  // 允许鼠标选中文本
+    descText->setTextInteractionFlags(Qt::TextSelectableByMouse); // 允许鼠标选中文本
     descText->setTextPixelSize(15);
 
     QVBoxLayout* topLayout = new QVBoxLayout(customWidget);

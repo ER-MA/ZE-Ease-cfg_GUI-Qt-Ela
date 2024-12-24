@@ -19,7 +19,7 @@ Page_ServerList::Page_ServerList(QWidget *parent)
 {
     initUI();
     initData();
-    initConnection();
+    initConnect();
 }
 
 Page_ServerList::~Page_ServerList()
@@ -124,7 +124,7 @@ void Page_ServerList::initData()
     _fetcher = new Server_DataFetcher();
 }
 
-void Page_ServerList::initConnection()
+void Page_ServerList::initConnect()
 {
     // 服务器ComboBox - 选择服务器
     connect(_serverComboBox, &ElaComboBox::currentIndexChanged, _fetcher, &Server_DataFetcher::setFetchServer);

@@ -21,7 +21,7 @@ public:
     ~Page_ServerList();
     void initUI();
     void initData();
-    void initConnection();
+    void initConnect();
 
 signals:
     void fetchData();
