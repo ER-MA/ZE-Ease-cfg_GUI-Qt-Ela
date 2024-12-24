@@ -1,19 +1,17 @@
 # ZE-Ease-cfg_GUI-Qt-Ela
 
-<center>[服务器列表-界面预览]</center>
+## 服务器列表-界面预览
 
 ![服务器列表界面](doc/GUI-ServerPage.png)
 
----
-
-<center>[软件功能一览]</center>
+## 软件功能一览
 
 - 服务器列表 
     -
         - 服务器：加服、挤服
         - 地图：查览、订阅、收藏
         - （更多社区支持，持续开发中）
-- 按键功能配置 (v0.9)
+- 按键功能配置
     - 
         - 按键绑定：傻瓜式绑定社区功能到按键
         - 功能配置：暂不支持新增及修改功能
@@ -25,3 +23,7 @@
 - 其他
     - 
         - 神秘功能，规划中
+
+## 依赖
+
+- [[ElaWidgetTools](https://github.com/Liniyous/ElaWidgetTools)](基于QT-Widget开发的FluentUI风格的组件库)
