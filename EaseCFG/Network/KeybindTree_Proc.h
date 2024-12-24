@@ -33,9 +33,9 @@ private:
     void initConfigDir(); // 初始化配置文件目录
     void initConfigFile(); // 初始化配置文件
 
-    QJsonObject readJsonObj(const QString& filePath); // 读取Json对象
-    QJsonObject readJsonObj(const QFileInfo& fileInfo); // 读取Json对象
-    QJsonObject readJsonObj(const QResource& resource); // 读取Json对象
+    QJsonObject readJsonObj(const QString& filePath);
+    QJsonObject readJsonObj(const QFileInfo& fileInfo);
+    QJsonObject readJsonObj(const QResource& resource);
     QJsonObject generateKeybindList(); // 生成游戏按键绑定列表
     void writeKeybindsToStream(QTextStream& out, const QJsonObject& keybindList); // 写入按键绑定到流
 

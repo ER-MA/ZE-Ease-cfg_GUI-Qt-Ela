@@ -28,7 +28,7 @@ Page_KeyBind::Page_KeyBind(QWidget* parent)
     //setTitleVisible(false);  // 隐藏标题栏
     setContentsMargins(20, 20, 20, 7);
 
-    createCustomWidget("你可以在这里为按键分配功能; 你还可以添加多套按键配置, 以便游戏内随时切换（v0.9）");
+    createCustomWidget("你可以在这里为按键分配功能; 你还可以添加多套按键配置, 以便游戏内随时切换 (v0.9)");
 
     // testText(测试文本)
     //ElaText* testText = new ElaText("测试文本", this);

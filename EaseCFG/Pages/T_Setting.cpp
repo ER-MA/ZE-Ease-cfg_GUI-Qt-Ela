@@ -20,11 +20,11 @@ T_Setting::T_Setting(QWidget* parent)
 {
     setContentsMargins(20, 20, 20, 7);
 
-    createCustomWidget("选择服务器后加入游戏，或复制服务器地址自行输入控制台加入游戏。");
+    createCustomWidget("修改软件主题，调整软件默认设置");
 
     // 预览窗口标题
     ElaWindow* window = dynamic_cast<ElaWindow*>(parent);
-    setWindowTitle("Setting");
+    setWindowTitle("软件设置");
 
     ElaText* themeText = new ElaText("主题设置", this);
     themeText->setWordWrap(false);

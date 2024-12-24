@@ -33,7 +33,7 @@ void Page_ServerList::initUI()
     //setTitleVisible(false);  // 隐藏标题栏
     setContentsMargins(20, 20, 20, 7);
 
-    createCustomWidget("选择服务器后加入游戏，或复制服务器地址自行输入控制台加入游戏。");
+    createCustomWidget("选择服务器后加入游戏，或复制服务器地址自行输入控制台加入游戏");
 
 
     // toolBarWidget(工具栏)

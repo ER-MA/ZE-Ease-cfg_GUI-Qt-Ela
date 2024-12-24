@@ -2,11 +2,10 @@
 
 KeybindTree_Proc::KeybindTree_Proc(QObject* parent) : QObject(parent)
 {
-    qDebug("[KeybindTree_Proc::KeybindTree_Proc] Constructor.");
     initConfigDir();
     initConfigFile();
-    //测试函数readJsonObj()的返回值
-    //qDebug() << "[KeybindTree_Proc::KeybindTree_Proc] readJsonObj() return value:\n" << qPrintable(QJsonDocument(readJsonObj(_configFuncListQrcFileRes)).toJson(QJsonDocument::Indented));
+
+    // 打印Obj方式: qPrintable(QJsonDocument(readJsonObj(_configFuncListQrcFileRes)).toJson(QJsonDocument::Indented))
 };
 
 KeybindTree_Proc::~KeybindTree_Proc()

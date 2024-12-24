@@ -23,17 +23,6 @@ MainWindow::MainWindow(QWidget* parent)
     initConnections();  // 连接信号槽
 
     updateCurrentPage(_serverListPageKey);  // 修复初始化的Page不会触发navigationNodeClicked信号的问题
-
-    // 程序测试代码
-    // TODO: 在根目录下创建一个文本文件，用于确认根目录位置
-    //QFile file("test1001.txt");
-    //if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-    //    qDebug() << "Cannot open file for writing";
-    //    return;
-    //}
-    //QTextStream out(&file);
-    //out << "Hello, world!";
-    //file.close();
 }
 
 MainWindow::~MainWindow()
@@ -144,7 +133,11 @@ void MainWindow::initConnections()
             //qDebug() << "[MainWindow] 切换到关于页面";
             updateCurrentPage(_aboutPageKey);
             _aboutPage->setFixedSize(400, 400);
-            _aboutPage->moveToCenter();
+            QRect rect = this->geometry(); // 包括标题栏和边框
+            //QRect rect = this->rect(); // 仅客户区
+            int x = this->x() + (rect.width() - _aboutPage->width()) / 2;
+            int y = this->y() + (rect.height() - _aboutPage->height()) / 2;
+            _aboutPage->move(x, y); // 设置关于页面的位置，位于窗口中心
             _aboutPage->show();
         }
         if (_settingPageKey == nodeKey)
