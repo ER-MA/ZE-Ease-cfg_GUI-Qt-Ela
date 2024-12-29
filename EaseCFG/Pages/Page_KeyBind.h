@@ -6,6 +6,7 @@
 #include "ElaTableView.h"
 #include "ElaTreeView.h"
 #include "ElaPushButton.h"
+#include "ElaImageCard.h"
 
 #include "KeybindTree_Proc.h"
 
@@ -45,6 +46,17 @@ private:
 
     ElaPushButton* _saveButton;
     ElaPushButton* _writeButton;
+
+    ElaText* _selectedKeyNameLable;
+    ElaText* _selectedKeyIntroLable;
+    ElaText* _currentFunctionNameLable;
+    ElaText* _mousePointFunctionLable;
+    ElaText* _functionDetailsTitleLabel;
+    ElaText* _functionDetailsIntroLabel;
+    ElaText* _functionDetailsNoteTitleLabel;
+    ElaText* _functionDetailsNoteLabel;
+
+    ElaImageCard* _functionImagePreview;
 };
 
 

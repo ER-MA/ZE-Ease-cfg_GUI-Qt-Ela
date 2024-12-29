@@ -1,0 +1,367 @@
+{
+    "mouse1": {
+        "Abbreviation": "Mouse1",
+        "StandardName": "Mouse1",
+        "Description": "鼠标1键"
+    },
+    "mouse2": {
+        "Abbreviation": "Mouse2",
+        "StandardName": "Mouse2",
+        "Description": "鼠标2键"
+    },
+    "mouse3": {
+        "Abbreviation": "Mouse3",
+        "StandardName": "Mouse3",
+        "Description": "鼠标3键"
+    },
+    "mouse4": {
+        "Abbreviation": "Mouse4",
+        "StandardName": "Mouse4",
+        "Description": "鼠标4键"
+    },
+    "mouse5": {
+        "Abbreviation": "Mouse5",
+        "StandardName": "Mouse5",
+        "Description": "鼠标5键"
+    },
+    "mwheelup": {
+        "Abbreviation": "MWheelUp",
+        "StandardName": "MouseWheelUp",
+        "Description": "鼠标滚轮上滚"
+    },
+    "mwheeldown": {
+        "Abbreviation": "MWheelDown",
+        "StandardName": "MouseWheelDown",
+        "Description": "鼠标滚轮下滚"
+    },
+    "mouse_x": {
+        "Abbreviation": "MouseX",
+        "StandardName": "MouseX",
+        "Description": "鼠标X轴移动"
+    },
+    "mouse_y": {
+        "Abbreviation": "MouseY",
+        "StandardName": "MouseY",
+        "Description": "鼠标Y轴移动"
+    },
+    "f1": {
+        "Abbreviation": "F1",
+        "StandardName": "F1",
+        "Description": "F1功能键"
+    },
+    "f2": {
+        "Abbreviation": "F2",
+        "StandardName": "F2",
+        "Description": "F2功能键"
+    },
+    "f3": {
+        "Abbreviation": "F3",
+        "StandardName": "F3",
+        "Description": "F3功能键"
+    },
+    "f4": {
+        "Abbreviation": "F4",
+        "StandardName": "F4",
+        "Description": "F4功能键"
+    },
+    "f5": {
+        "Abbreviation": "F5",
+        "StandardName": "F5",
+        "Description": "F5功能键"
+    },
+    "f6": {
+        "Abbreviation": "F6",
+        "StandardName": "F6",
+        "Description": "F6功能键"
+    },
+    "f7": {
+        "Abbreviation": "F7",
+        "StandardName": "F7",
+        "Description": "F7功能键"
+    },
+    "f8": {
+        "Abbreviation": "F8",
+        "StandardName": "F8",
+        "Description": "F8功能键"
+    },
+    "f9": {
+        "Abbreviation": "F9",
+        "StandardName": "F9",
+        "Description": "F9功能键"
+    },
+    "f10": {
+        "Abbreviation": "F10",
+        "StandardName": "F10",
+        "Description": "F10功能键"
+    },
+    "f11": {
+        "Abbreviation": "F11",
+        "StandardName": "F11",
+        "Description": "F11功能键"
+    },
+    "f12": {
+        "Abbreviation": "F12",
+        "StandardName": "F12",
+        "Description": "F12功能键"
+    },
+    "1": {
+        "Abbreviation": "1",
+        "StandardName": "Key1",
+        "Description": "数字1键"
+    },
+    "2": {
+        "Abbreviation": "2",
+        "StandardName": "Key2",
+        "Description": "数字2键"
+    },
+    "3": {
+        "Abbreviation": "3",
+        "StandardName": "Key3",
+        "Description": "数字3键"
+    },
+    "4": {
+        "Abbreviation": "4",
+        "StandardName": "Key4",
+        "Description": "数字4键"
+    },
+    "5": {
+        "Abbreviation": "5",
+        "StandardName": "Key5",
+        "Description": "数字5键"
+    },
+    "6": {
+        "Abbreviation": "6",
+        "StandardName": "Key6",
+        "Description": "数字6键"
+    },
+    "7": {
+        "Abbreviation": "7",
+        "StandardName": "Key7",
+        "Description": "数字7键"
+    },
+    "8": {
+        "Abbreviation": "8",
+        "StandardName": "Key8",
+        "Description": "数字8键"
+    },
+    "9": {
+        "Abbreviation": "9",
+        "StandardName": "Key9",
+        "Description": "数字9键"
+    },
+    "0": {
+        "Abbreviation": "0",
+        "StandardName": "Key0",
+        "Description": "数字0键"
+    },
+    "w": {
+        "Abbreviation": "W",
+        "StandardName": "KeyW",
+        "Description": "W键"
+    },
+    "a": {
+        "Abbreviation": "A",
+        "StandardName": "KeyA",
+        "Description": "A键"
+    },
+    "s": {
+        "Abbreviation": "S",
+        "StandardName": "KeyS",
+        "Description": "S键"
+    },
+    "d": {
+        "Abbreviation": "D",
+        "StandardName": "KeyD",
+        "Description": "D键"
+    },
+    "q": {
+        "Abbreviation": "Q",
+        "StandardName": "KeyQ",
+        "Description": "Q键"
+    },
+    "e": {
+        "Abbreviation": "E",
+        "StandardName": "KeyE",
+        "Description": "E键"
+    },
+    "r": {
+        "Abbreviation": "R",
+        "StandardName": "KeyR",
+        "Description": "R键"
+    },
+    "t": {
+        "Abbreviation": "T",
+        "StandardName": "KeyT",
+        "Description": "T键"
+    },
+    "f": {
+        "Abbreviation": "F",
+        "StandardName": "KeyF",
+        "Description": "F键"
+    },
+    "g": {
+        "Abbreviation": "G",
+        "StandardName": "KeyG",
+        "Description": "G键"
+    },
+    "z": {
+        "Abbreviation": "Z",
+        "StandardName": "KeyZ",
+        "Description": "Z键"
+    },
+    "x": {
+        "Abbreviation": "X",
+        "StandardName": "KeyX",
+        "Description": "X键"
+    },
+    "c": {
+        "Abbreviation": "C",
+        "StandardName": "KeyC",
+        "Description": "C键"
+    },
+    "v": {
+        "Abbreviation": "V",
+        "StandardName": "KeyV",
+        "Description": "V键"
+    },
+    "y": {
+        "Abbreviation": "Y",
+        "StandardName": "KeyY",
+        "Description": "Y键"
+    },
+    "u": {
+        "Abbreviation": "U",
+        "StandardName": "KeyU",
+        "Description": "U键"
+    },
+    "i": {
+        "Abbreviation": "I",
+        "StandardName": "KeyI",
+        "Description": "I键"
+    },
+    "o": {
+        "Abbreviation": "O",
+        "StandardName": "KeyO",
+        "Description": "O键"
+    },
+    "p": {
+        "Abbreviation": "P",
+        "StandardName": "KeyP",
+        "Description": "P键"
+    },
+    "h": {
+        "Abbreviation": "H",
+        "StandardName": "KeyH",
+        "Description": "H键"
+    },
+    "j": {
+        "Abbreviation": "J",
+        "StandardName": "KeyJ",
+        "Description": "J键"
+    },
+    "k": {
+        "Abbreviation": "K",
+        "StandardName": "KeyK",
+        "Description": "K键"
+    },
+    "l": {
+        "Abbreviation": "L",
+        "StandardName": "KeyL",
+        "Description": "L键"
+    },
+    "b": {
+        "Abbreviation": "B",
+        "StandardName": "KeyB",
+        "Description": "B键"
+    },
+    "n": {
+        "Abbreviation": "N",
+        "StandardName": "KeyN",
+        "Description": "N键"
+    },
+    "m": {
+        "Abbreviation": "M",
+        "StandardName": "KeyM",
+        "Description": "M键"
+    },
+    "`": {
+        "Abbreviation": "Backquote",
+        "StandardName": "Backquote",
+        "Description": "反引号键"
+    },
+    "kp7": {
+        "Abbreviation": "KP7",
+        "StandardName": "Keypad7",
+        "Description": "小键盘7键"
+    },
+    "kp8": {
+        "Abbreviation": "KP8",
+        "StandardName": "Keypad8",
+        "Description": "小键盘8键"
+    },
+    "kp9": {
+        "Abbreviation": "KP9",
+        "StandardName": "Keypad9",
+        "Description": "小键盘9键"
+    },
+    "kpdel": {
+        "Abbreviation": "KPDel",
+        "StandardName": "KeypadDelete",
+        "Description": "小键盘删除键"
+    },
+    "kpplus": {
+        "Abbreviation": "KPPlus",
+        "StandardName": "KeypadPlus",
+        "Description": "小键盘加号键"
+    },
+    "kpminus": {
+        "Abbreviation": "KPMinus",
+        "StandardName": "KeypadMinus",
+        "Description": "小键盘减号键"
+    },
+    "kpmultiply": {
+        "Abbreviation": "KPMultiply",
+        "StandardName": "KeypadMultiply",
+        "Description": "小键盘乘号键"
+    },
+    "kpdivide": {
+        "Abbreviation": "KPDivide",
+        "StandardName": "KeypadDivide",
+        "Description": "小键盘除号键"
+    },
+    "numlock": {
+        "Abbreviation": "NumLock",
+        "StandardName": "NumLock",
+        "Description": "数字锁定键"
+    },
+    "ins": {
+        "Abbreviation": "Ins",
+        "StandardName": "Insert",
+        "Description": "插入键"
+    },
+    "home": {
+        "Abbreviation": "Home",
+        "StandardName": "Home",
+        "Description": "首页键"
+    },
+    "pgup": {
+        "Abbreviation": "PgUp",
+        "StandardName": "PageUp",
+        "Description": "向上翻页键"
+    },
+    "del": {
+        "Abbreviation": "Del",
+        "StandardName": "Delete",
+        "Description": "删除键"
+    },
+    "end": {
+        "Abbreviation": "End",
+        "StandardName": "End",
+        "Description": "结束键"
+    },
+    "pgdn": {
+        "Abbreviation": "PgDn",
+        "StandardName": "PageDown",
+        "Description": "向下翻页键"
+    }
+}

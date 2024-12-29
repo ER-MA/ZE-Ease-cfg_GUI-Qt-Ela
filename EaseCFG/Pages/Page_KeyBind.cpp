@@ -11,6 +11,8 @@
 #include "ElaTableView.h"
 #include "ElaTreeView.h"
 #include "ElaText.h"
+#include "ElaMessageBar.h"
+#include "ElaImageCard.h"
 
 #include "KeybindTree_Proc.h"
 #include "KeybindTable_Model.h"
@@ -61,7 +63,15 @@ void Page_KeyBind::initUI()
 
 void Page_KeyBind::createFunctionImagePreview() // [功能预览] ※
 {
+    _functionImagePreview = new ElaImageCard(this);
+    _functionImagePreview->setBorderRadius(10);
+    _functionImagePreview->setIsPreserveAspectCrop(true);
+    _functionImagePreview->setMaximumAspectRatio(qreal(16) / qreal(9));
 
+    _functionImagePreview->setMinimumSize(320, 180);
+
+    QImage image(":/Resource/Image/Card/dream.png");
+    _functionImagePreview->setCardImage(image);
 }
 
 void Page_KeyBind::createFunctionTreeView() // [功能选择] ※
@@ -94,6 +104,8 @@ void Page_KeyBind::createFunctionTreeView() // [功能选择] ※
     QFont headerFont = _functionTreeView->header()->font();
     headerFont.setPixelSize(13); // 设置标题字体大小（全局默认字体大小为13）
     _functionTreeView->header()->setFont(headerFont); // 应用字体
+
+    _functionTreeView->setMinimumSize(320, 180);
 }
 
 void Page_KeyBind::createFunctionSelectWidget() // [功能选择] 布局
@@ -102,6 +114,10 @@ void Page_KeyBind::createFunctionSelectWidget() // [功能选择] 布局
     QVBoxLayout* functionSelectVLayout = new QVBoxLayout(_functionSelectWidget);
     functionSelectVLayout->setContentsMargins(0, 0, 0, 0);
     functionSelectVLayout->addWidget(_functionTreeView);
+    functionSelectVLayout->addWidget(_functionImagePreview);
+
+    functionSelectVLayout->setStretchFactor(_functionTreeView, 2);
+    functionSelectVLayout->setStretchFactor(_functionImagePreview, 1);
 }
 
 void Page_KeyBind::createKeyFunctionEditWidget() // [按键功能编辑] ※
@@ -109,30 +125,30 @@ void Page_KeyBind::createKeyFunctionEditWidget() // [按键功能编辑] ※
     ElaText* selectedKeyTitleLable = new ElaText(this);
     selectedKeyTitleLable->setText("选中按键：");
     selectedKeyTitleLable->setTextPixelSize(15);
-    ElaText* selectedKeyNameLable = new ElaText(this);
-    selectedKeyNameLable->setText("Null");
-    selectedKeyNameLable->setTextPixelSize(15);
-    ElaText* selectedKeyIntroLable = new ElaText(this);
-    selectedKeyIntroLable->setText("(等待选择按键)");
-    selectedKeyIntroLable->setTextPixelSize(15);
+    _selectedKeyNameLable = new ElaText(this);
+    _selectedKeyNameLable->setText("Null");
+    _selectedKeyNameLable->setTextPixelSize(15);
+    _selectedKeyIntroLable = new ElaText(this);
+    _selectedKeyIntroLable->setText("(等待选择按键)");
+    _selectedKeyIntroLable->setTextPixelSize(15);
     QWidget* selectedKeyWidget = new QWidget(this);
     QHBoxLayout* selectedKeyHLayout = new QHBoxLayout(selectedKeyWidget);
     selectedKeyHLayout->setContentsMargins(0, 0, 0, 0);
     selectedKeyHLayout->addWidget(selectedKeyTitleLable);
-    selectedKeyHLayout->addWidget(selectedKeyNameLable);
+    selectedKeyHLayout->addWidget(_selectedKeyNameLable);
     selectedKeyHLayout->addStretch();
-    selectedKeyHLayout->addWidget(selectedKeyIntroLable);
+    selectedKeyHLayout->addWidget(_selectedKeyIntroLable);
 
-    ElaText* currentFunctionTitleLable = new ElaText(this);
-    currentFunctionTitleLable->setText("当前功能：");
-    currentFunctionTitleLable->setTextPixelSize(15);
+    _currentFunctionNameLable = new ElaText(this);
+    _currentFunctionNameLable->setText("当前功能：");
+    _currentFunctionNameLable->setTextPixelSize(15);
     ElaText* currentFunctionNameLable = new ElaText(this);
     currentFunctionNameLable->setText("Null");
     currentFunctionNameLable->setTextPixelSize(15);
     QWidget* currentFunctionWidget = new QWidget(this);
     QHBoxLayout* currentFunctionHLayout = new QHBoxLayout(currentFunctionWidget);
     currentFunctionHLayout->setContentsMargins(0, 0, 0, 0);
-    currentFunctionHLayout->addWidget(currentFunctionTitleLable);
+    currentFunctionHLayout->addWidget(_currentFunctionNameLable);
     currentFunctionHLayout->addWidget(currentFunctionNameLable);
     currentFunctionHLayout->addStretch();
 
@@ -146,40 +162,40 @@ void Page_KeyBind::createKeyFunctionEditWidget() // [按键功能编辑] ※
     ElaText* selectedFunctionLable = new ElaText(this);
     selectedFunctionLable->setText("选中功能：");
     selectedFunctionLable->setTextPixelSize(15);
-    ElaText* mousePointFunctionLable = new ElaText(this);
-    mousePointFunctionLable->setText("Null");
-    mousePointFunctionLable->setTextPixelSize(15);
+    _mousePointFunctionLable = new ElaText(this);
+    _mousePointFunctionLable->setText("Null");
+    _mousePointFunctionLable->setTextPixelSize(15);
     ElaPushButton* replaceFunctionPushButton = new ElaPushButton("替换当前功能", this);
 
     QWidget* replaceFunctionWidget = new QWidget(this);
     QHBoxLayout* replaceFunctionHLayout = new QHBoxLayout(replaceFunctionWidget);
     replaceFunctionHLayout->setContentsMargins(0, 0, 0, 0);
     replaceFunctionHLayout->addWidget(selectedFunctionLable);
-    replaceFunctionHLayout->addWidget(mousePointFunctionLable);
+    replaceFunctionHLayout->addWidget(_mousePointFunctionLable);
     replaceFunctionHLayout->addStretch();
     replaceFunctionHLayout->addWidget(replaceFunctionPushButton);
 
 
-    ElaText* functionDetailsTitleLabel = new ElaText(this);
-    functionDetailsTitleLabel->setText("Null");
-    functionDetailsTitleLabel->setTextPixelSize(15);
-    ElaText* functionDetailsIntroLabel = new ElaText(this);
-    functionDetailsIntroLabel->setText("暂无简介");
-    functionDetailsIntroLabel->setTextPixelSize(15);
-    ElaText* functionDetailsNoteTitleLabel = new ElaText(this);
-    functionDetailsNoteTitleLabel->setText("备注：");
-    functionDetailsNoteTitleLabel->setTextPixelSize(15);
-    ElaText* functionDetailsNoteLabel = new ElaText(this);
-    functionDetailsNoteLabel->setText("暂无功能备注。");
-    functionDetailsNoteLabel->setTextPixelSize(15);
+    _functionDetailsTitleLabel = new ElaText(this);
+    _functionDetailsTitleLabel->setText("Null");
+    _functionDetailsTitleLabel->setTextPixelSize(15);
+    _functionDetailsIntroLabel = new ElaText(this);
+    _functionDetailsIntroLabel->setText("暂无简介");
+    _functionDetailsIntroLabel->setTextPixelSize(15);
+    _functionDetailsNoteTitleLabel = new ElaText(this);
+    _functionDetailsNoteTitleLabel->setText("备注：");
+    _functionDetailsNoteTitleLabel->setTextPixelSize(15);
+    _functionDetailsNoteLabel = new ElaText(this);
+    _functionDetailsNoteLabel->setText("暂无功能备注。");
+    _functionDetailsNoteLabel->setTextPixelSize(15);
 
     QWidget* functionDetailsWidget = new QWidget(this);
     QVBoxLayout* functionDetailsVLayout = new QVBoxLayout(functionDetailsWidget);
     functionDetailsVLayout->setContentsMargins(0, 0, 0, 0);
-    functionDetailsVLayout->addWidget(functionDetailsTitleLabel);
-    functionDetailsVLayout->addWidget(functionDetailsIntroLabel);
-    functionDetailsVLayout->addWidget(functionDetailsNoteTitleLabel);
-    functionDetailsVLayout->addWidget(functionDetailsNoteLabel);
+    functionDetailsVLayout->addWidget(_functionDetailsTitleLabel);
+    functionDetailsVLayout->addWidget(_functionDetailsIntroLabel);
+    functionDetailsVLayout->addWidget(_functionDetailsNoteTitleLabel);
+    functionDetailsVLayout->addWidget(_functionDetailsNoteLabel);
 
 
     _keyFunctionEditWidget = new QWidget(this);
@@ -188,6 +204,10 @@ void Page_KeyBind::createKeyFunctionEditWidget() // [按键功能编辑] ※
     keyFunctionEditVLayout->addWidget(selectKeybindWidget);
     keyFunctionEditVLayout->addWidget(replaceFunctionWidget);
     keyFunctionEditVLayout->addWidget(functionDetailsWidget);
+
+    keyFunctionEditVLayout->setStretchFactor(selectKeybindWidget, 18);
+    keyFunctionEditVLayout->setStretchFactor(replaceFunctionWidget, 18);
+    keyFunctionEditVLayout->setStretchFactor(functionDetailsWidget, 64);
 }
 
 void Page_KeyBind::createKeybindTableView() // [按键绑定列表] ※
@@ -195,9 +215,6 @@ void Page_KeyBind::createKeybindTableView() // [按键绑定列表] ※
     _keybindTableView = new ElaTableView(this);
     _keybindTableView->setHeaderMargin(10);  // 设置表头边距
     KeybindTableModel* model = new KeybindTableModel(this);
-    //Keybind_DataFetcher* fetcher = new Keybind_DataFetcher();
-    //connect(fetcher, &Keybind_DataFetcher::dataFetched, model, &KeybindTableModel::fetchData);
-    //fetcher->startFetch();
     _keybindTableView->setModel(model); // 设置模型
     _keybindTableView->horizontalHeader()->setStretchLastSection(true);  // 自动拉伸最后一列
     _keybindTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);  // 自动拉伸所有列
@@ -271,5 +288,20 @@ void Page_KeyBind::initConnect()
     QFileInfo steamCfgDir(floderPath);
     connect(_writeButton, &ElaPushButton::clicked, this, [this, steamCfgDir]() {
         _keybindProc->writeConfigFile(steamCfgDir);
+    });
+
+    // 测试ElaMessageBar
+    connect(_saveButton, &ElaPushButton::clicked, this, [this]() {
+        // 显示一个成功提示
+        ElaMessageBar::success(ElaMessageBarType::TopRight, "成功", "操作成功完成！", 3000, this);
+
+        // 显示一个警告提示
+        ElaMessageBar::warning(ElaMessageBarType::TopLeft, "警告", "请注意，有潜在风险！", 3000, this);
+
+        // 显示一个信息提示
+        ElaMessageBar::information(ElaMessageBarType::BottomRight, "信息", "这是一条普通信息！", 3000, this);
+
+        // 显示一个错误提示
+        ElaMessageBar::error(ElaMessageBarType::BottomLeft, "错误", "操作失败，请重试！", 3000, this);
     });
 };

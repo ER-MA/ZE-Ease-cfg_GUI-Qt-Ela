@@ -6,6 +6,7 @@ KeybindTree_Proc::KeybindTree_Proc(QObject* parent) : QObject(parent)
     initConfigFile();
 
     // 打印Obj方式: qPrintable(QJsonDocument(readJsonObj(_configFuncListQrcFileRes)).toJson(QJsonDocument::Indented))
+    QString path = ":/Resource/Data/Config/Keybind/Show_KeyInfoList.json";
 };
 
 KeybindTree_Proc::~KeybindTree_Proc()
@@ -66,6 +67,33 @@ void KeybindTree_Proc::initConfigFile()
             }
         }
     }
+}
+
+void KeybindTree_Proc::selectKey(QTreeWidgetItem* item, int column)
+{
+
+}
+void KeybindTree_Proc::hoverKey(QTreeWidgetItem* item, int column)
+{
+
+}
+void KeybindTree_Proc::selectFunc(QTreeWidgetItem* item, int column)
+{
+
+}
+void KeybindTree_Proc::hoverFunc(QTreeWidgetItem* item, int column)
+{
+
+}
+
+void KeybindTree_Proc::replaceKeybind(const QJsonObject& keybind)
+{
+
+}
+
+void KeybindTree_Proc::saveConfig()
+{
+
 }
 
 void KeybindTree_Proc::writeConfigFile(const QFileInfo& cfgDirInfo)
@@ -226,4 +254,3 @@ QJsonObject KeybindTree_Proc::readJsonObj(const QResource& qrcFileRes)
 
     return jsonDoc.object();
 }
-

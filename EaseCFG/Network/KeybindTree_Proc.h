@@ -18,6 +18,8 @@ class KeybindTree_Proc : public QObject
 {
     Q_OBJECT
 public:
+    // 修改一下，需要传入model
+    //explicit KeybindTree_Proc(QObject* parent = nullptr, QTreeWidget* treeWidget = nullptr);
     explicit KeybindTree_Proc(QObject *parent = nullptr);
     ~KeybindTree_Proc();
 
@@ -27,6 +29,15 @@ public slots:
 
     //void modifyKeybind(QString key, QString value); // 修改按键绑定
     //void overwriteKeybind(QJsonObject keybind); // 覆写按键绑定
+
+    void selectKey(QTreeWidgetItem* item, int column);
+    void hoverKey(QTreeWidgetItem* item, int column);
+    void selectFunc(QTreeWidgetItem* item, int column);
+    void hoverFunc(QTreeWidgetItem* item, int column);
+
+    void replaceKeybind(const QJsonObject& keybind); // 替换按键绑定
+
+    void saveConfig(); // 保存配置文件
     void writeConfigFile(const QFileInfo& cfgDirInfo); // 写入配置文件
 
 private:
