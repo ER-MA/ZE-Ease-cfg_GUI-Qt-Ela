@@ -214,8 +214,8 @@ void Page_KeyBind::createKeybindTableView() // [按键绑定列表] ※
 {
     _keybindTableView = new ElaTableView(this);
     _keybindTableView->setHeaderMargin(10);  // 设置表头边距
-    KeybindTableModel* model = new KeybindTableModel(this);
-    _keybindTableView->setModel(model); // 设置模型
+    _keybindTableModel = new KeybindTable_Model(this);
+    _keybindTableView->setModel(_keybindTableModel); // 设置模型
     _keybindTableView->horizontalHeader()->setStretchLastSection(true);  // 自动拉伸最后一列
     _keybindTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);  // 自动拉伸所有列
     _keybindTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);  // 允许拖动调整列宽
@@ -303,5 +303,13 @@ void Page_KeyBind::initConnect()
 
         // 显示一个错误提示
         ElaMessageBar::error(ElaMessageBarType::BottomLeft, "错误", "操作失败，请重试！", 3000, this);
+    });
+
+    // 恢复 TableView 选中项
+    connect(_keybindTableModel, &KeybindTable_Model::modelAboutToBeReset, this, [this]() {
+        _selectedKeybindIndex = _keybindTableView->currentIndex();
+    });
+    connect(_keybindTableModel, &KeybindTable_Model::modelReset, this, [this]() {
+        _keybindTableView->setCurrentIndex(_selectedKeybindIndex);
     });
 };

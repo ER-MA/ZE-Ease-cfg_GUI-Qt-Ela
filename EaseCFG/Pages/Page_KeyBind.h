@@ -8,6 +8,7 @@
 #include "ElaPushButton.h"
 #include "ElaImageCard.h"
 
+#include "KeybindTable_Model.h"
 #include "KeybindTree_Proc.h"
 
 class ElaComboBox;
@@ -34,6 +35,9 @@ private:
     void createKeybindWidget();
     void createToolBarWidget();
     void setupCentralWidget();
+
+    KeybindTable_Model* _keybindTableModel;
+    QModelIndex _selectedKeybindIndex;
 
     KeybindTree_Proc* _keybindProc;
 
