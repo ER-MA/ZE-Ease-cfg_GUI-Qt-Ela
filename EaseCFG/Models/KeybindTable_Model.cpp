@@ -5,8 +5,9 @@ KeybindTable_Model::KeybindTable_Model(QObject* parent) : QAbstractTableModel(pa
     initModelData();
     initHeaderData();
 
-    //bool ret = setHeaderData(0, Qt::Horizontal, "呀哈哈", Qt::DisplayRole);
-    //qDebug() << "setHeaderData ret:" << ret;
+    // 可使用 setHeaderData 重新函数设置表头数据
+    // bool ret = setHeaderData(0, Qt::Horizontal, "呀哈哈", Qt::DisplayRole);
+    // qDebug() << "setHeaderData ret:" << ret;
 }
 
 
@@ -142,7 +143,29 @@ bool KeybindTable_Model::setData(const QModelIndex& index, const QVariant& value
 void KeybindTable_Model::initModelData() {
     // 初始化数据
     _modelData.clear();
-    _modelData.append(KeybindModelItem{"按键", "等待功能"});
+    _modelData.append(KeybindModelItem{"按键", "等待功能", "按键唯一标识符", "功能唯一标识符"});
+    _modelData.append(KeybindModelItem{"Key01", "Function01", "KeyID:01", "FunctionID:01"});
+    _modelData.append(KeybindModelItem{"Key02", "Function02", "KeyID:02", "FunctionID:02"});
+    _modelData.append(KeybindModelItem{"Key03", "Function03", "KeyID:03", "FunctionID:03"});
+    _modelData.append(KeybindModelItem{"Key04", "Function04", "KeyID:04", "FunctionID:04"});
+    _modelData.append(KeybindModelItem{"Key05", "Function05", "KeyID:05", "FunctionID:05"});
+    _modelData.append(KeybindModelItem{"Key06", "Function06", "KeyID:06", "FunctionID:06"});
+    _modelData.append(KeybindModelItem{"Key07", "Function07", "KeyID:07", "FunctionID:07"});
+    _modelData.append(KeybindModelItem{"Key08", "Function08", "KeyID:08", "FunctionID:08"});
+    _modelData.append(KeybindModelItem{"Key09", "Function09", "KeyID:09", "FunctionID:09"});        
+    _modelData.append(KeybindModelItem{"Key10", "Function10", "KeyID:10", "FunctionID:10"});
+    _modelData.append(KeybindModelItem{"Key11", "Function11", "KeyID:11", "FunctionID:11"});
+    _modelData.append(KeybindModelItem{"Key12", "Function12", "KeyID:12", "FunctionID:12"});
+    _modelData.append(KeybindModelItem{"Key13", "Function13", "KeyID:13", "FunctionID:13"});
+    _modelData.append(KeybindModelItem{"Key14", "Function14", "KeyID:14", "FunctionID:14"});
+    _modelData.append(KeybindModelItem{"Key15", "Function15", "KeyID:15", "FunctionID:15"});
+    _modelData.append(KeybindModelItem{"Key16", "Function16", "KeyID:16", "FunctionID:16"});
+    _modelData.append(KeybindModelItem{"Key17", "Function17", "KeyID:17", "FunctionID:17"});
+    _modelData.append(KeybindModelItem{"Key18", "Function18", "KeyID:18", "FunctionID:18"});
+    _modelData.append(KeybindModelItem{"Key19", "Function19", "KeyID:19", "FunctionID:19"});
+    _modelData.append(KeybindModelItem{"Key20", "Function20", "KeyID:20", "FunctionID:20"});
+    _modelData.append(KeybindModelItem{"Key21", "Function21", "KeyID:21", "FunctionID:21"});
+    _modelData.append(KeybindModelItem{"...", "...", "...", "..."});
     _modelData.append(KeybindModelItem{"...", "..."});
 }
 

@@ -8,6 +8,7 @@
 #include "ElaPushButton.h"
 #include "ElaImageCard.h"
 
+#include "Ovr_ElaTableView_Hover.h"
 #include "KeybindTable_Model.h"
 #include "KeybindTree_Proc.h"
 
@@ -27,6 +28,7 @@ private:
     void initData();
     void initConnect();
 
+    // UI创建
     void createFunctionImagePreview();
     void createFunctionTreeView();
     void createFunctionSelectWidget();
@@ -36,12 +38,19 @@ private:
     void createToolBarWidget();
     void setupCentralWidget();
 
+    // 模型依赖设置
+    void applyTableModelDepenedentSettings();
+    void applyTreeModelDepenedentSettings();
+
     KeybindTable_Model* _keybindTableModel;
     QModelIndex _selectedKeybindIndex;
+    QModelIndex _hoveredKeybindIndex;
+    QModelIndex _selectedFunctionIndex;
+    QModelIndex _hoveredFunctionIndex;
 
     KeybindTree_Proc* _keybindProc;
 
-    ElaTableView* _keybindTableView;
+    Ovr_ElaTableView_Hover* _keybindTableView;
     ElaTreeView* _functionTreeView;
     QWidget* _toolBarWidget;
     QWidget* _keybindWidget;

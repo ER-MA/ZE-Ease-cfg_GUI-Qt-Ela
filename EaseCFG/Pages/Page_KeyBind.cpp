@@ -18,6 +18,7 @@
 #include "KeybindTable_Model.h"
 #include "T_TreeViewModel.h"
 #include "Ovr_ElaTreeView.h"
+#include "Ovr_ElaTableView_Hover.h"
 
 #include "Page_KeyBind.h"
 
@@ -212,23 +213,21 @@ void Page_KeyBind::createKeyFunctionEditWidget() // [按键功能编辑] ※
 
 void Page_KeyBind::createKeybindTableView() // [按键绑定列表] ※
 {
-    _keybindTableView = new ElaTableView(this);
+    _keybindTableView = new Ovr_ElaTableView_Hover(this);
+
+    // 表格配置
+    _keybindTableView->setShowGrid(false);  // 显示网格线
+    _keybindTableView->setAlternatingRowColors(false);  // 交替行背景色
+
+    //_keybindTableView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);  // 大小策略为扩展
     _keybindTableView->setHeaderMargin(10);  // 设置表头边距
-    _keybindTableModel = new KeybindTable_Model(this);
-    _keybindTableView->setModel(_keybindTableModel); // 设置模型
-    _keybindTableView->horizontalHeader()->setStretchLastSection(true);  // 自动拉伸最后一列
-    _keybindTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);  // 自动拉伸所有列
-    _keybindTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);  // 允许拖动调整列宽
-    //_keybindTableView->horizontalHeader()->setMinimumSectionSize(60);  // 设置最小列宽
-    //_keybindTableView->verticalHeader()->setMinimumSectionSize(46);  // 设置最小行高
-    //_keybindTableView->verticalHeader()->setVisible(false);  // 隐藏左侧序列号
-    _keybindTableView->setSelectionBehavior(QAbstractItemView::SelectRows);  // 选择行为为行选择
-    _keybindTableView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);  // 大小策略为扩展
-    //_keybindTableView->setShowGrid(true);  // 显示网格线
-    connect(_keybindTableView, &ElaTableView::tableViewShow, this, [=]() {
-        _keybindTableView->setColumnWidth(0, 100);
-        _keybindTableView->setColumnWidth(1, 150);
-    });
+
+    _keybindTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);  // 编辑触发方式（禁止编辑）
+    _keybindTableView->setWordWrap(true);  // 禁止换行
+    _keybindTableView->setCornerButtonEnabled(false);  // 禁止右上角按钮
+    _keybindTableView->setSortingEnabled(false);  // 允许排序
+    _keybindTableView->setSelectionBehavior(QAbstractItemView::SelectRows);  // 选择行为为行选择（选择整行）
+    _keybindTableView->setSelectionMode(QAbstractItemView::SingleSelection);  // 选择模式为单选
 }
 
 void Page_KeyBind::createKeybindWidget() // [按键绑定] 布局
@@ -277,19 +276,43 @@ void Page_KeyBind::setupCentralWidget() // [中心窗口] 布局
     centerVLayout->addWidget(_keybindWidget);
 }
 
+void Page_KeyBind::applyTableModelDepenedentSettings()
+{
+    // 在模型被应用前不能设置的参数
+    // 表格样式配置
+    _keybindTableView->setColumnWidth(0, 50);  // 设置列宽
+    _keybindTableView->setColumnWidth(1, 100);  // 设置列宽
+    // 水平表头配置
+    QHeaderView* horHeader = _keybindTableView->horizontalHeader(); // 获取表头实例
+    horHeader->setVisible(true);  // 显示表头
+    horHeader->setHighlightSections(false);  // 表头高亮
+    horHeader->setDefaultSectionSize(100);  // 设置默认列宽
+    horHeader->setSectionResizeMode(0, QHeaderView::Interactive); // 如何调整列宽（列数，模式）
+    horHeader->setSectionResizeMode(1, QHeaderView::Interactive); // 交互模式，允许用户调整列宽
+    horHeader->setStretchLastSection(true);  // 自动拉伸填充最后一列
+
+    horHeader->setSectionsMovable(false);  // 拖动表头以交换列位置
+    horHeader->setSectionsClickable(false);  // 表头可点击（排序相关）
+    // 垂直表头配置
+    QHeaderView* verHeader = _keybindTableView->verticalHeader(); // 获取左侧序列号实例
+    verHeader->setVisible(false);  // 隐藏左侧序列号
+}
+
+void Page_KeyBind::applyTreeModelDepenedentSettings()
+{
+    // 在模型被应用前不能设置的参数
+}
+
 void Page_KeyBind::initData()
 {
+    _keybindTableModel = new KeybindTable_Model(this);
+    _keybindTableView->setModel(_keybindTableModel); // 设置模型
+    applyTableModelDepenedentSettings(); // 进一步设置表格样式
     _keybindProc = new KeybindTree_Proc(this);
 };
 
 void Page_KeyBind::initConnect()
 {
-    QString floderPath = QCoreApplication::applicationDirPath() + "/config/output";
-    QFileInfo steamCfgDir(floderPath);
-    connect(_writeButton, &ElaPushButton::clicked, this, [this, steamCfgDir]() {
-        _keybindProc->writeConfigFile(steamCfgDir);
-    });
-
     // 测试ElaMessageBar
     connect(_saveButton, &ElaPushButton::clicked, this, [this]() {
         // 显示一个成功提示
@@ -311,5 +334,21 @@ void Page_KeyBind::initConnect()
     });
     connect(_keybindTableModel, &KeybindTable_Model::modelReset, this, [this]() {
         _keybindTableView->setCurrentIndex(_selectedKeybindIndex);
+    });
+
+    // 鼠标点击 TableView 项
+    connect(_keybindTableView, &ElaTableView::clicked, this, [this](const QModelIndex& index) {
+        _selectedKeybindIndex = index;
+    });
+    // 鼠标悬停 TableView 项
+    connect(_keybindTableView, &Ovr_ElaTableView_Hover::hoveredIndexChanged, this, [this](const QModelIndex& index) {
+        _hoveredKeybindIndex = index;
+        qDebug() << "[Page_KeyBind::initConnect]: Current hovered Item KeyID/FunctionID: " << _keybindTableModel->dataKeyID(index).toString() << "/" << _keybindTableModel->dataFunctionID(index).toString();
+    });
+
+    QString floderPath = QCoreApplication::applicationDirPath() + "/config/output";
+    QFileInfo steamCfgDir(floderPath);
+    connect(_writeButton, &ElaPushButton::clicked, this, [this, steamCfgDir]() {
+        _keybindProc->writeConfigFile(steamCfgDir);
     });
 };

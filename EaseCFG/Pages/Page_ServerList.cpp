@@ -92,7 +92,6 @@ void Page_ServerList::initUI()
     _serverTableView = new ElaTableView(this);
     _serverTableView->setHeaderMargin(10);  // 设置表头边距
     _serverTableView->horizontalHeader()->setStretchLastSection(true);  // 自动拉伸最后一列
-    _serverTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);  // 自动拉伸所有列
     _serverTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);  // 允许拖动调整列宽
     _serverTableView->verticalHeader()->setVisible(false);  // 隐藏左侧序列号
     _serverTableView->setSelectionBehavior(QAbstractItemView::SelectRows);  // 选择行为为行选择
