@@ -1,12 +1,18 @@
 #include "KeybindTree_Proc.h"
 
-KeybindTree_Proc::KeybindTree_Proc(QObject* parent) : QObject(parent)
+KeybindTree_Proc::KeybindTree_Proc(KeybindTable_Model* model, QObject* parent) :
+    QObject(parent),
+    _keybindTableModel(model)
 {
     initConfigDir();
     initConfigFile();
 
-    // 打印Obj方式: qPrintable(QJsonDocument(readJsonObj(_configFuncListQrcFileRes)).toJson(QJsonDocument::Indented))
-    QString path = ":/Resource/Data/Config/Keybind/Show_KeyInfoList.json";
+    updateKeyID2KeyInfo();
+    updateFuncID2FuncInfo();
+
+    // 打印Obj方式1(中文会出现乱码): qPrintable(QJsonDocument(readJsonObj(_configResFuncID2GameFunc)).toJson(QJsonDocument::Indented))
+    // 打印Obj方式2(中文不会出现乱码): qDebug() << QJsonDocument(readJsonObj(_configResFuncID2GameFunc)).toJson(QJsonDocument::Indented).data();
+
 };
 
 KeybindTree_Proc::~KeybindTree_Proc()
@@ -17,27 +23,31 @@ KeybindTree_Proc::~KeybindTree_Proc()
 void KeybindTree_Proc::initConfigDir()
 {
     // 系统资源文件
-    QString configDirPath = QCoreApplication::applicationDirPath() + "/config"; // 配置文件目录
-    QString configKeyBindFilePath = configDirPath + "/KeyBind.json"; // 按键绑定配置文件（用户自定义）
+    QString sysDirConfig = QCoreApplication::applicationDirPath() + "/config"; // 系统资源文件目录
+    QString sysPathKeyIDLinkFuncID = sysDirConfig + "/KeyBind.json";
     // Qrc系统资源文件
-    QString configQrcDirPath = ":/Resource/Data/Config/Keybind"; // 配置文件目录
-    QString configKeyBindFileQrcPath = configQrcDirPath + "/KeyBind.json"; // 按键绑定配置文件
-    QString configKeyListFileQrcPath = configQrcDirPath + "/KeyList.json"; // 按键列表配置文件
-    QString configFuncListFileQrcPath = configQrcDirPath + "/FuncList.json"; // 功能列表配置文件
+    QString qrcDirKeybindConfig = ":/Resource/Data/Config/Keybind"; // Qrc系统资源文件目录
+    QString qrcPathKeyIDLinkFuncID = qrcDirKeybindConfig + "/KeyID_Link_FuncID.json"; // 按键ID对应的功能ID
+    QString qrcPathKeyID2GameKey = qrcDirKeybindConfig + "/KeyID_To_GameKey.json"; // 按键ID到游戏按键
+    QString qrcPathFuncID2GameFunc = qrcDirKeybindConfig + "/FuncID_To_GameFunc.json"; // 功能ID到游戏功能
+    QString qrcPathKeyID2KeyInfo = qrcDirKeybindConfig + "/KeyID_To_KeyInfo.json"; // 按键ID到按键信息
+    QString qrcPathFuncID2FuncInfo = qrcDirKeybindConfig + "/FuncID_To_FuncInfo.json"; // 功能ID到功能信息
 
     // 格式化文件路径
-    _configKeyBindFileInfo.setFile(configKeyBindFilePath);
-    _configKeyBindQrcFileRes.setFileName(configKeyBindFileQrcPath);
-    _configKeyListQrcFileRes.setFileName(configKeyListFileQrcPath);
-    _configFuncListQrcFileRes.setFileName(configFuncListFileQrcPath);
+    _configInfoKeyIDLinkFuncID.setFile(sysPathKeyIDLinkFuncID);
+    _configResKeyIDLinkFuncID.setFileName(qrcPathKeyIDLinkFuncID);
+    _configResKeyID2GameKey.setFileName(qrcPathKeyID2GameKey);
+    _configResFuncID2GameFunc.setFileName(qrcPathFuncID2GameFunc);
+    _configResKeyID2KeyInfo.setFileName(qrcPathKeyID2KeyInfo);
+    _configResFuncID2FuncInfo.setFileName(qrcPathFuncID2FuncInfo);
 }
 
 void KeybindTree_Proc::initConfigFile()
 {
     // 检查配置文件是否存在
-    if (!_configKeyBindFileInfo.exists()) {
+    if (!_configInfoKeyIDLinkFuncID.exists()) {
         // 获取配置文件所在的目录
-        QDir configDir = _configKeyBindFileInfo.dir();
+        QDir configDir = _configInfoKeyIDLinkFuncID.dir();
 
         // 如果目录不存在，则尝试创建目录
         if (!configDir.exists() && !configDir.mkpath(".")) {
@@ -46,9 +56,9 @@ void KeybindTree_Proc::initConfigFile()
         }
         else {
             // 检查资源文件是否有效，并且复制资源到配置文件位置
-            if (_configKeyBindQrcFileRes.isValid()) {
-                QString sourcePath = _configKeyBindQrcFileRes.absoluteFilePath();
-                QString targetPath = _configKeyBindFileInfo.absoluteFilePath();
+            if (_configResKeyIDLinkFuncID.isValid()) {
+                QString sourcePath = _configResKeyIDLinkFuncID.absoluteFilePath();
+                QString targetPath = _configInfoKeyIDLinkFuncID.absoluteFilePath();
 
                 if (QFile::copy(sourcePath, targetPath)) {
                     // 设置新创建的配置文件的权限
@@ -63,25 +73,74 @@ void KeybindTree_Proc::initConfigFile()
             }
             else {
                 // 处理资源文件无效的情况
-                qWarning("[KeybindTree_Proc::initConfigFile] Invalid resource file: %s", qPrintable(_configKeyBindQrcFileRes.absoluteFilePath()));
+                qWarning("[KeybindTree_Proc::initConfigFile] Invalid resource file: %s", qPrintable(_configResKeyIDLinkFuncID.absoluteFilePath()));
             }
         }
     }
 }
 
-void KeybindTree_Proc::selectKey(QTreeWidgetItem* item, int column)
+void KeybindTree_Proc::selectKey(const QModelIndex& index)
+{
+    if (!index.isValid()) {
+        _selectedKeybindIndex = QModelIndex();
+        emit keyInfoUpdated("Null", "Null", "Null");
+        return;
+    }
+
+    _selectedKeybindIndex = index;
+    updateKeyInfo(_selectedKeybindIndex);
+}
+
+void KeybindTree_Proc::hoverKey(const QModelIndex& index)
+{
+    if (!index.isValid()) { // 鼠标移出
+        _hoveredKeybindIndex = QModelIndex();
+        selectKey(_selectedKeybindIndex);
+        return;
+    }
+
+    _hoveredKeybindIndex = index;
+    updateKeyInfo(_hoveredKeybindIndex);
+}
+void KeybindTree_Proc::updateKeyInfo(const QModelIndex& index)
 {
 
-}
-void KeybindTree_Proc::hoverKey(QTreeWidgetItem* item, int column)
-{
+    QString keyID = _keybindTableModel->dataKeyID(index).toString();
+    QString functionID = _keybindTableModel->dataFunctionID(index).toString();
 
+    QString StandardName = "Null";
+    QString Description = "Null";
+    QString Name = "Null";
+
+    const QJsonObject& keyInfo = _objKeyID2KeyInfo.value(keyID).toObject();
+    if (!keyInfo.isEmpty()) {
+        StandardName = keyInfo["StandardName"].toString();
+        Description = keyInfo["Description"].toString();
+    }
+    else {
+        qWarning() << "[KeybindTree_Proc::selectKey] Key ID not found in Qrc KeyID_To_KeyInfo.json:" << keyID;
+    }
+
+    const QJsonObject& funcInfo = _objFuncID2FuncInfo.value(functionID).toObject();
+    if (!keyInfo.isEmpty()) {
+        Name = funcInfo["Name"].toString();
+    }
+    else {
+        qWarning() << "[KeybindTree_Proc::selectKey] Function ID not found in Qrc FuncID_To_FuncInfo.json:" << functionID;
+    }
+
+    emit keyInfoUpdated(StandardName, Description, Name);
 }
+
 void KeybindTree_Proc::selectFunc(QTreeWidgetItem* item, int column)
 {
 
 }
 void KeybindTree_Proc::hoverFunc(QTreeWidgetItem* item, int column)
+{
+
+}
+void KeybindTree_Proc::updateFuncInfo(QTreeWidgetItem* item, int column)
 {
 
 }
@@ -135,6 +194,16 @@ void KeybindTree_Proc::writeConfigFile(const QFileInfo& cfgDirInfo)
     file.close();
 }
 
+void KeybindTree_Proc::updateKeyID2KeyInfo()
+{
+    _objKeyID2KeyInfo = readJsonObj(_configResKeyID2KeyInfo.absoluteFilePath());
+}
+
+void KeybindTree_Proc::updateFuncID2FuncInfo()
+{
+    _objFuncID2FuncInfo = readJsonObj(_configResFuncID2FuncInfo.absoluteFilePath());
+}
+
 void KeybindTree_Proc::writeKeybindsToStream(QTextStream& out, const QJsonObject& keybindList)
 {
     for (auto it = keybindList.constBegin(); it != keybindList.constEnd(); ++it) {
@@ -146,9 +215,9 @@ void KeybindTree_Proc::writeKeybindsToStream(QTextStream& out, const QJsonObject
 
 QJsonObject KeybindTree_Proc::generateKeybindList()
 {
-    QJsonObject keyBindObj = readJsonObj(_configKeyBindFileInfo.absoluteFilePath());
-    QJsonObject keyListObj = readJsonObj(_configKeyListQrcFileRes.absoluteFilePath());
-    QJsonObject funcListObj = readJsonObj(_configFuncListQrcFileRes.absoluteFilePath());
+    QJsonObject keyBindObj = readJsonObj(_configInfoKeyIDLinkFuncID.absoluteFilePath());
+    QJsonObject keyListObj = readJsonObj(_configResKeyID2GameKey.absoluteFilePath());
+    QJsonObject funcListObj = readJsonObj(_configResFuncID2GameFunc.absoluteFilePath());
 
     QJsonObject resultObj;
 

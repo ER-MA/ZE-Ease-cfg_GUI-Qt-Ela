@@ -43,8 +43,8 @@ private:
     void applyTreeModelDepenedentSettings();
 
     KeybindTable_Model* _keybindTableModel;
-    QModelIndex _selectedKeybindIndex;
-    QModelIndex _hoveredKeybindIndex;
+    QModelIndex _selectedKeybindIndex; // 仅在表格刷新时更新
+    QModelIndex _hoveredKeybindIndex; // 剩下几个未使用
     QModelIndex _selectedFunctionIndex;
     QModelIndex _hoveredFunctionIndex;
 

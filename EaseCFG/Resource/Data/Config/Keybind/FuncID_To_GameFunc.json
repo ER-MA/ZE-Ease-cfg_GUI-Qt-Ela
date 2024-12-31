@@ -1,5 +1,5 @@
 {
-    "NULL": "",
+    "null": "",
     "matbright": "@loop_matbright",
     "postprocess": "@loop_postprocess",
     "draw_particles": "@loop_draw_particles",

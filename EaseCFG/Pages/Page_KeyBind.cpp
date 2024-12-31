@@ -140,17 +140,17 @@ void Page_KeyBind::createKeyFunctionEditWidget() // [按键功能编辑] ※
     selectedKeyHLayout->addStretch();
     selectedKeyHLayout->addWidget(_selectedKeyIntroLable);
 
+    ElaText* currentFunctionTitleLable = new ElaText(this);
+    currentFunctionTitleLable->setText("当前功能：");
+    currentFunctionTitleLable->setTextPixelSize(15);
     _currentFunctionNameLable = new ElaText(this);
-    _currentFunctionNameLable->setText("当前功能：");
+    _currentFunctionNameLable->setText("Null");
     _currentFunctionNameLable->setTextPixelSize(15);
-    ElaText* currentFunctionNameLable = new ElaText(this);
-    currentFunctionNameLable->setText("Null");
-    currentFunctionNameLable->setTextPixelSize(15);
     QWidget* currentFunctionWidget = new QWidget(this);
     QHBoxLayout* currentFunctionHLayout = new QHBoxLayout(currentFunctionWidget);
     currentFunctionHLayout->setContentsMargins(0, 0, 0, 0);
+    currentFunctionHLayout->addWidget(currentFunctionTitleLable);
     currentFunctionHLayout->addWidget(_currentFunctionNameLable);
-    currentFunctionHLayout->addWidget(currentFunctionNameLable);
     currentFunctionHLayout->addStretch();
 
     QWidget* selectKeybindWidget = new QWidget(this);
@@ -308,7 +308,7 @@ void Page_KeyBind::initData()
     _keybindTableModel = new KeybindTable_Model(this);
     _keybindTableView->setModel(_keybindTableModel); // 设置模型
     applyTableModelDepenedentSettings(); // 进一步设置表格样式
-    _keybindProc = new KeybindTree_Proc(this);
+    _keybindProc = new KeybindTree_Proc(_keybindTableModel);
 };
 
 void Page_KeyBind::initConnect()
@@ -337,14 +337,29 @@ void Page_KeyBind::initConnect()
     });
 
     // 鼠标点击 TableView 项
-    connect(_keybindTableView, &ElaTableView::clicked, this, [this](const QModelIndex& index) {
-        _selectedKeybindIndex = index;
-    });
+    connect(_keybindTableView, &ElaTableView::clicked, _keybindProc, &KeybindTree_Proc::selectKey);
     // 鼠标悬停 TableView 项
-    connect(_keybindTableView, &Ovr_ElaTableView_Hover::hoveredIndexChanged, this, [this](const QModelIndex& index) {
-        _hoveredKeybindIndex = index;
-        qDebug() << "[Page_KeyBind::initConnect]: Current hovered Item KeyID/FunctionID: " << _keybindTableModel->dataKeyID(index).toString() << "/" << _keybindTableModel->dataFunctionID(index).toString();
+    connect(_keybindTableView, &Ovr_ElaTableView_Hover::hoveredIndexChanged, _keybindProc, &KeybindTree_Proc::hoverKey);
+
+    connect(_keybindProc, &KeybindTree_Proc::keyInfoUpdated, this, [this](QString StandardName, QString Description, QString Name) {
+        if (StandardName == "Null") {
+            _selectedKeyNameLable->setText("未知按键");
+        } else {
+            _selectedKeyNameLable->setText(StandardName);
+        }
+        if (Description == "Null") {
+            _selectedKeyIntroLable->setText("(无功能描述)");
+        } else {
+            _selectedKeyIntroLable->setText("(" + Description + ")");
+
+        }
+        if (Name == "Null") {
+            _currentFunctionNameLable->setText("未知功能");
+        } else {
+            _currentFunctionNameLable->setText(Name);
+        }
     });
+
 
     QString floderPath = QCoreApplication::applicationDirPath() + "/config/output";
     QFileInfo steamCfgDir(floderPath);

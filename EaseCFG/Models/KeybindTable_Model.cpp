@@ -144,7 +144,10 @@ void KeybindTable_Model::initModelData() {
     // 初始化数据
     _modelData.clear();
     _modelData.append(KeybindModelItem{"按键", "等待功能", "按键唯一标识符", "功能唯一标识符"});
-    _modelData.append(KeybindModelItem{"Key01", "Function01", "KeyID:01", "FunctionID:01"});
+    _modelData.append(KeybindModelItem{"Y", "死亡重置", "y", "reset_effect_affected_death"});
+    _modelData.append(KeybindModelItem{"NumLock", "一键划刀(轻击)", "numlock", "keep_attack"});
+    _modelData.append(KeybindModelItem{"PgDn", "空（无功能）", "pgdn", "null"});
+    _modelData.append(KeybindModelItem{"End", "?", "end", ""});
     _modelData.append(KeybindModelItem{"Key02", "Function02", "KeyID:02", "FunctionID:02"});
     _modelData.append(KeybindModelItem{"Key03", "Function03", "KeyID:03", "FunctionID:03"});
     _modelData.append(KeybindModelItem{"Key04", "Function04", "KeyID:04", "FunctionID:04"});
