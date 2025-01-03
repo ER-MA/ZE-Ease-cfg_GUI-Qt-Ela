@@ -363,5 +363,20 @@
         "Abbreviation": "PgDn",
         "StandardName": "PageDown",
         "Description": "向下翻页键"
+    },
+    "null": {
+        "Abbreviation": "[!] Null",
+        "StandardName": "无按键",
+        "Description": "游戏无法识别"
+    },
+    "": {
+        "Abbreviation": "[!] Empty",
+        "StandardName": "空按键",
+        "Description": "游戏无法识别"
+    },
+    "unknow": {
+        "Abbreviation": "[!] Unknow",
+        "StandardName": "未知按键",
+        "Description": "游戏无法识别"
     }
 }

@@ -127,10 +127,10 @@ void Page_KeyBind::createKeyFunctionEditWidget() // [按键功能编辑] ※
     selectedKeyTitleLable->setText("选中按键：");
     selectedKeyTitleLable->setTextPixelSize(15);
     _selectedKeyNameLable = new ElaText(this);
-    _selectedKeyNameLable->setText("Null");
+    _selectedKeyNameLable->setText("请选择按键");
     _selectedKeyNameLable->setTextPixelSize(15);
     _selectedKeyIntroLable = new ElaText(this);
-    _selectedKeyIntroLable->setText("(等待选择按键)");
+    _selectedKeyIntroLable->setText("(左侧表格中)");
     _selectedKeyIntroLable->setTextPixelSize(15);
     QWidget* selectedKeyWidget = new QWidget(this);
     QHBoxLayout* selectedKeyHLayout = new QHBoxLayout(selectedKeyWidget);
@@ -144,7 +144,7 @@ void Page_KeyBind::createKeyFunctionEditWidget() // [按键功能编辑] ※
     currentFunctionTitleLable->setText("当前功能：");
     currentFunctionTitleLable->setTextPixelSize(15);
     _currentFunctionNameLable = new ElaText(this);
-    _currentFunctionNameLable->setText("Null");
+    _currentFunctionNameLable->setText("未选择按键");
     _currentFunctionNameLable->setTextPixelSize(15);
     QWidget* currentFunctionWidget = new QWidget(this);
     QHBoxLayout* currentFunctionHLayout = new QHBoxLayout(currentFunctionWidget);
@@ -342,22 +342,9 @@ void Page_KeyBind::initConnect()
     connect(_keybindTableView, &Ovr_ElaTableView_Hover::hoveredIndexChanged, _keybindProc, &KeybindTree_Proc::hoverKey);
 
     connect(_keybindProc, &KeybindTree_Proc::keyInfoUpdated, this, [this](QString StandardName, QString Description, QString Name) {
-        if (StandardName == "Null") {
-            _selectedKeyNameLable->setText("未知按键");
-        } else {
-            _selectedKeyNameLable->setText(StandardName);
-        }
-        if (Description == "Null") {
-            _selectedKeyIntroLable->setText("(无功能描述)");
-        } else {
-            _selectedKeyIntroLable->setText("(" + Description + ")");
-
-        }
-        if (Name == "Null") {
-            _currentFunctionNameLable->setText("未知功能");
-        } else {
-            _currentFunctionNameLable->setText(Name);
-        }
+        _selectedKeyNameLable->setText(StandardName);
+        _selectedKeyIntroLable->setText("(" + Description + ")");
+        _currentFunctionNameLable->setText(Name);
     });
 
 

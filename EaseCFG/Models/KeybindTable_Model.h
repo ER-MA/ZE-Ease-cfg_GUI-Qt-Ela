@@ -8,12 +8,7 @@
 #include <QVector>
 #include <QString>
 
-struct KeybindModelItem {
-    QString Key;
-    QString Function;
-    QString KeyID;
-    QString FunctionID;
-};
+#include "Structs.h"
 
 class KeybindTable_Model : public QAbstractTableModel {
     Q_OBJECT
@@ -21,8 +16,8 @@ class KeybindTable_Model : public QAbstractTableModel {
 public:
     explicit KeybindTable_Model(QObject* parent = nullptr);
 
-    void setModelData(const QList<KeybindModelItem>& datas); // 设置数据
-    QList<KeybindModelItem> getModelData() const; // 获取数据
+    void setModelData(const QList<TableStructs::KeybindModelItem>& datas); // 设置数据
+    QList<TableStructs::KeybindModelItem> getModelData() const; // 获取数据
 
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override; // 返回表头数据
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant& value, int role = Qt::EditRole) override; // 设置表头数据
@@ -41,7 +36,7 @@ private:
     void initModelData(); // 初始化数据存储
     void initHeaderData(); // 初始化表头数据
 
-    QList<KeybindModelItem> _modelData; // 数据存储
+    QList<TableStructs::KeybindModelItem> _modelData; // 数据存储
     QList<QString> _horHeaderData; // 水平表头数据
     QList<QString> _verHeaderData; // 垂直表头数据
 };

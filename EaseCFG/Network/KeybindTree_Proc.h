@@ -46,6 +46,7 @@ public slots:
 private:
     void initConfigDir(); // 初始化配置文件目录
     void initConfigFile(); // 初始化配置文件
+    void initData(); // 初始化数据
 
     void updateKeyInfo(const QModelIndex& index);
     void updateFuncInfo(QTreeWidgetItem* item, int column);
@@ -74,6 +75,8 @@ private:
 
     QJsonObject _objKeyID2KeyInfo; // 按键ID到按键信息的映射
     QJsonObject _objFuncID2FuncInfo; // 功能ID到功能信息的映射
+
+    static const QString _defaultString; // 默认字符串
 };
 
 #endif // KEYBINDTREE_PROC_H

@@ -1,5 +1,4 @@
 {
-    "null": "",
     "matbright": "@loop_matbright",
     "postprocess": "@loop_postprocess",
     "draw_particles": "@loop_draw_particles",
@@ -50,5 +49,8 @@
     "vesthelm": "@trigger_buy_vesthelm",
     "healthshot": "@trigger_buy_healthshot",
     "taser": "@trigger_buy_taser",
-    "defuser": "@trigger_buy_defuser"
+    "defuser": "@trigger_buy_defuser",
+    "null": "@null",
+    "": "@empty",
+    "unknow": "@unknow"
 }

@@ -99,5 +99,8 @@
     "pgup": "pgup",
     "del": "del",
     "end": "end",
-    "pgdn": "pgdn"
+    "pgdn": "pgdn",
+    "null": ";"
+    "": ";",
+    "unknow": ";"
 }

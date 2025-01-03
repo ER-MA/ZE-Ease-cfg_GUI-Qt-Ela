@@ -12,7 +12,7 @@ KeybindTable_Model::KeybindTable_Model(QObject* parent) : QAbstractTableModel(pa
 
 
 
-void KeybindTable_Model::setModelData(const QList<KeybindModelItem>& datas)
+void KeybindTable_Model::setModelData(const QList<TableStructs::KeybindModelItem>& datas)
 {
     beginResetModel(); // 触发 modelAboutToBeReset 信号
     _modelData = datas;
@@ -24,7 +24,7 @@ void KeybindTable_Model::setModelData(const QList<KeybindModelItem>& datas)
     //emit dataChanged(index(0,0),index(RowMax-1,ColMax-1),QVector<int>());
 }
 
-QList<KeybindModelItem> KeybindTable_Model::getModelData() const
+QList<TableStructs::KeybindModelItem> KeybindTable_Model::getModelData() const
 {
     return _modelData;
 }
@@ -143,33 +143,23 @@ bool KeybindTable_Model::setData(const QModelIndex& index, const QVariant& value
 void KeybindTable_Model::initModelData() {
     // 初始化数据
     _modelData.clear();
-    _modelData.append(KeybindModelItem{"按键", "等待功能", "按键唯一标识符", "功能唯一标识符"});
-    _modelData.append(KeybindModelItem{"Y", "死亡重置", "y", "reset_effect_affected_death"});
-    _modelData.append(KeybindModelItem{"NumLock", "一键划刀(轻击)", "numlock", "keep_attack"});
-    _modelData.append(KeybindModelItem{"PgDn", "空（无功能）", "pgdn", "null"});
-    _modelData.append(KeybindModelItem{"End", "?", "end", ""});
-    _modelData.append(KeybindModelItem{"Key02", "Function02", "KeyID:02", "FunctionID:02"});
-    _modelData.append(KeybindModelItem{"Key03", "Function03", "KeyID:03", "FunctionID:03"});
-    _modelData.append(KeybindModelItem{"Key04", "Function04", "KeyID:04", "FunctionID:04"});
-    _modelData.append(KeybindModelItem{"Key05", "Function05", "KeyID:05", "FunctionID:05"});
-    _modelData.append(KeybindModelItem{"Key06", "Function06", "KeyID:06", "FunctionID:06"});
-    _modelData.append(KeybindModelItem{"Key07", "Function07", "KeyID:07", "FunctionID:07"});
-    _modelData.append(KeybindModelItem{"Key08", "Function08", "KeyID:08", "FunctionID:08"});
-    _modelData.append(KeybindModelItem{"Key09", "Function09", "KeyID:09", "FunctionID:09"});        
-    _modelData.append(KeybindModelItem{"Key10", "Function10", "KeyID:10", "FunctionID:10"});
-    _modelData.append(KeybindModelItem{"Key11", "Function11", "KeyID:11", "FunctionID:11"});
-    _modelData.append(KeybindModelItem{"Key12", "Function12", "KeyID:12", "FunctionID:12"});
-    _modelData.append(KeybindModelItem{"Key13", "Function13", "KeyID:13", "FunctionID:13"});
-    _modelData.append(KeybindModelItem{"Key14", "Function14", "KeyID:14", "FunctionID:14"});
-    _modelData.append(KeybindModelItem{"Key15", "Function15", "KeyID:15", "FunctionID:15"});
-    _modelData.append(KeybindModelItem{"Key16", "Function16", "KeyID:16", "FunctionID:16"});
-    _modelData.append(KeybindModelItem{"Key17", "Function17", "KeyID:17", "FunctionID:17"});
-    _modelData.append(KeybindModelItem{"Key18", "Function18", "KeyID:18", "FunctionID:18"});
-    _modelData.append(KeybindModelItem{"Key19", "Function19", "KeyID:19", "FunctionID:19"});
-    _modelData.append(KeybindModelItem{"Key20", "Function20", "KeyID:20", "FunctionID:20"});
-    _modelData.append(KeybindModelItem{"Key21", "Function21", "KeyID:21", "FunctionID:21"});
-    _modelData.append(KeybindModelItem{"...", "...", "...", "..."});
-    _modelData.append(KeybindModelItem{"...", "..."});
+    // _modelData.append(KeybindModelItem{"按键", "功能", "按键唯一标识符", "功能唯一标识符"});
+    _modelData.append(TableStructs::KeybindModelItem{"Y", "死亡重置", "y", "reset_effect_affected_death"});
+    _modelData.append(TableStructs::KeybindModelItem{"NumLock", "一键划刀(轻击)", "numlock", "keep_attack"});
+    _modelData.append(TableStructs::KeybindModelItem{"PgDn", "无功能(\"null\")", "pgdn", "null"});
+    _modelData.append(TableStructs::KeybindModelItem{"End", "无功能(\"null\")", "end", "null"});
+    _modelData.append(TableStructs::KeybindModelItem{"Q", "无功能(\"null\")", "q", "null"});
+    _modelData.append(TableStructs::KeybindModelItem{"W", "无功能(\"null\")", "w", "null"});
+    _modelData.append(TableStructs::KeybindModelItem{"E", "无功能(\"null\")", "e", "null"});
+    _modelData.append(TableStructs::KeybindModelItem{"[!] Null", "无功能(\"null\")", "null", "null"});
+    _modelData.append(TableStructs::KeybindModelItem{"[!] Null", "空功能(\" \")", "null", ""});
+    _modelData.append(TableStructs::KeybindModelItem{"[!] Null", "未知功能(\"\?\")", "null", "unknow"});
+    _modelData.append(TableStructs::KeybindModelItem{"[!] Empty", "无功能(\"null\")", "", "null"});
+    _modelData.append(TableStructs::KeybindModelItem{"[!] Empty", "空功能(\" \")", "", ""});
+    _modelData.append(TableStructs::KeybindModelItem{"[!] Empty", "未知功能(\"\?\")", "", "unknow"});
+    _modelData.append(TableStructs::KeybindModelItem{"[!] Unknow", "无功能(\"null\")", "unknow", "null"});
+    _modelData.append(TableStructs::KeybindModelItem{"[!] Unknow", "空功能(\" \")", "unknow", "" });
+    _modelData.append(TableStructs::KeybindModelItem{"[!] Unknow", "未知功能(\"\?\")", "unknow", "unknow"});
 }
 
 void KeybindTable_Model::initHeaderData()

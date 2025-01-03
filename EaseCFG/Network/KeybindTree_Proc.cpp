@@ -4,11 +4,7 @@ KeybindTree_Proc::KeybindTree_Proc(KeybindTable_Model* model, QObject* parent) :
     QObject(parent),
     _keybindTableModel(model)
 {
-    initConfigDir();
-    initConfigFile();
-
-    updateKeyID2KeyInfo();
-    updateFuncID2FuncInfo();
+    initData();
 
     // 打印Obj方式1(中文会出现乱码): qPrintable(QJsonDocument(readJsonObj(_configResFuncID2GameFunc)).toJson(QJsonDocument::Indented))
     // 打印Obj方式2(中文不会出现乱码): qDebug() << QJsonDocument(readJsonObj(_configResFuncID2GameFunc)).toJson(QJsonDocument::Indented).data();
@@ -19,6 +15,16 @@ KeybindTree_Proc::~KeybindTree_Proc()
 {
 
 };
+
+const QString KeybindTree_Proc::_defaultString = "Default";
+void KeybindTree_Proc::initData()
+{
+    initConfigDir();
+    initConfigFile();
+
+    updateKeyID2KeyInfo();
+    updateFuncID2FuncInfo();
+}
 
 void KeybindTree_Proc::initConfigDir()
 {
@@ -83,7 +89,7 @@ void KeybindTree_Proc::selectKey(const QModelIndex& index)
 {
     if (!index.isValid()) {
         _selectedKeybindIndex = QModelIndex();
-        emit keyInfoUpdated("Null", "Null", "Null");
+        emit keyInfoUpdated("请选择按键", "单击以选择", "未选择按键");
         return;
     }
 
@@ -104,33 +110,56 @@ void KeybindTree_Proc::hoverKey(const QModelIndex& index)
 }
 void KeybindTree_Proc::updateKeyInfo(const QModelIndex& index)
 {
-
     QString keyID = _keybindTableModel->dataKeyID(index).toString();
     QString functionID = _keybindTableModel->dataFunctionID(index).toString();
 
-    QString StandardName = "Null";
-    QString Description = "Null";
-    QString Name = "Null";
+    QString StandardName = _defaultString;
+    QString Description = _defaultString;
+    QString Name = _defaultString;
 
-    const QJsonObject& keyInfo = _objKeyID2KeyInfo.value(keyID).toObject();
-    if (!keyInfo.isEmpty()) {
-        StandardName = keyInfo["StandardName"].toString();
-        Description = keyInfo["Description"].toString();
+    // keyInfo 查找
+    // 使用find方法和迭代器来访问元素，只有当元素存在时才通过it.value()获取QJsonObject的引用
+    // 避免在未找到functionID时进行不必要的对象复制。
+    auto keyIt = _objKeyID2KeyInfo.find(keyID);
+    if (keyIt != _objKeyID2KeyInfo.end()) {
+        const QJsonObject& keyInfo = keyIt.value().toObject();
+        StandardName = keyInfo["StandardName"].toString(_defaultString);
+        Description = keyInfo["Description"].toString(_defaultString);
     }
     else {
-        qWarning() << "[KeybindTree_Proc::selectKey] Key ID not found in Qrc KeyID_To_KeyInfo.json:" << keyID;
+        qWarning() << "[KeybindTree_Proc::selectKey] Unknown key ID: " << keyID;
+        keyIt = _objKeyID2KeyInfo.find("unknow");
+        if (keyIt != _objKeyID2KeyInfo.end()) {
+            const QJsonObject& keyInfo = keyIt.value().toObject();
+            StandardName = keyInfo["StandardName"].toString(_defaultString);
+            Description = keyInfo["Description"].toString(_defaultString);
+        }
+        else {
+            qWarning() << "[KeybindTree_Proc::selectKey] UnDefined key ID: \"unknown\"";
+        }
     }
 
-    const QJsonObject& funcInfo = _objFuncID2FuncInfo.value(functionID).toObject();
-    if (!keyInfo.isEmpty()) {
-        Name = funcInfo["Name"].toString();
+    // funcInfo 查找
+    auto funcIt = _objFuncID2FuncInfo.find(functionID);
+    if (funcIt != _objFuncID2FuncInfo.end()) {
+        const QJsonObject& funcInfo = funcIt.value().toObject();
+        Name = funcInfo["Name"].toString(_defaultString);
     }
     else {
-        qWarning() << "[KeybindTree_Proc::selectKey] Function ID not found in Qrc FuncID_To_FuncInfo.json:" << functionID;
+        qWarning() << "[KeybindTree_Proc::selectKey] Unknown function ID: " << functionID;
+        funcIt = _objFuncID2FuncInfo.find("unknow");
+        if (funcIt != _objFuncID2FuncInfo.end()) {
+            const QJsonObject& funcInfo = funcIt.value().toObject();
+            Name = funcInfo["Name"].toString(_defaultString);
+        }
+        else {
+            qWarning() << "[KeybindTree_Proc::selectKey] UnDefined function ID: \"unknown\"";
+        }
     }
 
     emit keyInfoUpdated(StandardName, Description, Name);
 }
+
 
 void KeybindTree_Proc::selectFunc(QTreeWidgetItem* item, int column)
 {
