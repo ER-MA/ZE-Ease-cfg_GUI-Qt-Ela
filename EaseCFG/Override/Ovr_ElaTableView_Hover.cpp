@@ -2,36 +2,36 @@
 
 Ovr_ElaTableView_Hover::Ovr_ElaTableView_Hover(QWidget* parent)
     : ElaTableView(parent), lastHoverIndex(QModelIndex()) {
-    // Êó±ê×·×ÙÒÑ¾­ÔÚ ElaTableView ÖĞÆôÓÃ£¬ÎŞĞèÔÙ´ÎÉèÖÃ
+    // é¼ æ ‡è¿½è¸ªå·²ç»åœ¨ ElaTableView ä¸­å¯ç”¨ï¼Œæ— éœ€å†æ¬¡è®¾ç½®
 }
 
 Ovr_ElaTableView_Hover::~Ovr_ElaTableView_Hover() {
-    // Îö¹¹º¯Êı£¬Èç¹ûĞèÒªÇåÀí×ÊÔ´£¬¿ÉÒÔÔÚÕâÀï½øĞĞ
+    // ææ„å‡½æ•°ï¼Œå¦‚æœéœ€è¦æ¸…ç†èµ„æºï¼Œå¯ä»¥åœ¨è¿™é‡Œè¿›è¡Œ
 }
 
 void Ovr_ElaTableView_Hover::mouseMoveEvent(QMouseEvent* event) {
-    // Ê×ÏÈµ÷ÓÃ»ùÀàµÄÊµÏÖÒÔ±£ÁôÔ­ÓĞ¹¦ÄÜ
+    // é¦–å…ˆè°ƒç”¨åŸºç±»çš„å®ç°ä»¥ä¿ç•™åŸæœ‰åŠŸèƒ½
     ElaTableView::mouseMoveEvent(event);
 
-    // »ñÈ¡µ±Ç°Êó±êĞüÍ£µÄË÷Òı
+    // è·å–å½“å‰é¼ æ ‡æ‚¬åœçš„ç´¢å¼•
     QModelIndex currentHoverIndex = indexAt(event->pos());
 
-    // ¼ì²éĞüÍ£Ë÷ÒıÊÇ·ñ·¢Éú±ä»¯
+    // æ£€æŸ¥æ‚¬åœç´¢å¼•æ˜¯å¦å‘ç”Ÿå˜åŒ–
     if (currentHoverIndex != lastHoverIndex) {
         lastHoverIndex = currentHoverIndex;
-        // ·¢ÉäĞÅºÅÍ¨ÖªÍâ½çĞüÍ£Ë÷ÒıÒÑ¸ü¸Ä
+        // å‘å°„ä¿¡å·é€šçŸ¥å¤–ç•Œæ‚¬åœç´¢å¼•å·²æ›´æ”¹
         emit hoveredIndexChanged(currentHoverIndex);
     }
 }
 
 void Ovr_ElaTableView_Hover::leaveEvent(QEvent* event) {
-    // Ê×ÏÈµ÷ÓÃ»ùÀàµÄÊµÏÖÒÔ±£ÁôÔ­ÓĞ¹¦ÄÜ
+    // é¦–å…ˆè°ƒç”¨åŸºç±»çš„å®ç°ä»¥ä¿ç•™åŸæœ‰åŠŸèƒ½
     ElaTableView::leaveEvent(event);
 
-    // Êó±êÀë¿ªÊÓÍ¼Ê±£¬ĞüÍ£Ë÷ÒıÓ¦ÉèÖÃÎªÎŞĞ§
+    // é¼ æ ‡ç¦»å¼€è§†å›¾æ—¶ï¼Œæ‚¬åœç´¢å¼•åº”è®¾ç½®ä¸ºæ— æ•ˆ
     if (lastHoverIndex.isValid()) {
         lastHoverIndex = QModelIndex();
-        // ·¢ÉäĞÅºÅÍ¨ÖªÍâ½çĞüÍ£Ë÷ÒıÒÑ¸ü¸Ä
+        // å‘å°„ä¿¡å·é€šçŸ¥å¤–ç•Œæ‚¬åœç´¢å¼•å·²æ›´æ”¹
         emit hoveredIndexChanged(lastHoverIndex);
     }
 }
