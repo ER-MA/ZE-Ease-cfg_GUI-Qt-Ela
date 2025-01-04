@@ -10,11 +10,11 @@
 
 #include "Structs.h"
 
-class KeybindTable_Model : public QAbstractTableModel {
+class Keybind_TableModel : public QAbstractTableModel {
     Q_OBJECT
 
 public:
-    explicit KeybindTable_Model(QObject* parent = nullptr);
+    explicit Keybind_TableModel(QObject* parent = nullptr);
 
     void setModelData(const QList<TableStructs::KeybindModelItem>& datas); // 设置数据
     QList<TableStructs::KeybindModelItem> getModelData() const; // 获取数据

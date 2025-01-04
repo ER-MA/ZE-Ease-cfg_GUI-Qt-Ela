@@ -9,7 +9,7 @@
 #include "ElaEventBus.h"
 #include "ElaLog.h"
 #include "Page_ServerList.h"
-#include "Page_KeyBind.h"
+#include "KeyBind_Page.h"
 #include "T_About.h"
 #include "T_Setting.h"
 
@@ -71,7 +71,7 @@ void MainWindow::initContent()
 {
     // 左侧导航栏主栏目
     _serverListPage = new Page_ServerList(this);
-    _keyBindPage = new Page_KeyBind(this);
+    _keyBindPage = new KeyBind_Page(this);
 
     addPageNode("服务器", _serverListPage, ElaIconType::Server);
     addPageNode("按键绑定", _keyBindPage, ElaIconType::Keyboard);

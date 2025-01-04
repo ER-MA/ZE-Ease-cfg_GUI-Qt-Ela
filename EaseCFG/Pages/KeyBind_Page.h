@@ -1,5 +1,5 @@
-#ifndef PAGE_KEYBIND_H
-#define PAGE_KEYBIND_H
+#ifndef KEYBIND_PAGE_H
+#define KEYBIND_PAGE_H
 
 #include "Page_BasePage.h"
 
@@ -9,16 +9,16 @@
 #include "ElaImageCard.h"
 
 #include "Ovr_ElaTableView_Hover.h"
-#include "KeybindTable_Model.h"
+#include "Keybind_TableModel.h"
 #include "Keybind_Controller.h"
 
 class ElaComboBox;
-class Page_KeyBind : public Page_BasePage
+class KeyBind_Page : public Page_BasePage
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE explicit Page_KeyBind(QWidget* parent = nullptr);
-    ~Page_KeyBind();
+    Q_INVOKABLE explicit KeyBind_Page(QWidget* parent = nullptr);
+    ~KeyBind_Page();
 
 protected:
 
@@ -42,7 +42,7 @@ private:
     void applyTableModelDepenedentSettings();
     void applyTreeModelDepenedentSettings();
 
-    KeybindTable_Model* _keybindTableModel;
+    Keybind_TableModel* _keybindTableModel;
     QModelIndex _selectedKeybindIndex; // 仅在表格刷新时更新
     QModelIndex _hoveredKeybindIndex; // 剩下几个未使用
     QModelIndex _selectedFunctionIndex;
@@ -73,4 +73,4 @@ private:
 };
 
 
-#endif // PAGE_KEYBIND_H
+#endif // KEYBIND_PAGE_H

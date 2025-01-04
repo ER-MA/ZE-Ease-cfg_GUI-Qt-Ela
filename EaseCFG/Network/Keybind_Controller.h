@@ -12,14 +12,14 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-#include "KeybindTable_Model.h"
+#include "Keybind_TableModel.h"
 #include "Structs.h"
 
 class Keybind_Controller : public QObject
 {
     Q_OBJECT
 public:
-    explicit Keybind_Controller(KeybindTable_Model* model = nullptr, QObject* parent = nullptr);
+    explicit Keybind_Controller(Keybind_TableModel* model = nullptr, QObject* parent = nullptr);
     ~Keybind_Controller();
 
 signals:
@@ -54,7 +54,7 @@ private:
     void updateKeyInfo(const QModelIndex& index);
     void updateFuncInfo(QTreeWidgetItem* item, int column);
 
-    KeybindTable_Model* _keybindTableModel; // 按键绑定表模型
+    Keybind_TableModel* _keybindTableModel; // 按键绑定表模型
 
     QJsonObject readJsonObj(const QString& filePath);
     QJsonObject readJsonObj(const QFileInfo& fileInfo);

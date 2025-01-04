@@ -15,14 +15,14 @@
 #include "ElaImageCard.h"
 
 #include "Keybind_Controller.h"
-#include "KeybindTable_Model.h"
+#include "Keybind_TableModel.h"
 #include "T_TreeViewModel.h"
 #include "Ovr_ElaTreeView.h"
 #include "Ovr_ElaTableView_Hover.h"
 
-#include "Page_KeyBind.h"
+#include "KeyBind_Page.h"
 
-Page_KeyBind::Page_KeyBind(QWidget* parent)
+KeyBind_Page::KeyBind_Page(QWidget* parent)
     : Page_BasePage(parent)
 {
     initUI();
@@ -30,12 +30,12 @@ Page_KeyBind::Page_KeyBind(QWidget* parent)
     initConnect();
 };
 
-Page_KeyBind::~Page_KeyBind()
+KeyBind_Page::~KeyBind_Page()
 {
 
 };
 
-void Page_KeyBind::initUI()
+void KeyBind_Page::initUI()
 {
     setWindowTitle("Key Bind"); // 窗口标题
     //setTitleVisible(false); // 隐藏标题栏
@@ -62,7 +62,7 @@ void Page_KeyBind::initUI()
     setupCentralWidget();
 }
 
-void Page_KeyBind::createFunctionImagePreview() // [功能预览] ※
+void KeyBind_Page::createFunctionImagePreview() // [功能预览] ※
 {
     _functionImagePreview = new ElaImageCard(this);
     _functionImagePreview->setBorderRadius(10);
@@ -75,7 +75,7 @@ void Page_KeyBind::createFunctionImagePreview() // [功能预览] ※
     _functionImagePreview->setCardImage(image);
 }
 
-void Page_KeyBind::createFunctionTreeView() // [功能选择] ※
+void KeyBind_Page::createFunctionTreeView() // [功能选择] ※
 {
     T_TreeViewModel* treeModel = new T_TreeViewModel(this);
     QFile file(":/Resource/Data/FunctionTreeView.json");
@@ -109,7 +109,7 @@ void Page_KeyBind::createFunctionTreeView() // [功能选择] ※
     _functionTreeView->setMinimumSize(320, 180);
 }
 
-void Page_KeyBind::createFunctionSelectWidget() // [功能选择] 布局
+void KeyBind_Page::createFunctionSelectWidget() // [功能选择] 布局
 {
     _functionSelectWidget = new QWidget(this);
     QVBoxLayout* functionSelectVLayout = new QVBoxLayout(_functionSelectWidget);
@@ -121,7 +121,7 @@ void Page_KeyBind::createFunctionSelectWidget() // [功能选择] 布局
     functionSelectVLayout->setStretchFactor(_functionImagePreview, 1);
 }
 
-void Page_KeyBind::createKeyFunctionEditWidget() // [按键功能编辑] ※
+void KeyBind_Page::createKeyFunctionEditWidget() // [按键功能编辑] ※
 {
     ElaText* selectedKeyTitleLable = new ElaText(this);
     selectedKeyTitleLable->setText("选中按键：");
@@ -211,7 +211,7 @@ void Page_KeyBind::createKeyFunctionEditWidget() // [按键功能编辑] ※
     keyFunctionEditVLayout->setStretchFactor(functionDetailsWidget, 64);
 }
 
-void Page_KeyBind::createKeybindTableView() // [按键绑定列表] ※
+void KeyBind_Page::createKeybindTableView() // [按键绑定列表] ※
 {
     _keybindTableView = new Ovr_ElaTableView_Hover(this);
 
@@ -230,7 +230,7 @@ void Page_KeyBind::createKeybindTableView() // [按键绑定列表] ※
     _keybindTableView->setSelectionMode(QAbstractItemView::SingleSelection);  // 选择模式为单选
 }
 
-void Page_KeyBind::createKeybindWidget() // [按键绑定] 布局
+void KeyBind_Page::createKeybindWidget() // [按键绑定] 布局
 {
     _keybindWidget = new QWidget(this);
     QHBoxLayout* keybindHLayout = new QHBoxLayout(_keybindWidget);
@@ -240,7 +240,7 @@ void Page_KeyBind::createKeybindWidget() // [按键绑定] 布局
     keybindHLayout->addWidget(_functionSelectWidget);
 }
 
-void Page_KeyBind::createToolBarWidget() // [工具栏] ※
+void KeyBind_Page::createToolBarWidget() // [工具栏] ※
 {
     ElaComboBox* modeComboBox = new ElaComboBox(this);
     QStringList comboList{
@@ -264,7 +264,7 @@ void Page_KeyBind::createToolBarWidget() // [工具栏] ※
     toolBarHLayout->addWidget(_writeButton);
 }
 
-void Page_KeyBind::setupCentralWidget() // [中心窗口] 布局
+void KeyBind_Page::setupCentralWidget() // [中心窗口] 布局
 {
     QWidget* centralWidget = new QWidget(this);
     centralWidget->setWindowTitle("按键配置");
@@ -276,7 +276,7 @@ void Page_KeyBind::setupCentralWidget() // [中心窗口] 布局
     centerVLayout->addWidget(_keybindWidget);
 }
 
-void Page_KeyBind::applyTableModelDepenedentSettings()
+void KeyBind_Page::applyTableModelDepenedentSettings()
 {
     // 在模型被应用前不能设置的参数
     // 表格样式配置
@@ -298,20 +298,20 @@ void Page_KeyBind::applyTableModelDepenedentSettings()
     verHeader->setVisible(false);  // 隐藏左侧序列号
 }
 
-void Page_KeyBind::applyTreeModelDepenedentSettings()
+void KeyBind_Page::applyTreeModelDepenedentSettings()
 {
     // 在模型被应用前不能设置的参数
 }
 
-void Page_KeyBind::initData()
+void KeyBind_Page::initData()
 {
-    _keybindTableModel = new KeybindTable_Model(this);
+    _keybindTableModel = new Keybind_TableModel(this);
     _keybindTableView->setModel(_keybindTableModel); // 设置模型
     applyTableModelDepenedentSettings(); // 进一步设置表格样式
     _keybindController = new Keybind_Controller(_keybindTableModel);
 };
 
-void Page_KeyBind::initConnect()
+void KeyBind_Page::initConnect()
 {
     // 测试ElaMessageBar
     connect(_saveButton, &ElaPushButton::clicked, this, [this]() {
@@ -329,10 +329,10 @@ void Page_KeyBind::initConnect()
     });
 
     // 恢复 TableView 选中项
-    connect(_keybindTableModel, &KeybindTable_Model::modelAboutToBeReset, this, [this]() {
+    connect(_keybindTableModel, &Keybind_TableModel::modelAboutToBeReset, this, [this]() {
         _selectedKeybindIndex = _keybindTableView->currentIndex();
     });
-    connect(_keybindTableModel, &KeybindTable_Model::modelReset, this, [this]() {
+    connect(_keybindTableModel, &Keybind_TableModel::modelReset, this, [this]() {
         _keybindTableView->setCurrentIndex(_selectedKeybindIndex);
     });
 

@@ -1,6 +1,6 @@
-#include "KeybindTable_Model.h"
+#include "Keybind_TableModel.h"
 
-KeybindTable_Model::KeybindTable_Model(QObject* parent) : QAbstractTableModel(parent) {
+Keybind_TableModel::Keybind_TableModel(QObject* parent) : QAbstractTableModel(parent) {
     // 初始化数据
     initModelData();
     initHeaderData();
@@ -12,7 +12,7 @@ KeybindTable_Model::KeybindTable_Model(QObject* parent) : QAbstractTableModel(pa
 
 
 
-void KeybindTable_Model::setModelData(const QList<TableStructs::KeybindModelItem>& datas)
+void Keybind_TableModel::setModelData(const QList<TableStructs::KeybindModelItem>& datas)
 {
     beginResetModel(); // 触发 modelAboutToBeReset 信号
     _modelData = datas;
@@ -24,14 +24,14 @@ void KeybindTable_Model::setModelData(const QList<TableStructs::KeybindModelItem
     //emit dataChanged(index(0,0),index(RowMax-1,ColMax-1),QVector<int>());
 }
 
-QList<TableStructs::KeybindModelItem> KeybindTable_Model::getModelData() const
+QList<TableStructs::KeybindModelItem> Keybind_TableModel::getModelData() const
 {
     return _modelData;
 }
 
 
 
-bool KeybindTable_Model::setHeaderData(int section, Qt::Orientation orientation, const QVariant& value, int role) {
+bool Keybind_TableModel::setHeaderData(int section, Qt::Orientation orientation, const QVariant& value, int role) {
     // 设置表头数据
     if (orientation == Qt::Horizontal) {
         if (role == Qt::DisplayRole) {
@@ -53,7 +53,7 @@ bool KeybindTable_Model::setHeaderData(int section, Qt::Orientation orientation,
     return false;
 }
 
-QVariant KeybindTable_Model::headerData(int section, Qt::Orientation orientation, int role) const {
+QVariant Keybind_TableModel::headerData(int section, Qt::Orientation orientation, int role) const {
     // 返回表头数据
     if (orientation == Qt::Horizontal) {
         if (role == Qt::DisplayRole) {
@@ -71,7 +71,7 @@ QVariant KeybindTable_Model::headerData(int section, Qt::Orientation orientation
     return QVariant();
 }
 
-int KeybindTable_Model::rowCount(const QModelIndex& parent) const {
+int Keybind_TableModel::rowCount(const QModelIndex& parent) const {
     // 返回行数
     if (parent.isValid()) {
         return 0;
@@ -79,7 +79,7 @@ int KeybindTable_Model::rowCount(const QModelIndex& parent) const {
     return _modelData.count();
 }
 
-int KeybindTable_Model::columnCount(const QModelIndex& parent) const {
+int Keybind_TableModel::columnCount(const QModelIndex& parent) const {
     // 返回列数
     if (parent.isValid()) {
         return 0;
@@ -87,7 +87,7 @@ int KeybindTable_Model::columnCount(const QModelIndex& parent) const {
     return 2;
 }
 
-QVariant KeybindTable_Model::data(const QModelIndex& index, int role) const {
+QVariant Keybind_TableModel::data(const QModelIndex& index, int role) const {
     // 返回单元格数据
     if (!index.isValid()) {
         return QVariant();
@@ -103,7 +103,7 @@ QVariant KeybindTable_Model::data(const QModelIndex& index, int role) const {
     return QVariant();
 }
 
-QVariant KeybindTable_Model::dataKeyID(const QModelIndex& index) const
+QVariant Keybind_TableModel::dataKeyID(const QModelIndex& index) const
 {
     // 返回按键ID ※
     if (!index.isValid()) {
@@ -113,7 +113,7 @@ QVariant KeybindTable_Model::dataKeyID(const QModelIndex& index) const
     return _modelData.at(row).KeyID;
 }
 
-QVariant KeybindTable_Model::dataFunctionID(const QModelIndex& index) const
+QVariant Keybind_TableModel::dataFunctionID(const QModelIndex& index) const
 {
     // 返回功能ID ※
     if (!index.isValid()) {
@@ -123,7 +123,7 @@ QVariant KeybindTable_Model::dataFunctionID(const QModelIndex& index) const
     return _modelData.at(row).FunctionID;
 }
 
-bool KeybindTable_Model::setData(const QModelIndex& index, const QVariant& value, int role)
+bool Keybind_TableModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
     // 设置单元格数据（保存 TableView 中修改的数据）
     if (index.isValid() && role == Qt::EditRole) {
@@ -140,7 +140,7 @@ bool KeybindTable_Model::setData(const QModelIndex& index, const QVariant& value
 
 
 
-void KeybindTable_Model::initModelData() {
+void Keybind_TableModel::initModelData() {
     // 初始化数据
     _modelData.clear();
     // _modelData.append(KeybindModelItem{"按键", "功能", "按键唯一标识符", "功能唯一标识符"});
@@ -162,7 +162,7 @@ void KeybindTable_Model::initModelData() {
     _modelData.append(TableStructs::KeybindModelItem{"[!] Unknow", "未知功能(\"\?\")", "unknow", "unknow"});
 }
 
-void KeybindTable_Model::initHeaderData()
+void Keybind_TableModel::initHeaderData()
 {
     // 初始化水平表头数据
     _horHeaderData.clear();

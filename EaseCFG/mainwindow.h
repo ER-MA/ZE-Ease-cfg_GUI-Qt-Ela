@@ -7,8 +7,8 @@
 #include "ElaWindow.h"
 
 
-class Page_KeyBind;
 class Page_ServerList;
+class KeyBind_Page;
 class T_About;
 class T_Setting;
 class ElaContentDialog;
@@ -30,8 +30,8 @@ signals: // 信号
     void currentPageChanged(QString pageKey);
 
 private:
+    KeyBind_Page* _keyBindPage{nullptr};
     Page_ServerList* _serverListPage{nullptr};
-    Page_KeyBind* _keyBindPage{nullptr};
     T_About* _aboutPage{nullptr};
     T_Setting* _settingPage{nullptr};
 

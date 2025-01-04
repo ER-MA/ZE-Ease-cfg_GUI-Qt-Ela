@@ -1,6 +1,6 @@
 #include "Keybind_Controller.h"
 
-Keybind_Controller::Keybind_Controller(KeybindTable_Model* model, QObject* parent) :
+Keybind_Controller::Keybind_Controller(Keybind_TableModel* model, QObject* parent) :
     QObject(parent),
     _keybindTableModel(model)
 {
