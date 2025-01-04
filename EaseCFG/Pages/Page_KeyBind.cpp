@@ -164,7 +164,7 @@ void Page_KeyBind::createKeyFunctionEditWidget() // [按键功能编辑] ※
     selectedFunctionLable->setText("选中功能：");
     selectedFunctionLable->setTextPixelSize(15);
     _mousePointFunctionLable = new ElaText(this);
-    _mousePointFunctionLable->setText("Null");
+    _mousePointFunctionLable->setText("请选择功能");
     _mousePointFunctionLable->setTextPixelSize(15);
     ElaPushButton* replaceFunctionPushButton = new ElaPushButton("替换当前功能", this);
 
@@ -178,7 +178,7 @@ void Page_KeyBind::createKeyFunctionEditWidget() // [按键功能编辑] ※
 
 
     _functionDetailsTitleLabel = new ElaText(this);
-    _functionDetailsTitleLabel->setText("Null");
+    _functionDetailsTitleLabel->setText("未选择功能");
     _functionDetailsTitleLabel->setTextPixelSize(15);
     _functionDetailsIntroLabel = new ElaText(this);
     _functionDetailsIntroLabel->setText("暂无简介");

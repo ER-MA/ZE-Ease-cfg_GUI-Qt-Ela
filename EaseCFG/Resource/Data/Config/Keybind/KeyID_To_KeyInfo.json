@@ -2,36 +2,36 @@
     "mouse1": {
         "Abbreviation": "Mouse1",
         "StandardName": "Mouse1",
-        "Description": "鼠标1键"
+        "Description": "鼠标左键"
     },
     "mouse2": {
         "Abbreviation": "Mouse2",
         "StandardName": "Mouse2",
-        "Description": "鼠标2键"
+        "Description": "鼠标右键"
     },
     "mouse3": {
         "Abbreviation": "Mouse3",
         "StandardName": "Mouse3",
-        "Description": "鼠标3键"
+        "Description": "鼠标中键"
     },
     "mouse4": {
         "Abbreviation": "Mouse4",
         "StandardName": "Mouse4",
-        "Description": "鼠标4键"
+        "Description": "鼠标后侧键"
     },
     "mouse5": {
         "Abbreviation": "Mouse5",
         "StandardName": "Mouse5",
-        "Description": "鼠标5键"
+        "Description": "鼠标前侧键"
     },
     "mwheelup": {
-        "Abbreviation": "MWheelUp",
-        "StandardName": "MouseWheelUp",
+        "Abbreviation": "Mouse上滚轮",
+        "StandardName": "MWheel",
         "Description": "鼠标滚轮上滚"
     },
     "mwheeldown": {
-        "Abbreviation": "MWheelDown",
-        "StandardName": "MouseWheelDown",
+        "Abbreviation": "Mouse下滚轮",
+        "StandardName": "MWheel",
         "Description": "鼠标滚轮下滚"
     },
     "mouse_x": {
@@ -43,6 +43,51 @@
         "Abbreviation": "MouseY",
         "StandardName": "MouseY",
         "Description": "鼠标Y轴移动"
+    },
+    "space": {
+        "Abbreviation": "Space",
+        "StandardName": "Space",
+        "Description": "空格键"
+    },
+    "ctrl": {
+        "Abbreviation": "Ctrl",
+        "StandardName": "Control",
+        "Description": "左Ctrl键"
+    },
+    "alt": {
+        "Abbreviation": "Alt",
+        "StandardName": "Alternate",
+        "Description": "左Alt键"
+    },
+    "shift": {
+        "Abbreviation": "Shift",
+        "StandardName": "Shift",
+        "Description": "左Shift键"
+    },
+    "capslock": {
+        "Abbreviation": "Caps",
+        "StandardName": "CapsLock",
+        "Description": "大写锁定键"
+    },
+    "tab": {
+        "Abbreviation": "Tab",
+        "StandardName": "Tabulator",
+        "Description": "制表键"
+    },
+    "escape": {
+        "Abbreviation": "Esc",
+        "StandardName": "Escape",
+        "Description": "退出键"
+    },
+    "backspace": {
+        "Abbreviation": "Backspace",
+        "StandardName": "Backspace",
+        "Description": "退格键"
+    },
+    "enter": {
+        "Abbreviation": "Enter",
+        "StandardName": "Enter",
+        "Description": "回车键"
     },
     "f1": {
         "Abbreviation": "F1",
@@ -289,42 +334,92 @@
         "StandardName": "Backquote",
         "Description": "反引号键"
     },
-    "kp7": {
+    "uparrow": {
+        "Abbreviation": "↑",
+        "StandardName": "UpArrow",
+        "Description": "方向上键"
+    },
+    "downarrow": {
+        "Abbreviation": "↓",
+        "StandardName": "DownArrow",
+        "Description": "方向下键"
+    },
+    "leftarrow": {
+        "Abbreviation": "←",
+        "StandardName": "LeftArrow",
+        "Description": "方向左键"
+    },
+    "rightarrow": {
+        "Abbreviation": "→",
+        "StandardName": "RightArrow",
+        "Description": "方向右键"
+    },
+    "kp_1": {
+        "Abbreviation": "KP1",
+        "StandardName": "Keypad1",
+        "Description": "小键盘1键"
+    },
+    "kp_2": {
+        "Abbreviation": "KP2",
+        "StandardName": "Keypad2",
+        "Description": "小键盘2键"
+    },
+    "kp_3": {
+        "Abbreviation": "KP3",
+        "StandardName": "Keypad3",
+        "Description": "小键盘3键"
+    },
+    "kp_4": {
+        "Abbreviation": "KP4",
+        "StandardName": "Keypad4",
+        "Description": "小键盘4键"
+    },
+    "kp_5": {
+        "Abbreviation": "KP5",
+        "StandardName": "Keypad5",
+        "Description": "小键盘5键"
+    },
+    "kp_6": {
+        "Abbreviation": "KP6",
+        "StandardName": "Keypad6",
+        "Description": "小键盘6键"
+    },
+    "kp_7": {
         "Abbreviation": "KP7",
         "StandardName": "Keypad7",
         "Description": "小键盘7键"
     },
-    "kp8": {
+    "kp_8": {
         "Abbreviation": "KP8",
         "StandardName": "Keypad8",
         "Description": "小键盘8键"
     },
-    "kp9": {
+    "kp_9": {
         "Abbreviation": "KP9",
         "StandardName": "Keypad9",
         "Description": "小键盘9键"
     },
-    "kpdel": {
+    "kp_del": {
         "Abbreviation": "KPDel",
         "StandardName": "KeypadDelete",
         "Description": "小键盘删除键"
     },
-    "kpplus": {
+    "kp_plus": {
         "Abbreviation": "KPPlus",
         "StandardName": "KeypadPlus",
         "Description": "小键盘加号键"
     },
-    "kpminus": {
+    "kp_minus": {
         "Abbreviation": "KPMinus",
         "StandardName": "KeypadMinus",
         "Description": "小键盘减号键"
     },
-    "kpmultiply": {
+    "kp_multiply": {
         "Abbreviation": "KPMultiply",
         "StandardName": "KeypadMultiply",
         "Description": "小键盘乘号键"
     },
-    "kpdivide": {
+    "kp_divide": {
         "Abbreviation": "KPDivide",
         "StandardName": "KeypadDivide",
         "Description": "小键盘除号键"

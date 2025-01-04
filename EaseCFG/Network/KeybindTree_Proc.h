@@ -13,6 +13,7 @@
 #include <QJsonArray>
 
 #include "KeybindTable_Model.h"
+#include "Structs.h"
 
 class KeybindTree_Proc : public QObject
 {
@@ -42,6 +43,8 @@ public slots:
 
     void updateKeyID2KeyInfo();
     void updateFuncID2FuncInfo();
+
+    void resetKeybindTableModelData(); // 重置按键绑定表
 
 private:
     void initConfigDir(); // 初始化配置文件目录
@@ -75,6 +78,9 @@ private:
 
     QJsonObject _objKeyID2KeyInfo; // 按键ID到按键信息的映射
     QJsonObject _objFuncID2FuncInfo; // 功能ID到功能信息的映射
+
+    QJsonObject _objUnknowKeyID2KeyInfo; // 未知按键ID到按键信息的映射
+    QJsonObject _objUnknowFuncID2FuncInfo; // 未知功能ID到功能信息的映射
 
     static const QString _defaultString; // 默认字符串
 };

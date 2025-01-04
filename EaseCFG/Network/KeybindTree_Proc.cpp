@@ -24,6 +24,8 @@ void KeybindTree_Proc::initData()
 
     updateKeyID2KeyInfo();
     updateFuncID2FuncInfo();
+
+    resetKeybindTableModelData();
 }
 
 void KeybindTree_Proc::initConfigDir()
@@ -47,7 +49,6 @@ void KeybindTree_Proc::initConfigDir()
     _configResKeyID2KeyInfo.setFileName(qrcPathKeyID2KeyInfo);
     _configResFuncID2FuncInfo.setFileName(qrcPathFuncID2FuncInfo);
 }
-
 void KeybindTree_Proc::initConfigFile()
 {
     // 检查配置文件是否存在
@@ -96,7 +97,6 @@ void KeybindTree_Proc::selectKey(const QModelIndex& index)
     _selectedKeybindIndex = index;
     updateKeyInfo(_selectedKeybindIndex);
 }
-
 void KeybindTree_Proc::hoverKey(const QModelIndex& index)
 {
     if (!index.isValid()) { // 鼠标移出
@@ -128,15 +128,8 @@ void KeybindTree_Proc::updateKeyInfo(const QModelIndex& index)
     }
     else {
         qWarning() << "[KeybindTree_Proc::selectKey] Unknown key ID: " << keyID;
-        keyIt = _objKeyID2KeyInfo.find("unknow");
-        if (keyIt != _objKeyID2KeyInfo.end()) {
-            const QJsonObject& keyInfo = keyIt.value().toObject();
-            StandardName = keyInfo["StandardName"].toString(_defaultString);
-            Description = keyInfo["Description"].toString(_defaultString);
-        }
-        else {
-            qWarning() << "[KeybindTree_Proc::selectKey] UnDefined key ID: \"unknown\"";
-        }
+        StandardName = _objUnknowKeyID2KeyInfo["StandardName"].toString(_defaultString);
+        Description = _objUnknowKeyID2KeyInfo["Description"].toString(_defaultString);
     }
 
     // funcInfo 查找
@@ -147,19 +140,11 @@ void KeybindTree_Proc::updateKeyInfo(const QModelIndex& index)
     }
     else {
         qWarning() << "[KeybindTree_Proc::selectKey] Unknown function ID: " << functionID;
-        funcIt = _objFuncID2FuncInfo.find("unknow");
-        if (funcIt != _objFuncID2FuncInfo.end()) {
-            const QJsonObject& funcInfo = funcIt.value().toObject();
-            Name = funcInfo["Name"].toString(_defaultString);
-        }
-        else {
-            qWarning() << "[KeybindTree_Proc::selectKey] UnDefined function ID: \"unknown\"";
-        }
+        Name = _objUnknowFuncID2FuncInfo["Name"].toString(_defaultString);
     }
 
     emit keyInfoUpdated(StandardName, Description, Name);
 }
-
 
 void KeybindTree_Proc::selectFunc(QTreeWidgetItem* item, int column)
 {
@@ -222,17 +207,6 @@ void KeybindTree_Proc::writeConfigFile(const QFileInfo& cfgDirInfo)
     // 关闭文件
     file.close();
 }
-
-void KeybindTree_Proc::updateKeyID2KeyInfo()
-{
-    _objKeyID2KeyInfo = readJsonObj(_configResKeyID2KeyInfo.absoluteFilePath());
-}
-
-void KeybindTree_Proc::updateFuncID2FuncInfo()
-{
-    _objFuncID2FuncInfo = readJsonObj(_configResFuncID2FuncInfo.absoluteFilePath());
-}
-
 void KeybindTree_Proc::writeKeybindsToStream(QTextStream& out, const QJsonObject& keybindList)
 {
     for (auto it = keybindList.constBegin(); it != keybindList.constEnd(); ++it) {
@@ -241,7 +215,6 @@ void KeybindTree_Proc::writeKeybindsToStream(QTextStream& out, const QJsonObject
         out << "bind " << key << " \"" << function << "\"" << "\n";
     }
 }
-
 QJsonObject KeybindTree_Proc::generateKeybindList()
 {
     QJsonObject keyBindObj = readJsonObj(_configInfoKeyIDLinkFuncID.absoluteFilePath());
@@ -298,7 +271,6 @@ QJsonObject KeybindTree_Proc::readJsonObj(const QString& filePath)
 
     return jsonDoc.object();
 }
-
 QJsonObject KeybindTree_Proc::readJsonObj(const QFileInfo& fileInfo)
 {
     if (!fileInfo.exists()) {
@@ -307,7 +279,6 @@ QJsonObject KeybindTree_Proc::readJsonObj(const QFileInfo& fileInfo)
     }
     return readJsonObj(fileInfo.absoluteFilePath());
 }
-
 QJsonObject KeybindTree_Proc::readJsonObj(const QResource& qrcFileRes)
 {
     if (!qrcFileRes.isValid()) {
@@ -351,4 +322,76 @@ QJsonObject KeybindTree_Proc::readJsonObj(const QResource& qrcFileRes)
     }
 
     return jsonDoc.object();
+}
+
+void KeybindTree_Proc::updateKeyID2KeyInfo()
+{
+    _objKeyID2KeyInfo = readJsonObj(_configResKeyID2KeyInfo.absoluteFilePath());
+
+    auto keyInfoIt = _objKeyID2KeyInfo.find("unknow");
+    if (keyInfoIt != _objKeyID2KeyInfo.end()) {
+        _objUnknowKeyID2KeyInfo = keyInfoIt.value().toObject();
+    }
+    else {
+        qWarning() << "[KeybindTree_Proc::updateKeyID2KeyInfo] UnDefined key ID:\"unknown\"";
+    }
+}
+void KeybindTree_Proc::updateFuncID2FuncInfo()
+{
+    _objFuncID2FuncInfo = readJsonObj(_configResFuncID2FuncInfo.absoluteFilePath());
+
+    auto funcInfoIt = _objFuncID2FuncInfo.find("unknow");
+    if (funcInfoIt != _objFuncID2FuncInfo.end()) {
+        _objUnknowFuncID2FuncInfo = funcInfoIt.value().toObject();
+    }
+    else {
+        qWarning() << "[KeybindTree_Proc::updateFuncID2FuncInfo] UnDefined function ID:\"unknown\"";
+    }
+}
+
+void KeybindTree_Proc::resetKeybindTableModelData()
+{
+    QList<TableStructs::KeybindModelItem> _modelData;
+
+    QJsonObject keyBindObj = readJsonObj(_configInfoKeyIDLinkFuncID.absoluteFilePath());
+    if (keyBindObj.isEmpty()) {
+        return;
+    }
+
+    // 遍历KeyBind.json中的每个键值对
+    for (auto keyBindIter = keyBindObj.constBegin(); keyBindIter != keyBindObj.constEnd(); ++keyBindIter)
+    {
+        // 获取按键唯一标识符和功能唯一标识符
+        QString keyId = keyBindIter.key();
+        QString funcId = keyBindIter.value().toString();
+
+        TableStructs::KeybindModelItem item;
+        item.KeyID = keyId;
+        item.FunctionID = funcId;
+
+        // 在_objKeyID2KeyInfo中找到对应的按键信息
+        auto keyInfoIt = _objKeyID2KeyInfo.find(keyId);
+        if (keyInfoIt != _objKeyID2KeyInfo.end()) {
+            const QJsonObject& keyInfo = keyInfoIt.value().toObject();
+            item.Key = keyInfo["Abbreviation"].toString(_defaultString);
+        }
+        else {
+            qWarning() << "[KeybindTree_Proc::resetKeybindTableModelData] Key ID not found in Qrc KeyID_To_KeyInfo.json:" << keyId;
+            item.Key = _objUnknowKeyID2KeyInfo["Abbreviation"].toString(_defaultString);
+        }
+        // 在_objFuncID2FuncInfo中找到对应的功能信息
+        auto funcInfoIt = _objFuncID2FuncInfo.find(funcId);
+        if (funcInfoIt != _objFuncID2FuncInfo.end()) {
+            const QJsonObject& funcInfo = funcInfoIt.value().toObject();
+            item.Function = funcInfo["Name"].toString(_defaultString);
+        }
+        else {
+            qWarning() << "[KeybindTree_Proc::resetKeybindTableModelData] Function ID not found in Qrc FuncID_To_FuncInfo.json:" << funcId;
+            item.Function = _objUnknowFuncID2FuncInfo["Name"].toString(_defaultString);
+        }
+
+        _modelData.append(item);
+    }
+
+    _keybindTableModel->setModelData(_modelData);
 }
