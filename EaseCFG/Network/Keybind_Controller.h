@@ -1,5 +1,5 @@
-#ifndef KEYBINDTREE_PROC_H
-#define KEYBINDTREE_PROC_H
+#ifndef KEYBIND_CONTROLLER_H
+#define KEYBIND_CONTROLLER_H
 
 #include <QCoreApplication>
 #include <QTreeWidgetItem>
@@ -15,12 +15,12 @@
 #include "KeybindTable_Model.h"
 #include "Structs.h"
 
-class KeybindTree_Proc : public QObject
+class Keybind_Controller : public QObject
 {
     Q_OBJECT
 public:
-    explicit KeybindTree_Proc(KeybindTable_Model* model = nullptr, QObject* parent = nullptr);
-    ~KeybindTree_Proc();
+    explicit Keybind_Controller(KeybindTable_Model* model = nullptr, QObject* parent = nullptr);
+    ~Keybind_Controller();
 
 signals:
     void keyInfoUpdated(QString StandardName, QString Description, QString Name); // 按键信息被更新
@@ -85,4 +85,4 @@ private:
     static const QString _defaultString; // 默认字符串
 };
 
-#endif // KEYBINDTREE_PROC_H
+#endif // KEYBIND_CONTROLLER_H

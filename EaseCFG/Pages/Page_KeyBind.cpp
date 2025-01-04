@@ -14,7 +14,7 @@
 #include "ElaMessageBar.h"
 #include "ElaImageCard.h"
 
-#include "KeybindTree_Proc.h"
+#include "Keybind_Controller.h"
 #include "KeybindTable_Model.h"
 #include "T_TreeViewModel.h"
 #include "Ovr_ElaTreeView.h"
@@ -308,7 +308,7 @@ void Page_KeyBind::initData()
     _keybindTableModel = new KeybindTable_Model(this);
     _keybindTableView->setModel(_keybindTableModel); // 设置模型
     applyTableModelDepenedentSettings(); // 进一步设置表格样式
-    _keybindProc = new KeybindTree_Proc(_keybindTableModel);
+    _keybindController = new Keybind_Controller(_keybindTableModel);
 };
 
 void Page_KeyBind::initConnect()
@@ -337,11 +337,11 @@ void Page_KeyBind::initConnect()
     });
 
     // 鼠标点击 TableView 项
-    connect(_keybindTableView, &ElaTableView::clicked, _keybindProc, &KeybindTree_Proc::selectKey);
+    connect(_keybindTableView, &ElaTableView::clicked, _keybindController, &Keybind_Controller::selectKey);
     // 鼠标悬停 TableView 项
-    connect(_keybindTableView, &Ovr_ElaTableView_Hover::hoveredIndexChanged, _keybindProc, &KeybindTree_Proc::hoverKey);
+    connect(_keybindTableView, &Ovr_ElaTableView_Hover::hoveredIndexChanged, _keybindController, &Keybind_Controller::hoverKey);
 
-    connect(_keybindProc, &KeybindTree_Proc::keyInfoUpdated, this, [this](QString StandardName, QString Description, QString Name) {
+    connect(_keybindController, &Keybind_Controller::keyInfoUpdated, this, [this](QString StandardName, QString Description, QString Name) {
         _selectedKeyNameLable->setText(StandardName);
         _selectedKeyIntroLable->setText("(" + Description + ")");
         _currentFunctionNameLable->setText(Name);
@@ -351,6 +351,6 @@ void Page_KeyBind::initConnect()
     QString floderPath = QCoreApplication::applicationDirPath() + "/config/output";
     QFileInfo steamCfgDir(floderPath);
     connect(_writeButton, &ElaPushButton::clicked, this, [this, steamCfgDir]() {
-        _keybindProc->writeConfigFile(steamCfgDir);
+        _keybindController->writeConfigFile(steamCfgDir);
     });
 };

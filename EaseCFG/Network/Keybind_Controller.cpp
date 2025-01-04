@@ -1,6 +1,6 @@
-#include "KeybindTree_Proc.h"
+#include "Keybind_Controller.h"
 
-KeybindTree_Proc::KeybindTree_Proc(KeybindTable_Model* model, QObject* parent) :
+Keybind_Controller::Keybind_Controller(KeybindTable_Model* model, QObject* parent) :
     QObject(parent),
     _keybindTableModel(model)
 {
@@ -11,13 +11,13 @@ KeybindTree_Proc::KeybindTree_Proc(KeybindTable_Model* model, QObject* parent) :
 
 };
 
-KeybindTree_Proc::~KeybindTree_Proc()
+Keybind_Controller::~Keybind_Controller()
 {
 
 };
 
-const QString KeybindTree_Proc::_defaultString = "Default";
-void KeybindTree_Proc::initData()
+const QString Keybind_Controller::_defaultString = "Default";
+void Keybind_Controller::initData()
 {
     initConfigDir();
     initConfigFile();
@@ -28,7 +28,7 @@ void KeybindTree_Proc::initData()
     resetKeybindTableModelData();
 }
 
-void KeybindTree_Proc::initConfigDir()
+void Keybind_Controller::initConfigDir()
 {
     // 系统资源文件
     QString sysDirConfig = QCoreApplication::applicationDirPath() + "/config"; // 系统资源文件目录
@@ -49,7 +49,7 @@ void KeybindTree_Proc::initConfigDir()
     _configResKeyID2KeyInfo.setFileName(qrcPathKeyID2KeyInfo);
     _configResFuncID2FuncInfo.setFileName(qrcPathFuncID2FuncInfo);
 }
-void KeybindTree_Proc::initConfigFile()
+void Keybind_Controller::initConfigFile()
 {
     // 检查配置文件是否存在
     if (!_configInfoKeyIDLinkFuncID.exists()) {
@@ -59,7 +59,7 @@ void KeybindTree_Proc::initConfigFile()
         // 如果目录不存在，则尝试创建目录
         if (!configDir.exists() && !configDir.mkpath(".")) {
             // 处理目录创建失败的情况
-            qWarning("[KeybindTree_Proc::initConfigFile] Failed to create config directory: %s", qPrintable(configDir.absolutePath()));
+            qWarning("[Keybind_Controller::initConfigFile] Failed to create config directory: %s", qPrintable(configDir.absolutePath()));
         }
         else {
             // 检查资源文件是否有效，并且复制资源到配置文件位置
@@ -71,22 +71,22 @@ void KeybindTree_Proc::initConfigFile()
                     // 设置新创建的配置文件的权限
                     QFile newConfigKeyBindFile(targetPath);
                     newConfigKeyBindFile.setPermissions(QFile::ReadUser | QFile::WriteUser);
-                    qDebug("[KeybindTree_Proc::initConfigFile] Succeed to create new config file: %s", qPrintable(targetPath));
+                    qDebug("[Keybind_Controller::initConfigFile] Succeed to create new config file: %s", qPrintable(targetPath));
                 }
                 else {
                     // 处理文件复制失败的情况
-                    qWarning("[KeybindTree_Proc::initConfigFile] Failed to copy file from %s to %s.", qPrintable(sourcePath), qPrintable(targetPath));
+                    qWarning("[Keybind_Controller::initConfigFile] Failed to copy file from %s to %s.", qPrintable(sourcePath), qPrintable(targetPath));
                 }
             }
             else {
                 // 处理资源文件无效的情况
-                qWarning("[KeybindTree_Proc::initConfigFile] Invalid resource file: %s", qPrintable(_configResKeyIDLinkFuncID.absoluteFilePath()));
+                qWarning("[Keybind_Controller::initConfigFile] Invalid resource file: %s", qPrintable(_configResKeyIDLinkFuncID.absoluteFilePath()));
             }
         }
     }
 }
 
-void KeybindTree_Proc::selectKey(const QModelIndex& index)
+void Keybind_Controller::selectKey(const QModelIndex& index)
 {
     if (!index.isValid()) {
         _selectedKeybindIndex = QModelIndex();
@@ -97,7 +97,7 @@ void KeybindTree_Proc::selectKey(const QModelIndex& index)
     _selectedKeybindIndex = index;
     updateKeyInfo(_selectedKeybindIndex);
 }
-void KeybindTree_Proc::hoverKey(const QModelIndex& index)
+void Keybind_Controller::hoverKey(const QModelIndex& index)
 {
     if (!index.isValid()) { // 鼠标移出
         _hoveredKeybindIndex = QModelIndex();
@@ -108,7 +108,7 @@ void KeybindTree_Proc::hoverKey(const QModelIndex& index)
     _hoveredKeybindIndex = index;
     updateKeyInfo(_hoveredKeybindIndex);
 }
-void KeybindTree_Proc::updateKeyInfo(const QModelIndex& index)
+void Keybind_Controller::updateKeyInfo(const QModelIndex& index)
 {
     QString keyID = _keybindTableModel->dataKeyID(index).toString();
     QString functionID = _keybindTableModel->dataFunctionID(index).toString();
@@ -127,7 +127,7 @@ void KeybindTree_Proc::updateKeyInfo(const QModelIndex& index)
         Description = keyInfo["Description"].toString(_defaultString);
     }
     else {
-        qWarning() << "[KeybindTree_Proc::selectKey] Unknown key ID: " << keyID;
+        qWarning() << "[Keybind_Controller::selectKey] Unknown key ID: " << keyID;
         StandardName = _objUnknowKeyID2KeyInfo["StandardName"].toString(_defaultString);
         Description = _objUnknowKeyID2KeyInfo["Description"].toString(_defaultString);
     }
@@ -139,54 +139,54 @@ void KeybindTree_Proc::updateKeyInfo(const QModelIndex& index)
         Name = funcInfo["Name"].toString(_defaultString);
     }
     else {
-        qWarning() << "[KeybindTree_Proc::selectKey] Unknown function ID: " << functionID;
+        qWarning() << "[Keybind_Controller::selectKey] Unknown function ID: " << functionID;
         Name = _objUnknowFuncID2FuncInfo["Name"].toString(_defaultString);
     }
 
     emit keyInfoUpdated(StandardName, Description, Name);
 }
 
-void KeybindTree_Proc::selectFunc(QTreeWidgetItem* item, int column)
+void Keybind_Controller::selectFunc(QTreeWidgetItem* item, int column)
 {
 
 }
-void KeybindTree_Proc::hoverFunc(QTreeWidgetItem* item, int column)
+void Keybind_Controller::hoverFunc(QTreeWidgetItem* item, int column)
 {
 
 }
-void KeybindTree_Proc::updateFuncInfo(QTreeWidgetItem* item, int column)
-{
-
-}
-
-void KeybindTree_Proc::replaceKeybind(const QJsonObject& keybind)
+void Keybind_Controller::updateFuncInfo(QTreeWidgetItem* item, int column)
 {
 
 }
 
-void KeybindTree_Proc::saveConfig()
+void Keybind_Controller::replaceKeybind(const QJsonObject& keybind)
 {
 
 }
 
-void KeybindTree_Proc::writeConfigFile(const QFileInfo& cfgDirInfo)
+void Keybind_Controller::saveConfig()
+{
+
+}
+
+void Keybind_Controller::writeConfigFile(const QFileInfo& cfgDirInfo)
 {
     // 检查配置目录是否存在
     if (!cfgDirInfo.exists() || !cfgDirInfo.isDir()) {
-        qWarning("[KeybindTree_Proc::writeConfigFile] Config directory does not exist or is not a directory: %s", qPrintable(cfgDirInfo.absoluteFilePath()));
+        qWarning("[Keybind_Controller::writeConfigFile] Config directory does not exist or is not a directory: %s", qPrintable(cfgDirInfo.absoluteFilePath()));
         return;
     }
 
     // 创建文件路径
     QString fileName = "keybinds.cfg";
     QString filePath = cfgDirInfo.absoluteFilePath() + "/" + fileName;
-    qDebug("[KeybindTree_Proc::writeConfigFile] Generating keybind file at: %s", qPrintable(filePath));
+    qDebug("[Keybind_Controller::writeConfigFile] Generating keybind file at: %s", qPrintable(filePath));
 
     // 确保目录存在
     QDir dir(cfgDirInfo.absoluteFilePath());
     if (!dir.exists()) {
         if (!dir.mkpath(".")) {
-            qWarning("[KeybindTree_Proc::writeConfigFile] Directory missing and unable to create: %s", qPrintable(cfgDirInfo.absoluteFilePath()));
+            qWarning("[Keybind_Controller::writeConfigFile] Directory missing and unable to create: %s", qPrintable(cfgDirInfo.absoluteFilePath()));
             return;
         }
     }
@@ -194,7 +194,7 @@ void KeybindTree_Proc::writeConfigFile(const QFileInfo& cfgDirInfo)
     // 打开文件
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qWarning("[KeybindTree_Proc::writeConfigFile] Unable to open file for writing: %s", qPrintable(filePath));
+        qWarning("[Keybind_Controller::writeConfigFile] Unable to open file for writing: %s", qPrintable(filePath));
         return;
     }
 
@@ -207,7 +207,7 @@ void KeybindTree_Proc::writeConfigFile(const QFileInfo& cfgDirInfo)
     // 关闭文件
     file.close();
 }
-void KeybindTree_Proc::writeKeybindsToStream(QTextStream& out, const QJsonObject& keybindList)
+void Keybind_Controller::writeKeybindsToStream(QTextStream& out, const QJsonObject& keybindList)
 {
     for (auto it = keybindList.constBegin(); it != keybindList.constEnd(); ++it) {
         QString key = it.key();
@@ -215,7 +215,7 @@ void KeybindTree_Proc::writeKeybindsToStream(QTextStream& out, const QJsonObject
         out << "bind " << key << " \"" << function << "\"" << "\n";
     }
 }
-QJsonObject KeybindTree_Proc::generateKeybindList()
+QJsonObject Keybind_Controller::generateKeybindList()
 {
     QJsonObject keyBindObj = readJsonObj(_configInfoKeyIDLinkFuncID.absoluteFilePath());
     QJsonObject keyListObj = readJsonObj(_configResKeyID2GameKey.absoluteFilePath());
@@ -231,14 +231,14 @@ QJsonObject KeybindTree_Proc::generateKeybindList()
 
         // 在KeyList.json中找到对应的游戏可识别的按键
         if (!keyListObj.contains(keyId)) {
-            qWarning() << "[KeybindTree_Proc::generateKeybindList] Key ID not found in Qrc KeyList.json:" << keyId;
+            qWarning() << "[Keybind_Controller::generateKeybindList] Key ID not found in Qrc KeyList.json:" << keyId;
             continue; // 跳过未知的按键标识符
         }
         QString gameKey = keyListObj.value(keyId).toString();
 
         // 在FuncList.json中找到对应的游戏可识别的功能
         if (!funcListObj.contains(funcId)) {
-            qWarning() << "[KeybindTree_Proc::generateKeybindList] Function ID not found in Qrc FuncList.json:" << funcId;
+            qWarning() << "[Keybind_Controller::generateKeybindList] Function ID not found in Qrc FuncList.json:" << funcId;
             continue; // 跳过未知的功能标识符
         }
         QString gameFunc = funcListObj.value(funcId).toString();
@@ -251,11 +251,11 @@ QJsonObject KeybindTree_Proc::generateKeybindList()
     return resultObj;
 }
 
-QJsonObject KeybindTree_Proc::readJsonObj(const QString& filePath)
+QJsonObject Keybind_Controller::readJsonObj(const QString& filePath)
 {
     QFile configFile(filePath);
     if (!configFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning("[KeybindTree_Proc::readJsonObj] Unable to open file: %s", qPrintable(filePath));
+        qWarning("[Keybind_Controller::readJsonObj] Unable to open file: %s", qPrintable(filePath));
         return QJsonObject();
     }
 
@@ -265,24 +265,24 @@ QJsonObject KeybindTree_Proc::readJsonObj(const QString& filePath)
     QJsonParseError jsonError;
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData, &jsonError);
     if (jsonError.error != QJsonParseError::NoError) {
-        qWarning("[KeybindTree_Proc::readJsonObj] JSON parse error at offset %d: %s", jsonError.offset, qPrintable(jsonError.errorString()));
+        qWarning("[Keybind_Controller::readJsonObj] JSON parse error at offset %d: %s", jsonError.offset, qPrintable(jsonError.errorString()));
         return QJsonObject();
     }
 
     return jsonDoc.object();
 }
-QJsonObject KeybindTree_Proc::readJsonObj(const QFileInfo& fileInfo)
+QJsonObject Keybind_Controller::readJsonObj(const QFileInfo& fileInfo)
 {
     if (!fileInfo.exists()) {
-        qWarning("[KeybindTree_Proc::readJsonObj] File does not exist: %s", qPrintable(fileInfo.absoluteFilePath()));
+        qWarning("[Keybind_Controller::readJsonObj] File does not exist: %s", qPrintable(fileInfo.absoluteFilePath()));
         return QJsonObject();
     }
     return readJsonObj(fileInfo.absoluteFilePath());
 }
-QJsonObject KeybindTree_Proc::readJsonObj(const QResource& qrcFileRes)
+QJsonObject Keybind_Controller::readJsonObj(const QResource& qrcFileRes)
 {
     if (!qrcFileRes.isValid()) {
-        qWarning("[KeybindTree_Proc::readJsonObj] Resource is not valid: %s", qPrintable(qrcFileRes.absoluteFilePath()));
+        qWarning("[Keybind_Controller::readJsonObj] Resource is not valid: %s", qPrintable(qrcFileRes.absoluteFilePath()));
         return QJsonObject();
     }
 
@@ -296,11 +296,11 @@ QJsonObject KeybindTree_Proc::readJsonObj(const QResource& qrcFileRes)
         else if (compression == QResource::ZstdCompression) {
             // 需要包含zstd库并链接到它
             // jsonData = ZSTD_decompress(qrcFileRes.data(), qrcFileRes.uncompressedSize());
-            qWarning("[KeybindTree_Proc::readJsonObj] Zstd compression is not supported.");
+            qWarning("[Keybind_Controller::readJsonObj] Zstd compression is not supported.");
             return QJsonObject();
         }
         else {
-            qWarning("[KeybindTree_Proc::readJsonObj] Unknown compression algorithm.");
+            qWarning("[Keybind_Controller::readJsonObj] Unknown compression algorithm.");
             return QJsonObject();
         }
     }
@@ -310,21 +310,21 @@ QJsonObject KeybindTree_Proc::readJsonObj(const QResource& qrcFileRes)
     }
 
     if (jsonData.isEmpty()) {
-        qWarning("[KeybindTree_Proc::readJsonObj] Resource data is empty.");
+        qWarning("[Keybind_Controller::readJsonObj] Resource data is empty.");
         return QJsonObject();
     }
 
     QJsonParseError jsonError;
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData, &jsonError);
     if (jsonError.error != QJsonParseError::NoError) {
-        qWarning("[KeybindTree_Proc::readJsonObj] JSON parse error: %s", qPrintable(jsonError.errorString()));
+        qWarning("[Keybind_Controller::readJsonObj] JSON parse error: %s", qPrintable(jsonError.errorString()));
         return QJsonObject();
     }
 
     return jsonDoc.object();
 }
 
-void KeybindTree_Proc::updateKeyID2KeyInfo()
+void Keybind_Controller::updateKeyID2KeyInfo()
 {
     _objKeyID2KeyInfo = readJsonObj(_configResKeyID2KeyInfo.absoluteFilePath());
 
@@ -333,10 +333,10 @@ void KeybindTree_Proc::updateKeyID2KeyInfo()
         _objUnknowKeyID2KeyInfo = keyInfoIt.value().toObject();
     }
     else {
-        qWarning() << "[KeybindTree_Proc::updateKeyID2KeyInfo] UnDefined key ID:\"unknown\"";
+        qWarning() << "[Keybind_Controller::updateKeyID2KeyInfo] UnDefined key ID:\"unknown\"";
     }
 }
-void KeybindTree_Proc::updateFuncID2FuncInfo()
+void Keybind_Controller::updateFuncID2FuncInfo()
 {
     _objFuncID2FuncInfo = readJsonObj(_configResFuncID2FuncInfo.absoluteFilePath());
 
@@ -345,11 +345,11 @@ void KeybindTree_Proc::updateFuncID2FuncInfo()
         _objUnknowFuncID2FuncInfo = funcInfoIt.value().toObject();
     }
     else {
-        qWarning() << "[KeybindTree_Proc::updateFuncID2FuncInfo] UnDefined function ID:\"unknown\"";
+        qWarning() << "[Keybind_Controller::updateFuncID2FuncInfo] UnDefined function ID:\"unknown\"";
     }
 }
 
-void KeybindTree_Proc::resetKeybindTableModelData()
+void Keybind_Controller::resetKeybindTableModelData()
 {
     QList<TableStructs::KeybindModelItem> _modelData;
 
@@ -376,7 +376,7 @@ void KeybindTree_Proc::resetKeybindTableModelData()
             item.Key = keyInfo["Abbreviation"].toString(_defaultString);
         }
         else {
-            qWarning() << "[KeybindTree_Proc::resetKeybindTableModelData] Key ID not found in Qrc KeyID_To_KeyInfo.json:" << keyId;
+            qWarning() << "[Keybind_Controller::resetKeybindTableModelData] Key ID not found in Qrc KeyID_To_KeyInfo.json:" << keyId;
             item.Key = _objUnknowKeyID2KeyInfo["Abbreviation"].toString(_defaultString);
         }
         // 在_objFuncID2FuncInfo中找到对应的功能信息
@@ -386,7 +386,7 @@ void KeybindTree_Proc::resetKeybindTableModelData()
             item.Function = funcInfo["Name"].toString(_defaultString);
         }
         else {
-            qWarning() << "[KeybindTree_Proc::resetKeybindTableModelData] Function ID not found in Qrc FuncID_To_FuncInfo.json:" << funcId;
+            qWarning() << "[Keybind_Controller::resetKeybindTableModelData] Function ID not found in Qrc FuncID_To_FuncInfo.json:" << funcId;
             item.Function = _objUnknowFuncID2FuncInfo["Name"].toString(_defaultString);
         }
 

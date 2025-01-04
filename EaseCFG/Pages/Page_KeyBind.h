@@ -10,7 +10,7 @@
 
 #include "Ovr_ElaTableView_Hover.h"
 #include "KeybindTable_Model.h"
-#include "KeybindTree_Proc.h"
+#include "Keybind_Controller.h"
 
 class ElaComboBox;
 class Page_KeyBind : public Page_BasePage
@@ -48,7 +48,7 @@ private:
     QModelIndex _selectedFunctionIndex;
     QModelIndex _hoveredFunctionIndex;
 
-    KeybindTree_Proc* _keybindProc;
+    Keybind_Controller* _keybindController;
 
     Ovr_ElaTableView_Hover* _keybindTableView;
     ElaTreeView* _functionTreeView;
