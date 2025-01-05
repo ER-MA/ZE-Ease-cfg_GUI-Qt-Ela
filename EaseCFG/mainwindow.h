@@ -8,7 +8,7 @@
 
 
 class Page_ServerList;
-class KeyBind_Page;
+class Keybind_Page;
 class T_About;
 class T_Setting;
 class ElaContentDialog;
@@ -30,7 +30,7 @@ signals: // 信号
     void currentPageChanged(QString pageKey);
 
 private:
-    KeyBind_Page* _keyBindPage{nullptr};
+    Keybind_Page* _keyBindPage{nullptr};
     Page_ServerList* _serverListPage{nullptr};
     T_About* _aboutPage{nullptr};
     T_Setting* _settingPage{nullptr};

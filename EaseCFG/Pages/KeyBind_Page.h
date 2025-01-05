@@ -13,12 +13,12 @@
 #include "Keybind_Controller.h"
 
 class ElaComboBox;
-class KeyBind_Page : public Page_BasePage
+class Keybind_Page : public Page_BasePage
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE explicit KeyBind_Page(QWidget* parent = nullptr);
-    ~KeyBind_Page();
+    Q_INVOKABLE explicit Keybind_Page(QWidget* parent = nullptr);
+    ~Keybind_Page();
 
 protected:
 
