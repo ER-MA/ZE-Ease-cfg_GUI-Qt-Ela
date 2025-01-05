@@ -166,7 +166,7 @@ void KeyBind_Page::createKeyFunctionEditWidget() // [按键功能编辑] ※
     _mousePointFunctionLable = new ElaText(this);
     _mousePointFunctionLable->setText("请选择功能");
     _mousePointFunctionLable->setTextPixelSize(15);
-    ElaPushButton* replaceFunctionPushButton = new ElaPushButton("替换当前功能", this);
+    _replaceFunctionPushButton = new ElaPushButton("替换当前功能", this);
 
     QWidget* replaceFunctionWidget = new QWidget(this);
     QHBoxLayout* replaceFunctionHLayout = new QHBoxLayout(replaceFunctionWidget);
@@ -174,7 +174,7 @@ void KeyBind_Page::createKeyFunctionEditWidget() // [按键功能编辑] ※
     replaceFunctionHLayout->addWidget(selectedFunctionLable);
     replaceFunctionHLayout->addWidget(_mousePointFunctionLable);
     replaceFunctionHLayout->addStretch();
-    replaceFunctionHLayout->addWidget(replaceFunctionPushButton);
+    replaceFunctionHLayout->addWidget(_replaceFunctionPushButton);
 
 
     _functionDetailsTitleLabel = new ElaText(this);
@@ -317,17 +317,41 @@ void KeyBind_Page::initConnect()
     connect(_saveButton, &ElaPushButton::clicked, this, [this]() {
         // 显示一个成功提示
         ElaMessageBar::success(ElaMessageBarType::TopRight, "成功", "操作成功完成！", 3000, this);
-
         // 显示一个警告提示
         ElaMessageBar::warning(ElaMessageBarType::TopLeft, "警告", "请注意，有潜在风险！", 3000, this);
-
         // 显示一个信息提示
         ElaMessageBar::information(ElaMessageBarType::BottomRight, "信息", "这是一条普通信息！", 3000, this);
-
         // 显示一个错误提示
         ElaMessageBar::error(ElaMessageBarType::BottomLeft, "错误", "操作失败，请重试！", 3000, this);
     });
 
+
+
+    // [EventSignal]
+
+    // - PageEvevt
+    connect(_saveButton, &ElaPushButton::clicked, _keybindController, &Keybind_Controller::saveConfig);
+    connect(_writeButton, &ElaPushButton::clicked, _keybindController, &Keybind_Controller::writeConfigFile);
+    connect(_replaceFunctionPushButton, &ElaPushButton::clicked, _keybindController, &Keybind_Controller::replaceKeybind);
+
+    // - TableEvent
+    connect(_keybindTableView, &ElaTableView::clicked, _keybindController, &Keybind_Controller::selectKey);
+    connect(_keybindTableView, &Ovr_ElaTableView_Hover::hoveredIndexChanged, _keybindController, &Keybind_Controller::hoverKey);
+
+    // - TreeEvent
+
+
+
+    // [Signal-Slot]
+
+    // - PageUI
+    connect(_keybindController, &Keybind_Controller::keyInfoUpdated, this, [this](QString StandardName, QString Description, QString Name) {
+        _selectedKeyNameLable->setText(StandardName);
+        _selectedKeyIntroLable->setText("(" + Description + ")");
+        _currentFunctionNameLable->setText(Name);
+    });
+
+    // - TableViewUI
     // 恢复 TableView 选中项
     connect(_keybindTableModel, &Keybind_TableModel::modelAboutToBeReset, this, [this]() {
         _selectedKeybindIndex = _keybindTableView->currentIndex();
@@ -336,21 +360,6 @@ void KeyBind_Page::initConnect()
         _keybindTableView->setCurrentIndex(_selectedKeybindIndex);
     });
 
-    // 鼠标点击 TableView 项
-    connect(_keybindTableView, &ElaTableView::clicked, _keybindController, &Keybind_Controller::selectKey);
-    // 鼠标悬停 TableView 项
-    connect(_keybindTableView, &Ovr_ElaTableView_Hover::hoveredIndexChanged, _keybindController, &Keybind_Controller::hoverKey);
+    // - TreeViewUI
 
-    connect(_keybindController, &Keybind_Controller::keyInfoUpdated, this, [this](QString StandardName, QString Description, QString Name) {
-        _selectedKeyNameLable->setText(StandardName);
-        _selectedKeyIntroLable->setText("(" + Description + ")");
-        _currentFunctionNameLable->setText(Name);
-    });
-
-
-    QString floderPath = QCoreApplication::applicationDirPath() + "/config/output";
-    QFileInfo steamCfgDir(floderPath);
-    connect(_writeButton, &ElaPushButton::clicked, this, [this, steamCfgDir]() {
-        _keybindController->writeConfigFile(steamCfgDir);
-    });
 };

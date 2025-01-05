@@ -100,7 +100,7 @@
     "del": "del",
     "end": "end",
     "pgdn": "pgdn",
-    "null": ";"
+    "null": ";",
     "": ";",
     "unknow": ";"
 }

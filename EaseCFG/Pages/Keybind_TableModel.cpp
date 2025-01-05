@@ -29,6 +29,17 @@ QList<TableStructs::KeybindModelItem> Keybind_TableModel::getModelData() const
     return _modelData;
 }
 
+bool Keybind_TableModel::updateRowData(int row, const TableStructs::KeybindModelItem& newData)
+{
+    // 修改行数据
+    if (row >= 0 && row < _modelData.count()) {
+        _modelData[row] = newData;
+        emit dataChanged(index(row, 0), index(row, 3), QVector<int>()); // 列数实际为 4，后两个列为前两列的对应ID。
+        return true;
+    }
+    return false;
+}
+
 
 
 bool Keybind_TableModel::setHeaderData(int section, Qt::Orientation orientation, const QVariant& value, int role) {
@@ -87,6 +98,8 @@ int Keybind_TableModel::columnCount(const QModelIndex& parent) const {
     return 2;
 }
 
+
+
 QVariant Keybind_TableModel::data(const QModelIndex& index, int role) const {
     // 返回单元格数据
     if (!index.isValid()) {
@@ -122,6 +135,8 @@ QVariant Keybind_TableModel::dataFunctionID(const QModelIndex& index) const
     const int row = index.row();
     return _modelData.at(row).FunctionID;
 }
+
+
 
 bool Keybind_TableModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {

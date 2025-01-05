@@ -27,6 +27,7 @@ public:
     QVariant dataKeyID(const QModelIndex& index) const; // 返回单元格KeyID数据
     QVariant dataFunctionID(const QModelIndex& index) const; // 返回单元格FunctionID数据
     bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override; // 设置单元格数据
+    bool updateRowData(int row, const TableStructs::KeybindModelItem& newData);
 
 
 

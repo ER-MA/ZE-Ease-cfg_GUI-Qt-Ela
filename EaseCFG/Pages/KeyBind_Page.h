@@ -59,6 +59,7 @@ private:
 
     ElaPushButton* _saveButton;
     ElaPushButton* _writeButton;
+    ElaPushButton* _replaceFunctionPushButton;
 
     ElaText* _selectedKeyNameLable;
     ElaText* _selectedKeyIntroLable;
