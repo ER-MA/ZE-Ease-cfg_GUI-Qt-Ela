@@ -2,8 +2,8 @@
 
 #include <QApplication>
 
-#include <QDebug>
 #include <QFile>
+#include <QDebug>
 
 #include "ElaContentDialog.h"
 #include "ElaEventBus.h"
@@ -12,6 +12,8 @@
 #include "Keybind_Page.h"
 #include "T_About.h"
 #include "T_Setting.h"
+
+#include <QSqlDatabase>
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -23,6 +25,8 @@ MainWindow::MainWindow(QWidget* parent)
     initConnections();  // 连接信号槽
 
     updateCurrentPage(_serverListPageKey);  // 修复初始化的Page不会触发navigationNodeClicked信号的问题
+
+    testFunc();  // 测试函数
 }
 
 MainWindow::~MainWindow()
@@ -151,7 +155,7 @@ void MainWindow::initConnections()
 
 
     // 注册事件
-    qDebug() << "[MainWindow] 已注册的事件列表:" << ElaEventBus::getInstance()->getRegisteredEventsName();
+    qDebug() << "[MainWindow::initConnections] 已注册的事件列表:" << ElaEventBus::getInstance()->getRegisteredEventsName();
 
 }
 
@@ -161,8 +165,22 @@ void MainWindow::updateCurrentPage(QString pageKey)
     // 仅当pageKey有效时才进行处理
     if (pageKey == _serverListPageKey || pageKey == _keyBindPageKey || pageKey == _settingPageKey)
     {
-        qDebug() << "[MainWindow] 页面" << pageKey << "为当前主窗口";
+        qDebug() << "[MainWindow::updateCurrentPage] 页面" << pageKey << "为当前主窗口";
         emit currentPageChanged(pageKey);
     }
 }
 
+void MainWindow::testFunc()
+{
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("testdb");
+
+    if (!db.open()) {
+        qDebug() << "[MainWindow::testFunc] 无法建立与数据库的连接";
+        return;
+    }
+    else {
+        qDebug() << "[MainWindow::testFunc] 已建立与数据库的连接";
+    }
+
+}

@@ -26,6 +26,8 @@ public:
     void initConnections();
     void updateCurrentPage(QString pageKey);
 
+    void testFunc();
+
 signals: // 信号
     void currentPageChanged(QString pageKey);
 
