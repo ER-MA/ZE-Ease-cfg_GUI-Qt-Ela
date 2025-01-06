@@ -202,8 +202,8 @@ void Keybind_Controller::hoverFunc(QTreeWidgetItem* item, int column)
 
 void Keybind_Controller::updateKeyInfo(const QModelIndex& index)
 {
-    QString keyID = _keybindTableModel->dataKeyID(index).toString();
-    QString functionID = _keybindTableModel->dataFunctionID(index).toString();
+    QString keyID = _keybindTableModel->getKeyID(index).toString();
+    QString functionID = _keybindTableModel->getFunctionID(index).toString();
 
     QString StandardName = _defaultString;
     QString Description = _defaultString;

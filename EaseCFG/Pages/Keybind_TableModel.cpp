@@ -1,6 +1,10 @@
 #include "Keybind_TableModel.h"
 
-Keybind_TableModel::Keybind_TableModel(QObject* parent) : QAbstractTableModel(parent) {
+
+
+Keybind_TableModel::Keybind_TableModel(QObject* parent)
+    : QAbstractTableModel(parent)
+{
     // 初始化数据
     initModelData();
     initHeaderData();
@@ -10,13 +14,18 @@ Keybind_TableModel::Keybind_TableModel(QObject* parent) : QAbstractTableModel(pa
     // qDebug() << "setHeaderData ret:" << ret;
 }
 
+Keybind_TableModel::~Keybind_TableModel()
+{
+    _modelData.clear();
+}
 
+// [ModelData]
 
 void Keybind_TableModel::setModelData(const QList<TableStructs::KeybindModelItem>& datas)
 {
     beginResetModel(); // 触发 modelAboutToBeReset 信号
-    _modelData = datas;
 
+    _modelData = datas;
 
     endResetModel(); // 触发 modelReset 信号
     //注意：reset model后，选中的item会失效，我们可以自己写保存和恢复选中项的逻辑
@@ -29,6 +38,8 @@ QList<TableStructs::KeybindModelItem> Keybind_TableModel::getModelData() const
     return _modelData;
 }
 
+// [RowData]
+
 bool Keybind_TableModel::updateRowData(int row, const TableStructs::KeybindModelItem& newData)
 {
     // 修改行数据
@@ -40,7 +51,44 @@ bool Keybind_TableModel::updateRowData(int row, const TableStructs::KeybindModel
     return false;
 }
 
+// [ItemData]
 
+bool Keybind_TableModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+    // 设置单元格数据（保存 TableView 中修改的数据）
+    if (index.isValid() && role == Qt::EditRole) {
+        const int row = index.row();
+        switch (index.column()) {
+        case 0: _modelData[row].Key = value.toString(); break;
+        case 1: _modelData[row].Function = value.toString(); break;
+        }
+        emit dataChanged(index, index, QVector<int>());
+        return true;
+    }
+    return false;
+}
+
+QVariant Keybind_TableModel::getKeyID(const QModelIndex& index) const
+{
+    // 返回按键ID ※
+    if (!index.isValid()) {
+        return QVariant();
+    }
+    const int row = index.row();
+    return _modelData.at(row).KeyID;
+}
+
+QVariant Keybind_TableModel::getFunctionID(const QModelIndex& index) const
+{
+    // 返回功能ID ※
+    if (!index.isValid()) {
+        return QVariant();
+    }
+    const int row = index.row();
+    return _modelData.at(row).FunctionID;
+}
+
+// [HeaderData]
 
 bool Keybind_TableModel::setHeaderData(int section, Qt::Orientation orientation, const QVariant& value, int role) {
     // 设置表头数据
@@ -82,6 +130,8 @@ QVariant Keybind_TableModel::headerData(int section, Qt::Orientation orientation
     return QVariant();
 }
 
+// [Model]
+
 int Keybind_TableModel::rowCount(const QModelIndex& parent) const {
     // 返回行数
     if (parent.isValid()) {
@@ -97,8 +147,6 @@ int Keybind_TableModel::columnCount(const QModelIndex& parent) const {
     }
     return 2;
 }
-
-
 
 QVariant Keybind_TableModel::data(const QModelIndex& index, int role) const {
     // 返回单元格数据
@@ -116,44 +164,7 @@ QVariant Keybind_TableModel::data(const QModelIndex& index, int role) const {
     return QVariant();
 }
 
-QVariant Keybind_TableModel::dataKeyID(const QModelIndex& index) const
-{
-    // 返回按键ID ※
-    if (!index.isValid()) {
-        return QVariant();
-    }
-    const int row = index.row();
-    return _modelData.at(row).KeyID;
-}
-
-QVariant Keybind_TableModel::dataFunctionID(const QModelIndex& index) const
-{
-    // 返回功能ID ※
-    if (!index.isValid()) {
-        return QVariant();
-    }
-    const int row = index.row();
-    return _modelData.at(row).FunctionID;
-}
-
-
-
-bool Keybind_TableModel::setData(const QModelIndex& index, const QVariant& value, int role)
-{
-    // 设置单元格数据（保存 TableView 中修改的数据）
-    if (index.isValid() && role == Qt::EditRole) {
-        const int row = index.row();
-        switch (index.column()) {
-        case 0: _modelData[row].Key = value.toString(); break;
-        case 1: _modelData[row].Function = value.toString(); break;
-        }
-        emit dataChanged(index, index, QVector<int>());
-        return true;
-    }
-    return false;
-}
-
-
+// [init]
 
 void Keybind_TableModel::initModelData() {
     // 初始化数据
@@ -190,3 +201,14 @@ void Keybind_TableModel::initHeaderData()
         _verHeaderData.append(QString::number(i + 1));
     }
 }
+
+// 在 data() 函数中提取并返回_modelData 对应值
+// 在数据发生变化时，使用：
+//     beginResetModel(),
+//     endResetModel(),
+//     beginInsertRows(),
+//     endInsertRows(),
+//     beginRemoveRows(),
+//     endRemoveRows(),
+//     dataChanged()
+// 等信号通知视图更新。
