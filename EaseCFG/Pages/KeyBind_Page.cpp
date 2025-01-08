@@ -16,6 +16,7 @@
 
 #include "Keybind_Controller.h"
 #include "Keybind_TableModel.h"
+#include "Keybind_DB.h"
 #include "T_TreeViewModel.h"
 #include "Ovr_ElaTreeView.h"
 #include "Ovr_ElaTableView_Hover.h"
@@ -305,7 +306,8 @@ void Keybind_Page::applyTreeModelDepenedentSettings()
 
 void Keybind_Page::initData()
 {
-    _keybindTableModel = new Keybind_TableModel(this);
+    _keybindDB = new Keybind_DB(this);
+    _keybindTableModel = new Keybind_TableModel(_keybindDB, this);
     _keybindTableView->setModel(_keybindTableModel); // 设置模型
     applyTableModelDepenedentSettings(); // 进一步设置表格样式
     _keybindController = new Keybind_Controller(_keybindTableModel);

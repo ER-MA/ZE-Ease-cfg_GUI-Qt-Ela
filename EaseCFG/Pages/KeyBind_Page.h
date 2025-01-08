@@ -11,6 +11,7 @@
 #include "Ovr_ElaTableView_Hover.h"
 #include "Keybind_TableModel.h"
 #include "Keybind_Controller.h"
+#include "Keybind_DB.h"
 
 class ElaComboBox;
 class Keybind_Page : public Page_BasePage
@@ -49,6 +50,7 @@ private:
     QModelIndex _hoveredFunctionIndex;
 
     Keybind_Controller* _keybindController;
+    Keybind_DB* _keybindDB;
 
     Ovr_ElaTableView_Hover* _keybindTableView;
     ElaTreeView* _functionTreeView;

@@ -8,13 +8,14 @@
 #include <QVector>
 #include <QString>
 
+#include "Keybind_DB.h"
 #include "Structs.h"
 
 class Keybind_TableModel : public QAbstractTableModel {
     Q_OBJECT
 
 public:
-    explicit Keybind_TableModel(QObject* parent = nullptr);
+    explicit Keybind_TableModel(Keybind_DB* keybindDB, QObject* parent = nullptr);
     ~Keybind_TableModel() override;
 
     void setModelData(const QList<TableStructs::KeybindModelItem>& datas); // 设置数据
@@ -39,10 +40,23 @@ public slots:
 private:
     void initModelData(); // 初始化数据存储
     void initHeaderData(); // 初始化表头数据
+    void initConnection(); // 初始化信号连接
+
+    void updateKeybindMapFromDB(); // 更新键位映射表
+    void updateKeyAppellationHashFromDB(); // 更新键位释义映射表
+    void updateFunctionNameHashFromDB(); // 更新功能名称映射表
+    // 上述三个函数暂时用不上，使用下方函数在数据库中使用sql语句直接拼接。
+    void updateModelData(); // 更新数据存储
+
+    QMap<QString, QString> _keybindMap; // 键位映射表
+    QHash<QString, QString> _keyAppellationHash; // 键位释义映射表
+    QHash<QString, QString> _functionNameHash; // 功能名称映射表
 
     QList<TableStructs::KeybindModelItem> _modelData; // 数据存储
     QList<QString> _horHeaderData; // 水平表头数据
     QList<QString> _verHeaderData; // 垂直表头数据
+
+    Keybind_DB* _keybindDB; // 数据库对象
 };
 
 #endif // KEYBIND_TABLE_MODEL_H

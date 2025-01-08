@@ -1,7 +1,7 @@
 #include "Keybind_Controller.h"
 
-Keybind_Controller::Keybind_Controller(Keybind_TableModel* model, QObject* parent) :
-    QObject(parent),
+Keybind_Controller::Keybind_Controller(Keybind_TableModel* model, QObject* parent)
+    : QObject(parent),
     _keybindTableModel(model)
 {
     initData();
@@ -34,7 +34,7 @@ void Keybind_Controller::initData()
     updateKeyID2KeyInfo();
     updateFuncID2FuncInfo();
 
-    resetKeybindTableModelData();
+    //resetKeybindTableModelData();
     // _keybindTableModel->updateRowData(int(0), TableStructs::KeybindModelItem{ "111", "111", "111", "111" });
 }
 

@@ -172,15 +172,15 @@ void MainWindow::updateCurrentPage(QString pageKey)
 
 void MainWindow::testFunc()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("testdb");
+    //QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    //db.setDatabaseName("testdb");
 
-    if (!db.open()) {
-        qDebug() << "[MainWindow::testFunc] 无法建立与数据库的连接";
-        return;
-    }
-    else {
-        qDebug() << "[MainWindow::testFunc] 已建立与数据库的连接";
-    }
+    //if (!db.open()) {
+    //    qDebug() << "[MainWindow::testFunc] 无法建立与数据库的连接";
+    //    return;
+    //}
+    //else {
+    //    qDebug() << "[MainWindow::testFunc] 已建立与数据库的连接";
+    //}
 
 }

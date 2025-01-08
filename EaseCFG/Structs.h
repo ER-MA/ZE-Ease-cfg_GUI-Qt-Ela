@@ -14,4 +14,21 @@ namespace TableStructs {
 
 }
 
+namespace CSConfigStructs {
+
+    struct KeyInfo {
+        QString Appellation;
+        QString Description;
+        QString LabelSymbol;
+        QString LabelText;
+    };
+
+    struct FunctionInfo {
+        QString Name;
+        QString Description;
+        QString Detail;
+    };
+
+}
+
 #endif // STRUCTS_H

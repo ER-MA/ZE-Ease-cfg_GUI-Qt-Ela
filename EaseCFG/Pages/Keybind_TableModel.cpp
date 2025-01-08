@@ -2,16 +2,21 @@
 
 
 
-Keybind_TableModel::Keybind_TableModel(QObject* parent)
-    : QAbstractTableModel(parent)
+Keybind_TableModel::Keybind_TableModel(Keybind_DB* keybindDB, QObject* parent)
+    : QAbstractTableModel(parent),
+    _keybindDB(keybindDB)
 {
     // 初始化数据
     initModelData();
     initHeaderData();
+    initConnection();
 
     // 可使用 setHeaderData 重新函数设置表头数据
     // bool ret = setHeaderData(0, Qt::Horizontal, "呀哈哈", Qt::DisplayRole);
     // qDebug() << "setHeaderData ret:" << ret;
+
+    updateModelData();
+    setModelData(_modelData);
 }
 
 Keybind_TableModel::~Keybind_TableModel()
@@ -202,6 +207,13 @@ void Keybind_TableModel::initHeaderData()
     }
 }
 
+void Keybind_TableModel::initConnection()
+{
+    connect(_keybindDB, &Keybind_DB::keyBindUpdated, this, &Keybind_TableModel::updateKeybindMapFromDB);
+    connect(_keybindDB, &Keybind_DB::keyInfoUpdated, this, &Keybind_TableModel::updateKeyAppellationHashFromDB);
+    connect(_keybindDB, &Keybind_DB::functionInfoUpdated, this, &Keybind_TableModel::updateFunctionNameHashFromDB);
+}
+
 // 在 data() 函数中提取并返回_modelData 对应值
 // 在数据发生变化时，使用：
 //     beginResetModel(),
@@ -212,3 +224,35 @@ void Keybind_TableModel::initHeaderData()
 //     endRemoveRows(),
 //     dataChanged()
 // 等信号通知视图更新。
+
+
+
+void Keybind_TableModel::updateKeybindMapFromDB()
+{
+    _keybindMap = _keybindDB->getKeyBind();
+}
+
+void Keybind_TableModel::updateKeyAppellationHashFromDB()
+{
+    _keyAppellationHash = _keybindDB->getKeyAppellation();
+}
+
+void Keybind_TableModel::updateFunctionNameHashFromDB()
+{
+    _functionNameHash = _keybindDB->getFunctionName();
+}
+
+void Keybind_TableModel::updateModelData()
+{
+    _modelData = _keybindDB->getKeyBindModelData();
+
+    //// 备选方案
+    //QList<TableStructs::KeybindModelItem> modelData;
+    //// 根据_keybindMap按顺序填充modelData
+    //for (auto it = _keybindMap.begin(); it != _keybindMap.end(); ++it) {
+    //    QString key = _keyAppellationHash.value(it.key(), "未知按键");
+    //    QString function = _functionNameHash.value(it.value(), "未知功能");
+    //    modelData.append(TableStructs::KeybindModelItem{ key, function, it.key(), it.value() });
+    //}
+    //setModelData(modelData);
+}
