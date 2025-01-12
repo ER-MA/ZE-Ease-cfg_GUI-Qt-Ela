@@ -13,13 +13,14 @@
 #include <QJsonArray>
 
 #include "Keybind_TableModel.h"
+#include "Keybind_PageModel.h"
 #include "Structs.h"
 
 class Keybind_Controller : public QObject
 {
     Q_OBJECT
 public:
-    explicit Keybind_Controller(Keybind_TableModel* model = nullptr, QObject* parent = nullptr);
+    explicit Keybind_Controller(Keybind_PageModel* PageModel = nullptr,Keybind_TableModel* TableModel = nullptr,  QObject* parent = nullptr);
     ~Keybind_Controller();
 
 signals:
@@ -44,26 +45,27 @@ public slots:
 public:
     // [DirectCall]
     // - CallPageModel
-    void updateKeyInfo(const QModelIndex& index);
-    void updateFuncInfo(QTreeWidgetItem* item, int column);
+    void updateKeyInfo();
+    //void updateKeyInfo(const QModelIndex& index);
+    //void updateFuncInfo(QTreeWidgetItem* item, int column);
     // - CallTableModel
-    void resetKeybindTableModelData(); // 从配置文件中更新所有数据
-    void updateKeybindTableRowData(); // 更新单行数据
+    //void resetKeybindTableModelData(); // 从配置文件中更新所有数据
+    //void updateKeybindTableRowData(); // 更新单行数据
     // - CallTreeModel
     // - CallOthers
-    QJsonObject getGameKeyLinkGameFunc();
-    void updateKeyID2KeyInfo();
-    void updateFuncID2FuncInfo();
+    //QJsonObject getGameKeyLinkGameFunc();
+    //void updateKeyID2KeyInfo();
+    //void updateFuncID2FuncInfo();
 
     // [Helper]
     // - writeConfigFile()
-    void writeKeybindsToStream(QTextStream& out, const QJsonObject& keybindList); // 写入按键绑定到流
+    //void writeKeybindsToStream(QTextStream& out, const QJsonObject& keybindList); // 写入按键绑定到流
 
     // [Other]
     // - 未来将分离为 JsonFile_Proc 类的函数
-    QJsonObject readJsonObj(const QString& filePath);
-    QJsonObject readJsonObj(const QFileInfo& fileInfo);
-    QJsonObject readJsonObj(const QResource& resource);
+    //QJsonObject readJsonObj(const QString& filePath);
+    //QJsonObject readJsonObj(const QFileInfo& fileInfo);
+    //QJsonObject readJsonObj(const QResource& resource);
 
 private:
     // [Init]
@@ -71,9 +73,11 @@ private:
     void initConfigDir(); // 初始化配置文件目录
     void initConfigFile(); // 初始化配置文件
 
+
     static const QString _defaultString; // 默认字符串
 
     Keybind_TableModel* _keybindTableModel; // 按键绑定表模型
+    Keybind_PageModel* _keybindPageModel; // 按键绑定页面模型
 
     QFileInfo _gameInfoOutputDir; // 模拟游戏目录
     QFileInfo _configInfoKeyIDLinkFuncID; // 按键ID到功能ID的配置文件

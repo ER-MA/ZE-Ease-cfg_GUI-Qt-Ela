@@ -16,7 +16,6 @@ Keybind_TableModel::Keybind_TableModel(Keybind_DB* keybindDB, QObject* parent)
     // qDebug() << "setHeaderData ret:" << ret;
 
     updateModelData();
-    setModelData(_modelData);
 }
 
 Keybind_TableModel::~Keybind_TableModel()
@@ -71,6 +70,22 @@ bool Keybind_TableModel::setData(const QModelIndex& index, const QVariant& value
         return true;
     }
     return false;
+}
+
+QVariant Keybind_TableModel::data(const QModelIndex& index, int role) const {
+    // 返回单元格数据
+    if (!index.isValid()) {
+        return QVariant();
+    }
+    if (role == Qt::DisplayRole || role == Qt::EditRole) {
+        // 显示和编辑做同样处理
+        const int row = index.row();
+        switch (index.column()) {
+        case 0: return _modelData.at(row).Key;
+        case 1: return _modelData.at(row).Function;
+        }
+    }
+    return QVariant();
 }
 
 QVariant Keybind_TableModel::getKeyID(const QModelIndex& index) const
@@ -153,22 +168,6 @@ int Keybind_TableModel::columnCount(const QModelIndex& parent) const {
     return 2;
 }
 
-QVariant Keybind_TableModel::data(const QModelIndex& index, int role) const {
-    // 返回单元格数据
-    if (!index.isValid()) {
-        return QVariant();
-    }
-    if (role == Qt::DisplayRole || role == Qt::EditRole) {
-        // 显示和编辑做同样处理
-        const int row = index.row();
-        switch (index.column()) {
-        case 0: return _modelData.at(row).Key;
-        case 1: return _modelData.at(row).Function;
-        }
-    }
-    return QVariant();
-}
-
 // [init]
 
 void Keybind_TableModel::initModelData() {
@@ -212,6 +211,10 @@ void Keybind_TableModel::initConnection()
     connect(_keybindDB, &Keybind_DB::keyBindUpdated, this, &Keybind_TableModel::updateKeybindMapFromDB);
     connect(_keybindDB, &Keybind_DB::keyInfoUpdated, this, &Keybind_TableModel::updateKeyAppellationHashFromDB);
     connect(_keybindDB, &Keybind_DB::functionInfoUpdated, this, &Keybind_TableModel::updateFunctionNameHashFromDB);
+
+    connect(_keybindDB, &Keybind_DB::keyBindUpdated, this, &Keybind_TableModel::updateModelData);
+    connect(_keybindDB, &Keybind_DB::keyInfoUpdated, this, &Keybind_TableModel::updateModelData);
+    connect(_keybindDB, &Keybind_DB::functionInfoUpdated, this, &Keybind_TableModel::updateModelData);
 }
 
 // 在 data() 函数中提取并返回_modelData 对应值
@@ -245,6 +248,7 @@ void Keybind_TableModel::updateFunctionNameHashFromDB()
 void Keybind_TableModel::updateModelData()
 {
     _modelData = _keybindDB->getKeyBindModelData();
+    setModelData(_modelData);
 
     //// 备选方案
     //QList<TableStructs::KeybindModelItem> modelData;
@@ -255,4 +259,35 @@ void Keybind_TableModel::updateModelData()
     //    modelData.append(TableStructs::KeybindModelItem{ key, function, it.key(), it.value() });
     //}
     //setModelData(modelData);
+}
+
+void Keybind_TableModel::setSelectedIndex(const QModelIndex& index)
+{
+    _selectedIndex = index;
+}
+
+void Keybind_TableModel::setHoveredIndex(const QModelIndex& index)
+{
+    _hoveredIndex = index;
+}
+
+QModelIndex Keybind_TableModel::getSelectedIndex() const
+{
+    return _selectedIndex;
+}
+
+QModelIndex Keybind_TableModel::getHoveredIndex() const
+{
+    return _hoveredIndex;
+}
+
+QModelIndex Keybind_TableModel::getShowIndex() const
+{
+    if (_hoveredIndex.isValid()) {
+        return _hoveredIndex;
+    }
+    if (_selectedIndex.isValid()) {
+        return _selectedIndex;
+    }
+    return QModelIndex();
 }

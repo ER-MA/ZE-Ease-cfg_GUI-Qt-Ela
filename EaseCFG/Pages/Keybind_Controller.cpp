@@ -1,14 +1,11 @@
 #include "Keybind_Controller.h"
 
-Keybind_Controller::Keybind_Controller(Keybind_TableModel* model, QObject* parent)
+Keybind_Controller::Keybind_Controller(Keybind_PageModel* PageModel, Keybind_TableModel* TableModel, QObject* parent)
     : QObject(parent),
-    _keybindTableModel(model)
+    _keybindPageModel(PageModel),
+    _keybindTableModel(TableModel)
 {
     initData();
-
-    // 打印Obj方式1(中文会出现乱码): qPrintable(QJsonDocument(readJsonObj(_configResFuncID2GameFunc)).toJson(QJsonDocument::Indented))
-    // 打印Obj方式2(中文不会出现乱码): qDebug() << QJsonDocument(readJsonObj(_configResFuncID2GameFunc)).toJson(QJsonDocument::Indented).data();
-
 };
 
 Keybind_Controller::~Keybind_Controller()
@@ -31,11 +28,6 @@ void Keybind_Controller::initData()
     initConfigDir();
     initConfigFile();
 
-    updateKeyID2KeyInfo();
-    updateFuncID2FuncInfo();
-
-    //resetKeybindTableModelData();
-    // _keybindTableModel->updateRowData(int(0), TableStructs::KeybindModelItem{ "111", "111", "111", "111" });
 }
 
 void Keybind_Controller::initConfigDir()
@@ -114,6 +106,12 @@ void Keybind_Controller::saveConfig()
 
 void Keybind_Controller::writeConfigFile()
 {
+
+}
+
+/*
+void Keybind_Controller::writeConfigFile()
+{
     // 检查配置目录是否存在
     if (!_gameInfoOutputDir.exists() || !_gameInfoOutputDir.isDir()) {
         qWarning("[Keybind_Controller::writeConfigFile] Config directory does not exist or is not a directory: %s", qPrintable(_gameInfoOutputDir.absoluteFilePath()));
@@ -150,6 +148,7 @@ void Keybind_Controller::writeConfigFile()
     // 关闭文件
     file.close();
 }
+*/
 
 void Keybind_Controller::replaceKeybind()
 {
@@ -160,26 +159,27 @@ void Keybind_Controller::replaceKeybind()
 
 void Keybind_Controller::selectKey(const QModelIndex& index)
 {
-    if (!index.isValid()) {
-        _selectedKeybindIndex = QModelIndex();
-        emit keyInfoUpdated("请选择按键", "单击以选择", "未选择按键");
-        return;
-    }
-
-    _selectedKeybindIndex = index;
-    updateKeyInfo(_selectedKeybindIndex);
+    _keybindTableModel->setSelectedIndex(index);
+    updateKeyInfo();
 }
 
 void Keybind_Controller::hoverKey(const QModelIndex& index)
 {
-    if (!index.isValid()) { // 鼠标移出
-        _hoveredKeybindIndex = QModelIndex();
-        selectKey(_selectedKeybindIndex);
-        return;
+    if (!index.isValid())
+    {
+        _keybindTableModel->setHoveredIndex(QModelIndex());
+        updateKeyInfo();
     }
+    _keybindTableModel->setHoveredIndex(index);
+    updateKeyInfo();
+}
 
-    _hoveredKeybindIndex = index;
-    updateKeyInfo(_hoveredKeybindIndex);
+void Keybind_Controller::updateKeyInfo()
+{
+    QModelIndex index = _keybindTableModel->getShowIndex();
+    QString keyID = _keybindTableModel->getKeyID(index).toString();
+    QString functionID = _keybindTableModel->getFunctionID(index).toString();
+    _keybindPageModel->updateKeybindInfo(keyID, functionID);
 }
 
 // - TreeEvent
@@ -200,6 +200,7 @@ void Keybind_Controller::hoverFunc(QTreeWidgetItem* item, int column)
 
 // - CallPageModel
 
+/*
 void Keybind_Controller::updateKeyInfo(const QModelIndex& index)
 {
     QString keyID = _keybindTableModel->getKeyID(index).toString();
@@ -242,9 +243,11 @@ void Keybind_Controller::updateFuncInfo(QTreeWidgetItem* item, int column)
 {
 
 }
+*/
 
 // - CallTableModel
 
+/*
 void Keybind_Controller::resetKeybindTableModelData()
 {
     QList<TableStructs::KeybindModelItem> _modelData;
@@ -291,16 +294,20 @@ void Keybind_Controller::resetKeybindTableModelData()
 
     _keybindTableModel->setModelData(_modelData);
 }
+*/
 
+/*
 void Keybind_Controller::updateKeybindTableRowData()
 {
 
 }
+*/
 
 // - CallTreeModel
 
 // - CallOthers
 
+/*
 QJsonObject Keybind_Controller::getGameKeyLinkGameFunc()
 {
     QJsonObject keyBindObj = readJsonObj(_configInfoKeyIDLinkFuncID.absoluteFilePath());
@@ -336,7 +343,9 @@ QJsonObject Keybind_Controller::getGameKeyLinkGameFunc()
     // 返回新的QJsonObject
     return resultObj;
 }
+*/
 
+/*
 void Keybind_Controller::updateKeyID2KeyInfo()
 {
     _objKeyID2KeyInfo = readJsonObj(_configResKeyID2KeyInfo.absoluteFilePath());
@@ -349,7 +358,9 @@ void Keybind_Controller::updateKeyID2KeyInfo()
         qWarning() << "[Keybind_Controller::updateKeyID2KeyInfo] UnDefined key ID:\"unknown\"";
     }
 }
+*/
 
+/*
 void Keybind_Controller::updateFuncID2FuncInfo()
 {
     _objFuncID2FuncInfo = readJsonObj(_configResFuncID2FuncInfo.absoluteFilePath());
@@ -362,6 +373,7 @@ void Keybind_Controller::updateFuncID2FuncInfo()
         qWarning() << "[Keybind_Controller::updateFuncID2FuncInfo] UnDefined function ID:\"unknown\"";
     }
 }
+*/
 
 
 
@@ -369,6 +381,7 @@ void Keybind_Controller::updateFuncID2FuncInfo()
 
 // - writeConfigFile()
 
+/*
 void Keybind_Controller::writeKeybindsToStream(QTextStream& out, const QJsonObject& keybindList)
 {
     for (auto it = keybindList.constBegin(); it != keybindList.constEnd(); ++it) {
@@ -377,6 +390,7 @@ void Keybind_Controller::writeKeybindsToStream(QTextStream& out, const QJsonObje
         out << "bind " << key << " \"" << function << "\"" << "\n";
     }
 }
+*/
 
 
 
@@ -384,6 +398,7 @@ void Keybind_Controller::writeKeybindsToStream(QTextStream& out, const QJsonObje
 
 // - 未来将分离为 JsonFile_Proc 类的函数
 
+/*
 QJsonObject Keybind_Controller::readJsonObj(const QString& filePath)
 {
     QFile configFile(filePath);
@@ -456,6 +471,7 @@ QJsonObject Keybind_Controller::readJsonObj(const QResource& qrcFileRes)
 
     return jsonDoc.object();
 }
+*/
 
 // - 未来将分离为 Keybind_PageModel 类的信号
 

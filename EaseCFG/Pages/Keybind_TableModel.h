@@ -11,6 +11,7 @@
 #include "Keybind_DB.h"
 #include "Structs.h"
 
+
 class Keybind_TableModel : public QAbstractTableModel {
     Q_OBJECT
 
@@ -24,6 +25,7 @@ public:
     bool updateRowData(int row, const TableStructs::KeybindModelItem& newData); // 更新行数据
 
     bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override; // 设置单元格数据
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override; //返回单元格数据
     QVariant getKeyID(const QModelIndex& index) const; // 返回单元格KeyID数据
     QVariant getFunctionID(const QModelIndex& index) const; // 返回单元格FunctionID数据
 
@@ -32,8 +34,12 @@ public:
 
     int rowCount(const QModelIndex& parent = QModelIndex()) const override; // 返回行数
     int columnCount(const QModelIndex& parent = QModelIndex()) const override; // 返回列数
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override; //返回单元格数据
 
+    void setSelectedIndex(const QModelIndex& index); // 设置选中单元格索引
+    void setHoveredIndex(const QModelIndex& index); // 设置鼠标悬停单元格索引
+    QModelIndex getSelectedIndex() const; // 获取选中单元格索引
+    QModelIndex getHoveredIndex() const; // 获取鼠标悬停单元格索引
+    QModelIndex getShowIndex() const; // 获取显示单元格索引
 
 public slots:
 
@@ -57,6 +63,10 @@ private:
     QList<QString> _verHeaderData; // 垂直表头数据
 
     Keybind_DB* _keybindDB; // 数据库对象
+
+    QModelIndex _selectedIndex; // 选中单元格索引
+    QModelIndex _hoveredIndex; // 鼠标悬停单元格索引
 };
+
 
 #endif // KEYBIND_TABLE_MODEL_H

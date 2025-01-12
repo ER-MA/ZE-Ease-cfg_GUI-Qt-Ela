@@ -14,12 +14,13 @@
 #include "ElaMessageBar.h"
 #include "ElaImageCard.h"
 
-#include "Keybind_Controller.h"
-#include "Keybind_TableModel.h"
-#include "Keybind_DB.h"
-#include "T_TreeViewModel.h"
 #include "Ovr_ElaTreeView.h"
 #include "Ovr_ElaTableView_Hover.h"
+
+#include "Keybind_Controller.h"
+#include "Keybind_DB.h"
+#include "Keybind_TableModel.h"
+#include "T_TreeViewModel.h"
 
 #include "Keybind_Page.h"
 
@@ -124,6 +125,15 @@ void Keybind_Page::createFunctionSelectWidget() // [功能选择] 布局
 
 void Keybind_Page::createKeyFunctionEditWidget() // [按键功能编辑] ※
 {
+    _selectedKeyDescriptionLable = new ElaText(this);
+    _selectedKeyDescriptionLable->setText("当前尚未选择按键");
+    _selectedKeyDescriptionLable->setTextPixelSize(15);
+    QWidget* selectedKeyDescriptionWidget = new QWidget(this);
+    QHBoxLayout* selectedKeyDescriptionHLayout = new QHBoxLayout(selectedKeyDescriptionWidget);
+    selectedKeyDescriptionHLayout->setContentsMargins(0, 0, 0, 0);
+    selectedKeyDescriptionHLayout->addStretch();
+    selectedKeyDescriptionHLayout->addWidget(_selectedKeyDescriptionLable);
+
     ElaText* selectedKeyTitleLable = new ElaText(this);
     selectedKeyTitleLable->setText("选中按键：");
     selectedKeyTitleLable->setTextPixelSize(15);
@@ -131,7 +141,7 @@ void Keybind_Page::createKeyFunctionEditWidget() // [按键功能编辑] ※
     _selectedKeyNameLable->setText("请选择按键");
     _selectedKeyNameLable->setTextPixelSize(15);
     _selectedKeyIntroLable = new ElaText(this);
-    _selectedKeyIntroLable->setText("(左侧表格中)");
+    _selectedKeyIntroLable->setText("[左侧表格中]");
     _selectedKeyIntroLable->setTextPixelSize(15);
     QWidget* selectedKeyWidget = new QWidget(this);
     QHBoxLayout* selectedKeyHLayout = new QHBoxLayout(selectedKeyWidget);
@@ -157,6 +167,7 @@ void Keybind_Page::createKeyFunctionEditWidget() // [按键功能编辑] ※
     QWidget* selectKeybindWidget = new QWidget(this);
     QVBoxLayout* selectKeybindVLayout = new QVBoxLayout(selectKeybindWidget);
     selectKeybindVLayout->setContentsMargins(0, 0, 0, 0);
+    selectKeybindVLayout->addWidget(selectedKeyDescriptionWidget);
     selectKeybindVLayout->addWidget(selectedKeyWidget);
     selectKeybindVLayout->addWidget(currentFunctionWidget);
 
@@ -308,9 +319,11 @@ void Keybind_Page::initData()
 {
     _keybindDB = new Keybind_DB(this);
     _keybindTableModel = new Keybind_TableModel(_keybindDB, this);
+    _keybindPageModel = new Keybind_PageModel(_keybindDB, this);
+
     _keybindTableView->setModel(_keybindTableModel); // 设置模型
     applyTableModelDepenedentSettings(); // 进一步设置表格样式
-    _keybindController = new Keybind_Controller(_keybindTableModel);
+    _keybindController = new Keybind_Controller(_keybindPageModel, _keybindTableModel, this);
 };
 
 void Keybind_Page::initConnect()
@@ -352,6 +365,15 @@ void Keybind_Page::initConnect()
         _selectedKeyIntroLable->setText("(" + Description + ")");
         _currentFunctionNameLable->setText(Name);
     });
+
+    connect(_keybindPageModel, &Keybind_PageModel::keybindInfoUpdated, this, [this](QString keyAppellation, QString keyLabelContent, QString keyDescription, QString functionName) {
+        _selectedKeyNameLable->setText(keyAppellation);
+        _selectedKeyIntroLable->setText(keyLabelContent);
+        _selectedKeyDescriptionLable->setText(keyDescription);
+        _currentFunctionNameLable->setText(functionName);
+    });
+
+    
 
     // - TableViewUI
     // 恢复 TableView 选中项
