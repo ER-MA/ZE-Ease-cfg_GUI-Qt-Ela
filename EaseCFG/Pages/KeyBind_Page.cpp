@@ -17,9 +17,12 @@
 #include "Ovr_ElaTreeView.h"
 #include "Ovr_ElaTableView_Hover.h"
 
-#include "Keybind_Controller.h"
 #include "Keybind_DB.h"
+#include "Keybind_PageModel.h"
 #include "Keybind_TableModel.h"
+#include "Keybind_TreeModel.h"
+#include "Keybind_Controller.h"
+
 #include "T_TreeViewModel.h"
 
 #include "Keybind_Page.h"
@@ -79,15 +82,16 @@ void Keybind_Page::createFunctionImagePreview() // [功能预览] ※
 
 void Keybind_Page::createFunctionTreeView() // [功能选择] ※
 {
-    T_TreeViewModel* treeModel = new T_TreeViewModel(this);
-    QFile file(":/Resource/Data/FunctionTreeView.json");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        return;
-    }
-    QByteArray jsonData = file.readAll();  // 读取文件内容到QByteArray中
-    file.close();
-    const QByteArray& jsonDataRef = jsonData;  // 返回jsonData
-    treeModel->loadJsonData(jsonDataRef);
+    //T_TreeViewModel* treeModel = new T_TreeViewModel(this);
+    //QFile file(":/Resource/Data/FunctionTreeView.json");
+    //if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    //    return;
+    //}
+    //QByteArray jsonData = file.readAll();  // 读取文件内容到QByteArray中
+    //file.close();
+    //const QByteArray& jsonDataRef = jsonData;  // 返回jsonData
+    //treeModel->loadJsonData(jsonDataRef);
+    // 
     //QModelIndex index = treeModel->index(0, 0);
     //QModelIndex index0_0 = treeModel->index(0, 0, index);
     //QString title = (treeModel->data(index, Qt::DisplayRole)).toString();
@@ -96,7 +100,7 @@ void Keybind_Page::createFunctionTreeView() // [功能选择] ※
     //qDebug() << "treeModel_Index0_0_Title:" << title0_0;
     _functionTreeView = new ElaTreeView(this);
     //Ovr_ElaTreeView* _functionTreeView = new Ovr_ElaTreeView(this);
-    _functionTreeView->setModel(treeModel);
+    //_functionTreeView->setModel(treeModel);
     //_functionTreeView->setFixedHeight(450);
     //_functionTreeView->setUniformRowHeights(false);
     _functionTreeView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
@@ -320,9 +324,23 @@ void Keybind_Page::initData()
     _keybindDB = new Keybind_DB(this);
     _keybindTableModel = new Keybind_TableModel(_keybindDB, this);
     _keybindPageModel = new Keybind_PageModel(_keybindDB, this);
+    _functionTreeModel = new Keybind_TreeModel(_keybindDB, this);
 
-    _keybindTableView->setModel(_keybindTableModel); // 设置模型
+    _keybindTableView->setModel(_keybindTableModel); // 设置表格模型
     applyTableModelDepenedentSettings(); // 进一步设置表格样式
+    _functionTreeView->setModel(_functionTreeModel); // 设置树形模型
+
+    _functionTreeView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    _functionTreeView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+    _functionTreeView->setItemHeight(37); // ※
+    _functionTreeView->setHeaderMargin(10);
+    _functionTreeView->setIndentation(23);
+    QFont headerFont = _functionTreeView->header()->font();
+    headerFont.setPixelSize(13); // 设置标题字体大小（全局默认字体大小为13）
+    _functionTreeView->header()->setFont(headerFont); // 应用字体
+
+    _functionTreeView->setMinimumSize(320, 180);
+
     _keybindController = new Keybind_Controller(_keybindPageModel, _keybindTableModel, this);
 };
 

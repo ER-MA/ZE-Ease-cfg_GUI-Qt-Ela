@@ -1,6 +1,6 @@
 #include "Keybind_TableModel.h"
 
-
+#include <QTimer>
 
 Keybind_TableModel::Keybind_TableModel(Keybind_DB* keybindDB, QObject* parent)
     : QAbstractTableModel(parent),

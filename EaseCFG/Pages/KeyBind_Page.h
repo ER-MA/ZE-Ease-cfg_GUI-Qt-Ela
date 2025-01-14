@@ -9,10 +9,12 @@
 #include "ElaImageCard.h"
 
 #include "Ovr_ElaTableView_Hover.h"
-#include "Keybind_TableModel.h"
-#include "Keybind_PageModel.h"
-#include "Keybind_Controller.h"
+
 #include "Keybind_DB.h"
+#include "Keybind_PageModel.h"
+#include "Keybind_TableModel.h"
+#include "Keybind_TreeModel.h"
+#include "Keybind_Controller.h"
 
 class ElaComboBox;
 class Keybind_Page : public Page_BasePage
@@ -50,10 +52,12 @@ private:
     QModelIndex _selectedFunctionIndex;
     QModelIndex _hoveredFunctionIndex;
 
-    Keybind_Controller* _keybindController;
     Keybind_DB* _keybindDB;
 
     Keybind_PageModel* _keybindPageModel;
+    Keybind_TreeModel* _functionTreeModel;
+
+    Keybind_Controller* _keybindController;
 
     Ovr_ElaTableView_Hover* _keybindTableView;
     ElaTreeView* _functionTreeView;
