@@ -16,6 +16,8 @@ public:
     Univ_TreeItem* child(int number);
     // 返回当前节点的父节点
     Univ_TreeItem* parent();
+    // 返回当前节点在其父节点中的位置
+    int row() const;
 
     // 返回当前节点的，子节点数量
     int childCount() const;
@@ -34,8 +36,6 @@ public:
     bool removeChildren(int position, int count);
     // 在position处，移除columns列数据
     bool removeColumns(int position, int columns);
-
-    int row() const;
 
 private:
     std::vector<std::unique_ptr<Univ_TreeItem>> m_childItems;

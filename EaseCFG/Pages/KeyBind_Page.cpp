@@ -338,8 +338,8 @@ void Keybind_Page::initData()
     QFont headerFont = _functionTreeView->header()->font();
     headerFont.setPixelSize(13); // 设置标题字体大小（全局默认字体大小为13）
     _functionTreeView->header()->setFont(headerFont); // 应用字体
-
     _functionTreeView->setMinimumSize(320, 180);
+    _functionTreeView->setEditTriggers(QAbstractItemView::NoEditTriggers); // 禁止编辑
 
     _keybindController = new Keybind_Controller(_keybindPageModel, _keybindTableModel, this);
 };

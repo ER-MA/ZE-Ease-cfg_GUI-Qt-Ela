@@ -5,6 +5,8 @@
 #include "Univ_TreeItem.h"
 #include "Keybind_DB.h"
 
+#include "Proc_TreeData.h"
+
 class Keybind_TreeModel : public QAbstractItemModel
 {
     Q_OBJECT
@@ -34,6 +36,9 @@ private:
     std::unique_ptr<Univ_TreeItem> _rootItem; // 根节点
 
     void setupModelData(); // 设置模型数据
+    void printTree(const TreeNode* node, int level = 0); // 辅助函数，用于递归打印树节点
+    void insertNode(Univ_TreeItem* parentItem, const TreeNode* treeNode); // 辅助函数，用于插入树节点
+    QString getFunctionId(const QModelIndex& index) const;
     Keybind_DB* _keybindDB; // 数据库对象
 };
 

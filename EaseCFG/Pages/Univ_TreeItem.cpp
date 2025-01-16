@@ -26,10 +26,6 @@ int Univ_TreeItem::childCount() const {
     return m_childItems.size();
 }
 
-int Univ_TreeItem::childCount() const {
-    return m_childItems.size();
-}
-
 int Univ_TreeItem::columnCount() const {
     return itemData.size();
 }
