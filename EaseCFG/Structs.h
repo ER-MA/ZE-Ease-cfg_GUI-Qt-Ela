@@ -12,6 +12,12 @@ namespace TableStructs {
         QString FunctionID;
     };
 
+    struct FunctionModelItem {
+        QString Name;
+        QString FunctionID;
+        QString ParentID;
+    };
+
 }
 
 namespace CSConfigStructs {

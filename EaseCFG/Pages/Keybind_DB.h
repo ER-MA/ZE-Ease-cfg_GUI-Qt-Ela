@@ -35,7 +35,7 @@ public:
     QHash<QString, CSConfigStructs::FunctionInfo> getFunctionInfo();
 
     QList<TableStructs::KeybindModelItem> getKeyBindModelData();
-    QList<QVariantMap> getFunctionInfoModelData();
+    QList<TableStructs::FunctionModelItem> getFunctionInfoModelData();
 
 
 

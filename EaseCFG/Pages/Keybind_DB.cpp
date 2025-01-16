@@ -143,19 +143,20 @@ QList<TableStructs::KeybindModelItem> Keybind_DB::getKeyBindModelData()
     return dataList;
 }
 
-QList<QVariantMap> Keybind_DB::getFunctionInfoModelData()
+QList<TableStructs::FunctionModelItem> Keybind_DB::getFunctionInfoModelData()
 {
-    QList<QVariantMap> dataList;
+    QList<TableStructs::FunctionModelItem> dataList;
     QString sql = "SELECT function_id, name_cn, parent_id FROM function_info";
     QSqlQuery query(sql, _csConfigDB);
 
-    QList<QVariantMap> functionList;
+    QList<TableStructs::FunctionModelItem> functionList;
+
     while (query.next()) {
-        QVariantMap functionData;
-        functionData["function_id"] = query.value("function_id");
-        functionData["name_cn"] = query.value("name_cn");
-        functionData["parent_id"] = query.value("parent_id");
-        functionList.append(functionData);
+        TableStructs::FunctionModelItem item;
+        item.Name = query.value("name_cn").toString();
+        item.FunctionID = query.value("function_id").toString();
+        item.ParentID = query.value("parent_id").toString();
+        functionList.append(item);
     }
 
     return functionList;

@@ -1,19 +1,28 @@
 #include "Keybind_TreeModel.h"
 
 Keybind_TreeModel::Keybind_TreeModel(Keybind_DB* keybindDB, QObject* parent)
-    : QAbstractItemModel(parent),
-      _keybindDB(keybindDB),
-      m_rootItem(new Univ_TreeItem(QVariantList() << "functions"))
+    : QAbstractItemModel(parent), _keybindDB(keybindDB)
 {
-    qDebug() << "Root item1 has " << m_rootItem->columnCount();
-    updateModelData();
-    qDebug() << "Root item2 has " << m_rootItem->columnCount();
+    // 初始化根节点
+    QVariantList rootData;
+    rootData << "FunctionName" << "FunctionID"; // 根节点，同时用于存储列名
+    _rootItem = std::make_unique<Univ_TreeItem>(rootData);
+    setupModelData(); // 设置模型数据，具体实现暂时忽略
 }
 
 Keybind_TreeModel::~Keybind_TreeModel()
 {
-    delete m_rootItem;
+    // 根节点会自动删除其子节点
 }
+
+// custom functions
+
+void Keybind_TreeModel::setupModelData()
+{
+
+}
+
+// override
 
 QModelIndex Keybind_TreeModel::index(int row, int column, const QModelIndex& parent) const
 {
@@ -32,13 +41,10 @@ QModelIndex Keybind_TreeModel::parent(const QModelIndex& index) const
     if (!index.isValid())
         return QModelIndex();
 
-    Univ_TreeItem* childItem = static_cast<Univ_TreeItem*>(index.internalPointer());
-    if (childItem == nullptr) // 检查 childItem 是否为 nullptr
-        return QModelIndex();
-
+    Univ_TreeItem* childItem = getItem(index);
     Univ_TreeItem* parentItem = childItem->parent();
 
-    if (parentItem == m_rootItem || parentItem == nullptr)
+    if (parentItem == _rootItem.get())
         return QModelIndex();
 
     return createIndex(parentItem->row(), 0, parentItem);
@@ -55,33 +61,30 @@ int Keybind_TreeModel::rowCount(const QModelIndex& parent) const
 
 int Keybind_TreeModel::columnCount(const QModelIndex& parent) const
 {
-    Q_UNUSED(parent);
-    return m_rootItem->columnCount();
+    if (parent.isValid())
+        return getItem(parent)->columnCount();
+    return _rootItem->columnCount();
 }
 
 QVariant Keybind_TreeModel::data(const QModelIndex& index, int role) const
 {
-    if (!index.isValid() || role != Qt::DisplayRole)
+    if (!index.isValid())
         return QVariant();
 
-    Univ_TreeItem* item = static_cast<Univ_TreeItem*>(index.internalPointer());
-    QVariant data = item->data(index.column());
-    qDebug() << "Data requested for" << index << "role" << role << "data" << data;
-    return item->data(index.column());
+    Univ_TreeItem* item = getItem(index);
+
+    if (role == Qt::DisplayRole || role == Qt::EditRole)
+        return item->data(index.column());
+
+    return QVariant();
 }
 
-bool Keybind_TreeModel::setData(const QModelIndex& index, const QVariant& value, int role)
+QVariant Keybind_TreeModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (role != Qt::EditRole || !index.isValid())
-        return false;
+    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+        return _rootItem->data(section);
 
-    Univ_TreeItem* item = static_cast<Univ_TreeItem*>(index.internalPointer());
-    bool result = item->setData(index.column(), value);
-
-    if (result)
-        emit dataChanged(index, index, { role });
-
-    return result;
+    return QVariant();
 }
 
 Qt::ItemFlags Keybind_TreeModel::flags(const QModelIndex& index) const
@@ -92,21 +95,41 @@ Qt::ItemFlags Keybind_TreeModel::flags(const QModelIndex& index) const
     return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
-QVariant Keybind_TreeModel::headerData(int section, Qt::Orientation orientation, int role) const
+bool Keybind_TreeModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-        return m_rootItem->data(section);
+    if (role != Qt::EditRole || !index.isValid())
+        return false;
 
-    return QVariant();
+    Univ_TreeItem* item = getItem(index);
+    bool result = item->setData(index.column(), value);
+
+    if (result)
+        emit dataChanged(index, index, { role });
+
+    return result;
+}
+
+bool Keybind_TreeModel::setHeaderData(int section, Qt::Orientation orientation, const QVariant& value, int role)
+{
+    if (role != Qt::EditRole || orientation != Qt::Horizontal)
+        return false;
+
+    bool result = _rootItem->setData(section, value);
+
+    if (result)
+        emit headerDataChanged(orientation, section, section);
+
+    return result;
 }
 
 bool Keybind_TreeModel::insertRows(int position, int rows, const QModelIndex& parent)
 {
     Univ_TreeItem* parentItem = getItem(parent);
-    bool success;
+    if (!parentItem)
+        return false;
 
     beginInsertRows(parent, position, position + rows - 1);
-    success = parentItem->insertChildren(position, rows, m_rootItem->columnCount());
+    bool success = parentItem->insertChildren(position, rows, _rootItem->columnCount());
     endInsertRows();
 
     return success;
@@ -115,10 +138,11 @@ bool Keybind_TreeModel::insertRows(int position, int rows, const QModelIndex& pa
 bool Keybind_TreeModel::removeRows(int position, int rows, const QModelIndex& parent)
 {
     Univ_TreeItem* parentItem = getItem(parent);
-    bool success = true;
+    if (!parentItem)
+        return false;
 
     beginRemoveRows(parent, position, position + rows - 1);
-    success = parentItem->removeChildren(position, rows);
+    bool success = parentItem->removeChildren(position, rows);
     endRemoveRows();
 
     return success;
@@ -126,10 +150,11 @@ bool Keybind_TreeModel::removeRows(int position, int rows, const QModelIndex& pa
 
 bool Keybind_TreeModel::insertColumns(int position, int columns, const QModelIndex& parent)
 {
-    bool success;
+    if (position < 0 || position > _rootItem->columnCount())
+        return false;
 
     beginInsertColumns(parent, position, position + columns - 1);
-    success = m_rootItem->insertColumns(position, columns);
+    bool success = _rootItem->insertColumns(position, columns);
     endInsertColumns();
 
     return success;
@@ -137,59 +162,22 @@ bool Keybind_TreeModel::insertColumns(int position, int columns, const QModelInd
 
 bool Keybind_TreeModel::removeColumns(int position, int columns, const QModelIndex& parent)
 {
-    bool success = true;
+    if (position < 0 || position + columns > _rootItem->columnCount())
+        return false;
 
     beginRemoveColumns(parent, position, position + columns - 1);
-    success = m_rootItem->removeColumns(position, columns);
+    bool success = _rootItem->removeColumns(position, columns);
     endRemoveColumns();
 
     return success;
-}
-
-void Keybind_TreeModel::setModelData(Univ_TreeItem* newItem)
-{
-    beginResetModel();
-    delete m_rootItem; // 删除原有的根节点
-    m_rootItem = newItem; // 设置新的根节点
-    endResetModel();
-}
-
-Univ_TreeItem* Keybind_TreeModel::getRootItem() const
-{
-    return m_rootItem;
 }
 
 Univ_TreeItem* Keybind_TreeModel::getItem(const QModelIndex& index) const
 {
     if (index.isValid()) {
         Univ_TreeItem* item = static_cast<Univ_TreeItem*>(index.internalPointer());
-        if (item) return item;
+        if (item)
+            return item;
     }
-    return m_rootItem;
-}
-void Keybind_TreeModel::updateModelData()
-{
-    QList<QVariantMap> functionList = _keybindDB->getFunctionInfoModelData();
-    Univ_TreeItem* newRootItem = new Univ_TreeItem(QVariantList() << "functions"); // 创建新的根节点
-
-    QHash<QString, Univ_TreeItem*> itemMap;
-
-    // 创建所有项，不设置父子关系
-    for (const QVariantMap& functionData : functionList) {
-        Univ_TreeItem* item = new Univ_TreeItem(QVariantList() << functionData["name_cn"]);
-        itemMap[functionData["function_id"].toString()] = item;
-    }
-
-    // 设置父子关系
-    for (const QVariantMap& functionData : functionList) {
-        Univ_TreeItem* item = itemMap[functionData["function_id"].toString()];
-        QString parentId = functionData["parent_id"].toString();
-        if (parentId.isEmpty() || !itemMap.contains(parentId)) {
-            newRootItem->appendChild(item);
-        }
-        else {
-            itemMap[parentId]->appendChild(item);
-        }
-    }
-    setModelData(newRootItem); // 使用新的根节点更新模型数据
+    return _rootItem.get();
 }
