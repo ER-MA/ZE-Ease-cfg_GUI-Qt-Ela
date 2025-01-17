@@ -13,8 +13,8 @@ public:
     ~Ovr_ElaTableView_Hover();
 
 signals:
-    void hoveredIndexChanged(const QModelIndex& index);
-    void mouseReleased(const QModelIndex& index);
+    void hoverIndexChang(const QModelIndex& index);
+    void selectIndexChang(const QModelIndex& index);
 
 protected:
     void mouseMoveEvent(QMouseEvent* event) override;
@@ -22,7 +22,8 @@ protected:
     void leaveEvent(QEvent* event) override;
 
 private:
-    QModelIndex lastHoverIndex;
+    QModelIndex _currentHoverIndex;
+    QModelIndex _lastHoverIndex;
 };
 
 #endif // OVR_ELATABLEVIEW_HOVER_H

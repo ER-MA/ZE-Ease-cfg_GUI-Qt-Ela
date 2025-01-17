@@ -1,50 +1,40 @@
 #include "Ovr_ElaTableView_Hover.h"
 
 Ovr_ElaTableView_Hover::Ovr_ElaTableView_Hover(QWidget* parent)
-    : ElaTableView(parent), lastHoverIndex(QModelIndex()) {
+    : ElaTableView(parent),
+    _currentHoverIndex(QModelIndex())
+{
     // 鼠标追踪已经在 ElaTableView 中启用，无需再次设置
 }
 
-Ovr_ElaTableView_Hover::~Ovr_ElaTableView_Hover() {
-    // 析构函数，如果需要清理资源，可以在这里进行
+Ovr_ElaTableView_Hover::~Ovr_ElaTableView_Hover()
+{
+
 }
 
-void Ovr_ElaTableView_Hover::mouseMoveEvent(QMouseEvent* event) {
-    // 首先调用基类的实现以保留原有功能
+void Ovr_ElaTableView_Hover::mouseMoveEvent(QMouseEvent* event)
+{
+    QModelIndex index = indexAt(event->pos());
+
+    if (index != _currentHoverIndex && index.isValid()) {
+        _currentHoverIndex = index;
+        _lastHoverIndex = index;
+        emit hoverIndexChang(_currentHoverIndex);
+    }
+
     ElaTableView::mouseMoveEvent(event);
-
-    // 获取当前鼠标悬停的索引
-    QModelIndex currentHoverIndex = indexAt(event->pos());
-
-    // 检查悬停索引是否发生变化
-    if (currentHoverIndex != lastHoverIndex) {
-        lastHoverIndex = currentHoverIndex;
-        // 发射信号通知外界悬停索引已更改
-        emit hoveredIndexChanged(currentHoverIndex);
-    }
 }
 
-void Ovr_ElaTableView_Hover::mouseReleaseEvent(QMouseEvent* event) {
-    // 首先调用基类的实现以保留原有功能
-    ElaTableView::mouseReleaseEvent(event);
+void Ovr_ElaTableView_Hover::leaveEvent(QEvent* event)
+{
+    _currentHoverIndex = QModelIndex();
+    emit hoverIndexChang(_currentHoverIndex);
 
-    QModelIndex currentHoverIndex = indexAt(event->pos());
-    if (!currentHoverIndex.isValid()) {
-        emit mouseReleased(lastHoverIndex);
-    }
-    // 发射信号通知外界鼠标松开
-    emit mouseReleased(currentHoverIndex);
-
-}
-
-void Ovr_ElaTableView_Hover::leaveEvent(QEvent* event) {
-    // 首先调用基类的实现以保留原有功能
     ElaTableView::leaveEvent(event);
+}
 
-    // 鼠标离开视图时，悬停索引应设置为无效
-    if (lastHoverIndex.isValid()) {
-        lastHoverIndex = QModelIndex();
-        // 发射信号通知外界悬停索引已更改
-        emit hoveredIndexChanged(QModelIndex());
-    }
+void Ovr_ElaTableView_Hover::mouseReleaseEvent(QMouseEvent* event)
+{
+    emit selectIndexChang(_lastHoverIndex);
+    ElaTableView::mouseReleaseEvent(event);
 }

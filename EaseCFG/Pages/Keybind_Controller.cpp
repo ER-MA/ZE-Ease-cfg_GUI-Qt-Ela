@@ -166,12 +166,6 @@ void Keybind_Controller::selectKey(const QModelIndex& index)
 
 void Keybind_Controller::hoverKey(const QModelIndex& index)
 {
-    if (!index.isValid())
-    {
-        _keybindTableModel->setHoveredIndex(QModelIndex());
-        updateKeyInfo();
-        return;
-    }
     _keybindTableModel->setHoveredIndex(index);
     updateKeyInfo();
 }
@@ -194,12 +188,6 @@ void Keybind_Controller::selectFunction(const QModelIndex& index)
 
 void Keybind_Controller::hoverFunction(const QModelIndex& index)
 {
-    if (!index.isValid())
-    {
-        _keybindTreeModel->setHoveredIndex(QModelIndex());
-        updateFunctionInfo(MouseState::HoverRole);
-        return;
-    }
     _keybindTreeModel->setHoveredIndex(index);
     updateFunctionInfo(MouseState::HoverRole);
 }

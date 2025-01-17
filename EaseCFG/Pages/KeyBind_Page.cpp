@@ -368,10 +368,10 @@ void Keybind_Page::initConnect()
     connect(_replaceFunctionPushButton, &ElaPushButton::clicked, _keybindController, &Keybind_Controller::replaceKeybind);
 
     // - TableEvent
-    connect(_keybindTableView, &ElaTableView::clicked, _keybindController, &Keybind_Controller::selectKey);
+    connect(_keybindTableView, &Ovr_ElaTableView_Hover::selectIndexChang, _keybindController, &Keybind_Controller::selectKey);
     //connect(_keybindTableView, &Ovr_ElaTableView_Hover::mouseReleased, _keybindController, &Keybind_Controller::selectKey);
     // TODO: 进一步重写鼠标事件以实现更好的交互体验
-    connect(_keybindTableView, &Ovr_ElaTableView_Hover::hoveredIndexChanged, _keybindController, &Keybind_Controller::hoverKey);
+    connect(_keybindTableView, &Ovr_ElaTableView_Hover::hoverIndexChang, _keybindController, &Keybind_Controller::hoverKey);
 
     // - TreeEvent
 
