@@ -16,9 +16,11 @@ public:
 
     void updateKeybindInfo(const QString& keyID, const QString& functionID);
     void updateFunctionInfo(const QString& functionID);
+    void updateSelectedFunctionInfo(const QString& functionID);
 signals:
     void keybindInfoUpdated(const QString& keyAppellation, const QString& keyLabelContent, const QString& keyDescription, const QString& functionName);
     void functionInfoUpdated(const QString& Name, const QString& Description, const QString& Detail);
+    void selectedFunctionInfoUpdated(const QString& Name);
 
 public slots:
 

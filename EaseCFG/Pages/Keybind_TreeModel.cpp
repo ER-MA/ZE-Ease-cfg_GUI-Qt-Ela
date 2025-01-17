@@ -8,7 +8,9 @@ Keybind_TreeModel::Keybind_TreeModel(Keybind_DB* keybindDB, QObject* parent)
     QVariantList rootData;
     rootData << "FunctionName" << "FunctionID" << "ParentID"; // 根节点，同时用于存储列名
     _rootItem = std::make_unique<Univ_TreeItem>(rootData);
-    setupModelData(); // 设置模型数据，具体实现暂时忽略
+
+    initConnections();
+    setupModelData();
 }
 
 Keybind_TreeModel::~Keybind_TreeModel()
@@ -17,6 +19,10 @@ Keybind_TreeModel::~Keybind_TreeModel()
 }
 
 // custom functions
+
+void Keybind_TreeModel::initConnections() {
+    connect(_keybindDB, &Keybind_DB::functionInfoUpdated, this, &Keybind_TreeModel::setupModelData);
+}
 
 void Keybind_TreeModel::setupModelData()
 {
@@ -31,11 +37,13 @@ void Keybind_TreeModel::setupModelData()
     QList<TreeNode*> rootNodes = treeData->buildTree();
     //for (const auto& rootNode : rootNodes)
     //    printTree(rootNode); // 打印树形结构
-    
+
+    beginResetModel();
     // 从根节点开始插入
     for (const auto& rootNode : rootNodes) {
         insertNode(_rootItem.get(), rootNode);
     }
+    endResetModel();
 
     // 清理和释放内存
     delete treeData;
@@ -75,12 +83,38 @@ void Keybind_TreeModel::insertNode(Univ_TreeItem* parentItem, const TreeNode* tr
     }
 }
 
-QString Keybind_TreeModel::getFunctionId(const QModelIndex& index) const {
+QVariant Keybind_TreeModel::getFunctionID(const QModelIndex& index) const {
     Univ_TreeItem* item = getItem(index);
     if (item && item != _rootItem.get()) {
-        return item->data(1).toString(); // function_id存储在第二列
+        return item->data(1); // FunctionID 存储在第二列
     }
-    return QString();
+    return QVariant();
+}
+
+void Keybind_TreeModel::setSelectedIndex(const QModelIndex& index) {
+    _selectedIndex = index;
+}
+
+void Keybind_TreeModel::setHoveredIndex(const QModelIndex& index) {
+    _hoveredIndex = index;
+}
+
+QModelIndex Keybind_TreeModel::getSelectedIndex() const {
+    return _selectedIndex;
+}
+
+QModelIndex Keybind_TreeModel::getHoveredIndex() const {
+    return _hoveredIndex;
+}
+
+QModelIndex Keybind_TreeModel::getShowIndex() const {
+    if (_hoveredIndex.isValid()) {
+        return _hoveredIndex;
+    }
+    if (_selectedIndex.isValid()) {
+        return _selectedIndex;
+    }
+    return QModelIndex();
 }
 
 // override

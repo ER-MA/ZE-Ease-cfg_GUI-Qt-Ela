@@ -12,15 +12,17 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-#include "Keybind_TableModel.h"
 #include "Keybind_PageModel.h"
+#include "Keybind_TableModel.h"
+#include "Keybind_TreeModel.h"
 #include "Structs.h"
+#include "Enums.h"
 
 class Keybind_Controller : public QObject
 {
     Q_OBJECT
 public:
-    explicit Keybind_Controller(Keybind_PageModel* PageModel = nullptr,Keybind_TableModel* TableModel = nullptr,  QObject* parent = nullptr);
+    explicit Keybind_Controller(Keybind_PageModel* PageModel = nullptr,Keybind_TableModel* TableModel = nullptr, Keybind_TreeModel* TreeModel = nullptr,  QObject* parent = nullptr);
     ~Keybind_Controller();
 
 signals:
@@ -39,16 +41,18 @@ public slots:
     void selectKey(const QModelIndex& index);
     void hoverKey(const QModelIndex& index);
     // - TreeEvent
-    void selectFunc(QTreeWidgetItem* item, int column);
-    void hoverFunc(QTreeWidgetItem* item, int column);
+    void selectFunction(const QModelIndex& index);
+    void hoverFunction(const QModelIndex& index);
 
 public:
+
     // [DirectCall]
     // - CallPageModel
-    void updateKeyInfo();
+    void updateKeyInfo(); // 辅助函数，通知 PageModel 更新按键信息
     //void updateKeyInfo(const QModelIndex& index);
     //void updateFuncInfo(QTreeWidgetItem* item, int column);
     // - CallTableModel
+    void updateFunctionInfo(const MouseState& role); // 辅助函数，通知 PageModel 更新功能信息
     //void resetKeybindTableModelData(); // 从配置文件中更新所有数据
     //void updateKeybindTableRowData(); // 更新单行数据
     // - CallTreeModel
@@ -76,8 +80,9 @@ private:
 
     static const QString _defaultString; // 默认字符串
 
-    Keybind_TableModel* _keybindTableModel; // 按键绑定表模型
     Keybind_PageModel* _keybindPageModel; // 按键绑定页面模型
+    Keybind_TableModel* _keybindTableModel; // 按键绑定表模型
+    Keybind_TreeModel* _keybindTreeModel; // 功能树模型
 
     QFileInfo _gameInfoOutputDir; // 模拟游戏目录
     QFileInfo _configInfoKeyIDLinkFuncID; // 按键ID到功能ID的配置文件

@@ -46,16 +46,26 @@ private:
     void applyTableModelDepenedentSettings();
     void applyTreeModelDepenedentSettings();
 
+    Keybind_DB* _keybindDB;
+
+    Keybind_PageModel* _keybindPageModel;
+
     Keybind_TableModel* _keybindTableModel;
+    ElaText* _selectedKeyNameLable;
+    ElaText* _selectedKeyIntroLable;
+    ElaText* _selectedKeyDescriptionLable;
+    ElaText* _currentFunctionNameLable;
     QModelIndex _selectedKeybindIndex; // 仅在表格刷新时更新
     QModelIndex _hoveredKeybindIndex; // 剩下几个未使用
     QModelIndex _selectedFunctionIndex;
     QModelIndex _hoveredFunctionIndex;
 
-    Keybind_DB* _keybindDB;
-
-    Keybind_PageModel* _keybindPageModel;
-    Keybind_TreeModel* _functionTreeModel;
+    Keybind_TreeModel* _keybindTreeModel;
+    ElaText* _mousePointFunctionLable;
+    ElaText* _functionDetailsTitleLabel;
+    ElaText* _functionDetailsIntroLabel;
+    ElaText* _functionDetailsNoteTitleLabel;
+    ElaText* _functionDetailsNoteLabel;
 
     Keybind_Controller* _keybindController;
 
@@ -69,16 +79,6 @@ private:
     ElaPushButton* _saveButton;
     ElaPushButton* _writeButton;
     ElaPushButton* _replaceFunctionPushButton;
-
-    ElaText* _selectedKeyNameLable;
-    ElaText* _selectedKeyIntroLable;
-    ElaText* _selectedKeyDescriptionLable;
-    ElaText* _currentFunctionNameLable;
-    ElaText* _mousePointFunctionLable;
-    ElaText* _functionDetailsTitleLabel;
-    ElaText* _functionDetailsIntroLabel;
-    ElaText* _functionDetailsNoteTitleLabel;
-    ElaText* _functionDetailsNoteLabel;
 
     ElaImageCard* _functionImagePreview;
 };

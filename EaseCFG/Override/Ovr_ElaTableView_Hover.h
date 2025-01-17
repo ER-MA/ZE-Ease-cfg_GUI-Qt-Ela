@@ -14,9 +14,11 @@ public:
 
 signals:
     void hoveredIndexChanged(const QModelIndex& index);
+    void mouseReleased(const QModelIndex& index);
 
 protected:
     void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
     void leaveEvent(QEvent* event) override;
 
 private:

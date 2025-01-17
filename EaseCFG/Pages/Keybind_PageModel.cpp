@@ -45,6 +45,14 @@ void Keybind_PageModel::updateFunctionInfo(const QString& functionID)
     emit functionInfoUpdated(functionName, functionDescription, functionDetail);
 }
 
+void Keybind_PageModel::updateSelectedFunctionInfo(const QString& functionID)
+{
+    CSConfigStructs::FunctionInfo functionInfo = _functionInfo.value(functionID);
+    QString functionName = functionInfo.Name;
+
+    emit selectedFunctionInfoUpdated(functionName);
+}
+
 
 
 void Keybind_PageModel::updateKeyInfoFromDB()

@@ -24,6 +24,19 @@ void Ovr_ElaTableView_Hover::mouseMoveEvent(QMouseEvent* event) {
     }
 }
 
+void Ovr_ElaTableView_Hover::mouseReleaseEvent(QMouseEvent* event) {
+    // 首先调用基类的实现以保留原有功能
+    ElaTableView::mouseReleaseEvent(event);
+
+    QModelIndex currentHoverIndex = indexAt(event->pos());
+    if (!currentHoverIndex.isValid()) {
+        emit mouseReleased(lastHoverIndex);
+    }
+    // 发射信号通知外界鼠标松开
+    emit mouseReleased(currentHoverIndex);
+
+}
+
 void Ovr_ElaTableView_Hover::leaveEvent(QEvent* event) {
     // 首先调用基类的实现以保留原有功能
     ElaTableView::leaveEvent(event);
@@ -32,6 +45,6 @@ void Ovr_ElaTableView_Hover::leaveEvent(QEvent* event) {
     if (lastHoverIndex.isValid()) {
         lastHoverIndex = QModelIndex();
         // 发射信号通知外界悬停索引已更改
-        emit hoveredIndexChanged(lastHoverIndex);
+        emit hoveredIndexChanged(QModelIndex());
     }
 }

@@ -1,9 +1,10 @@
 #include "Keybind_Controller.h"
 
-Keybind_Controller::Keybind_Controller(Keybind_PageModel* PageModel, Keybind_TableModel* TableModel, QObject* parent)
+Keybind_Controller::Keybind_Controller(Keybind_PageModel* PageModel, Keybind_TableModel* TableModel, Keybind_TreeModel* TreeModel, QObject* parent)
     : QObject(parent),
     _keybindPageModel(PageModel),
-    _keybindTableModel(TableModel)
+    _keybindTableModel(TableModel),
+    _keybindTreeModel(TreeModel)
 {
     initData();
 };
@@ -169,6 +170,7 @@ void Keybind_Controller::hoverKey(const QModelIndex& index)
     {
         _keybindTableModel->setHoveredIndex(QModelIndex());
         updateKeyInfo();
+        return;
     }
     _keybindTableModel->setHoveredIndex(index);
     updateKeyInfo();
@@ -184,15 +186,40 @@ void Keybind_Controller::updateKeyInfo()
 
 // - TreeEvent
 
-void Keybind_Controller::selectFunc(QTreeWidgetItem* item, int column)
+void Keybind_Controller::selectFunction(const QModelIndex& index)
 {
-
+    _keybindTreeModel->setSelectedIndex(index);
+    updateFunctionInfo(MouseState::SelectRole);
 }
 
-void Keybind_Controller::hoverFunc(QTreeWidgetItem* item, int column)
+void Keybind_Controller::hoverFunction(const QModelIndex& index)
 {
-
+    if (!index.isValid())
+    {
+        _keybindTreeModel->setHoveredIndex(QModelIndex());
+        updateFunctionInfo(MouseState::HoverRole);
+        return;
+    }
+    _keybindTreeModel->setHoveredIndex(index);
+    updateFunctionInfo(MouseState::HoverRole);
 }
+
+void Keybind_Controller::updateFunctionInfo(const MouseState& role)
+{
+    if (role == MouseState::SelectRole) {
+        QModelIndex index = _keybindTreeModel->getSelectedIndex();
+        QString functionID = _keybindTreeModel->getFunctionID(index).toString();
+        _keybindPageModel->updateSelectedFunctionInfo(functionID);
+    }
+    if (role == MouseState::HoverRole) {
+
+    }
+
+    QModelIndex index = _keybindTreeModel->getShowIndex();
+    QString functionID = _keybindTreeModel->getFunctionID(index).toString();
+    _keybindPageModel->updateFunctionInfo(functionID);
+}
+
 
 
 

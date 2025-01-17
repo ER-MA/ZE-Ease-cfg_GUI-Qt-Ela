@@ -324,11 +324,11 @@ void Keybind_Page::initData()
     _keybindDB = new Keybind_DB(this);
     _keybindTableModel = new Keybind_TableModel(_keybindDB, this);
     _keybindPageModel = new Keybind_PageModel(_keybindDB, this);
-    _functionTreeModel = new Keybind_TreeModel(_keybindDB, this);
+    _keybindTreeModel = new Keybind_TreeModel(_keybindDB, this);
 
     _keybindTableView->setModel(_keybindTableModel); // 设置表格模型
     applyTableModelDepenedentSettings(); // 进一步设置表格样式
-    _functionTreeView->setModel(_functionTreeModel); // 设置树形模型
+    _functionTreeView->setModel(_keybindTreeModel); // 设置树形模型
 
     _functionTreeView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     _functionTreeView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
@@ -341,7 +341,7 @@ void Keybind_Page::initData()
     _functionTreeView->setMinimumSize(320, 180);
     _functionTreeView->setEditTriggers(QAbstractItemView::NoEditTriggers); // 禁止编辑
 
-    _keybindController = new Keybind_Controller(_keybindPageModel, _keybindTableModel, this);
+    _keybindController = new Keybind_Controller(_keybindPageModel, _keybindTableModel, _keybindTreeModel, this);
 };
 
 void Keybind_Page::initConnect()
@@ -369,11 +369,13 @@ void Keybind_Page::initConnect()
 
     // - TableEvent
     connect(_keybindTableView, &ElaTableView::clicked, _keybindController, &Keybind_Controller::selectKey);
+    //connect(_keybindTableView, &Ovr_ElaTableView_Hover::mouseReleased, _keybindController, &Keybind_Controller::selectKey);
+    // TODO: 进一步重写鼠标事件以实现更好的交互体验
     connect(_keybindTableView, &Ovr_ElaTableView_Hover::hoveredIndexChanged, _keybindController, &Keybind_Controller::hoverKey);
 
     // - TreeEvent
 
-
+    connect(_functionTreeView, &ElaTreeView::clicked, _keybindController, &Keybind_Controller::selectFunction);
 
     // [Signal-Slot]
 
@@ -389,6 +391,16 @@ void Keybind_Page::initConnect()
         _selectedKeyIntroLable->setText(keyLabelContent);
         _selectedKeyDescriptionLable->setText(keyDescription);
         _currentFunctionNameLable->setText(functionName);
+    });
+
+    connect(_keybindPageModel, &Keybind_PageModel::selectedFunctionInfoUpdated, this, [this](QString functionName) {
+        _mousePointFunctionLable->setText(functionName);
+    });
+
+    connect(_keybindPageModel, &Keybind_PageModel::functionInfoUpdated, this, [this](QString functionName, QString functionDescription, QString functionDetail) {
+        _functionDetailsTitleLabel->setText(functionName);
+        _functionDetailsIntroLabel->setText(functionDescription);
+        _functionDetailsNoteLabel->setText(functionDetail);
     });
 
     
