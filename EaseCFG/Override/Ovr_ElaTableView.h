@@ -1,16 +1,15 @@
-#ifndef OVR_ELATABLEVIEW_HOVER_H
-#define OVR_ELATABLEVIEW_HOVER_H
+#ifndef OVR_ELATABLEVIEW_H
+#define OVR_ELATABLEVIEW_H
 
 #include "ElaTableView.h"
 #include <QMouseEvent>
 #include <QModelIndex>
 
-class Ovr_ElaTableView_Hover : public ElaTableView {
+class Ovr_ElaTableView : public ElaTableView {
     Q_OBJECT
 
 public:
-    explicit Ovr_ElaTableView_Hover(QWidget* parent = nullptr);
-    ~Ovr_ElaTableView_Hover();
+    explicit Ovr_ElaTableView(QWidget* parent = nullptr);
 
 signals:
     void hoverIndexChang(const QModelIndex& index);
@@ -26,4 +25,4 @@ private:
     QModelIndex _lastHoverIndex;
 };
 
-#endif // OVR_ELATABLEVIEW_HOVER_H
+#endif // OVR_ELATABLEVIEW_H

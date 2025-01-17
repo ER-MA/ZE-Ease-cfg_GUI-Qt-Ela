@@ -1,18 +1,14 @@
-#include "Ovr_ElaTableView_Hover.h"
+#include "Ovr_ElaTableView.h"
 
-Ovr_ElaTableView_Hover::Ovr_ElaTableView_Hover(QWidget* parent)
+Ovr_ElaTableView::Ovr_ElaTableView(QWidget* parent)
     : ElaTableView(parent),
-    _currentHoverIndex(QModelIndex())
+    _currentHoverIndex(QModelIndex()),
+    _lastHoverIndex(QModelIndex())
 {
     // 鼠标追踪已经在 ElaTableView 中启用，无需再次设置
 }
 
-Ovr_ElaTableView_Hover::~Ovr_ElaTableView_Hover()
-{
-
-}
-
-void Ovr_ElaTableView_Hover::mouseMoveEvent(QMouseEvent* event)
+void Ovr_ElaTableView::mouseMoveEvent(QMouseEvent* event)
 {
     QModelIndex index = indexAt(event->pos());
 
@@ -25,7 +21,7 @@ void Ovr_ElaTableView_Hover::mouseMoveEvent(QMouseEvent* event)
     ElaTableView::mouseMoveEvent(event);
 }
 
-void Ovr_ElaTableView_Hover::leaveEvent(QEvent* event)
+void Ovr_ElaTableView::leaveEvent(QEvent* event)
 {
     _currentHoverIndex = QModelIndex();
     emit hoverIndexChang(_currentHoverIndex);
@@ -33,7 +29,7 @@ void Ovr_ElaTableView_Hover::leaveEvent(QEvent* event)
     ElaTableView::leaveEvent(event);
 }
 
-void Ovr_ElaTableView_Hover::mouseReleaseEvent(QMouseEvent* event)
+void Ovr_ElaTableView::mouseReleaseEvent(QMouseEvent* event)
 {
     emit selectIndexChang(_lastHoverIndex);
     ElaTableView::mouseReleaseEvent(event);

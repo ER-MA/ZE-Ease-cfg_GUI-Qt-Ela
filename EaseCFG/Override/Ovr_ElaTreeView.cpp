@@ -1,27 +1,36 @@
 #include "Ovr_ElaTreeView.h"
 
-Ovr_ElaTreeView::Ovr_ElaTreeView(QWidget* parent) : ElaTreeView(parent) {
-    setMouseTracking(true);
+Ovr_ElaTreeView::Ovr_ElaTreeView(QWidget* parent)
+    : ElaTreeView(parent),
+    _currentHoverIndex(QModelIndex()),
+    _lastHoverIndex(QModelIndex())
+{
+    
 }
 
-void Ovr_ElaTreeView::mouseMoveEvent(QMouseEvent* event) {
-    // 获取鼠标在QTreeView中的位置
-    QPoint globalPos = event->globalPos();
-    QPoint viewPos = mapFromGlobal(globalPos);
+void Ovr_ElaTreeView::mouseMoveEvent(QMouseEvent* event)
+{
+    QModelIndex index = indexAt(event->pos());
 
-    // 计算鼠标在QTreeView中的行列位置
-    QModelIndex index = indexAt(viewPos);
-
-    // 检查是否为有效的索引
-    if (index.isValid()) {
-        // 获取节点的中文文本
-        QString text = index.data(Qt::DisplayRole).toString();
-        qDebug() << "Mouse over node: " << text;
-    }
-    else {
-        qDebug() << "Mouse outside any node";
+    if (index != _currentHoverIndex && index.isValid()) {
+        _currentHoverIndex = index;
+        _lastHoverIndex = index;
+        emit hoverIndexChang(_currentHoverIndex);
     }
 
-    // 调用父类的mouseMoveEvent，以保持原有功能
-    QTreeView::mouseMoveEvent(event);
+    ElaTreeView::mouseMoveEvent(event);
+}
+
+void Ovr_ElaTreeView::leaveEvent(QEvent* event)
+{
+    _currentHoverIndex = QModelIndex();
+    emit hoverIndexChang(_currentHoverIndex);
+
+    ElaTreeView::leaveEvent(event);
+}
+
+void Ovr_ElaTreeView::mouseReleaseEvent(QMouseEvent* event)
+{
+    emit selectIndexChang(_lastHoverIndex);
+    ElaTreeView::mouseReleaseEvent(event);
 }

@@ -8,7 +8,8 @@
 #include "ElaPushButton.h"
 #include "ElaImageCard.h"
 
-#include "Ovr_ElaTableView_Hover.h"
+#include "Ovr_ElaTableView.h"
+#include "Ovr_ElaTreeView.h"
 
 #include "Keybind_DB.h"
 #include "Keybind_PageModel.h"
@@ -67,10 +68,8 @@ private:
     ElaText* _functionDetailsNoteTitleLabel;
     ElaText* _functionDetailsNoteLabel;
 
-    Keybind_Controller* _keybindController;
-
-    Ovr_ElaTableView_Hover* _keybindTableView;
-    ElaTreeView* _functionTreeView;
+    Ovr_ElaTableView* _keybindTableView;
+    Ovr_ElaTreeView* _functionTreeView;
     QWidget* _toolBarWidget;
     QWidget* _keybindWidget;
     QWidget* _keyFunctionEditWidget;
@@ -81,6 +80,8 @@ private:
     ElaPushButton* _replaceFunctionPushButton;
 
     ElaImageCard* _functionImagePreview;
+
+    Keybind_Controller* _keybindController;
 };
 
 

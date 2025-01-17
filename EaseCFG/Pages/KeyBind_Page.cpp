@@ -15,7 +15,7 @@
 #include "ElaImageCard.h"
 
 #include "Ovr_ElaTreeView.h"
-#include "Ovr_ElaTableView_Hover.h"
+#include "Ovr_ElaTableView.h"
 
 #include "Keybind_DB.h"
 #include "Keybind_PageModel.h"
@@ -98,7 +98,7 @@ void Keybind_Page::createFunctionTreeView() // [功能选择] ※
     //QString title0_0 = (treeModel->data(index0_0, Qt::DisplayRole)).toString();
     //qDebug() << "treeModel_Index_Title:" << title;
     //qDebug() << "treeModel_Index0_0_Title:" << title0_0;
-    _functionTreeView = new ElaTreeView(this);
+    _functionTreeView = new Ovr_ElaTreeView(this);
     //Ovr_ElaTreeView* _functionTreeView = new Ovr_ElaTreeView(this);
     //_functionTreeView->setModel(treeModel);
     //_functionTreeView->setFixedHeight(450);
@@ -229,7 +229,7 @@ void Keybind_Page::createKeyFunctionEditWidget() // [按键功能编辑] ※
 
 void Keybind_Page::createKeybindTableView() // [按键绑定列表] ※
 {
-    _keybindTableView = new Ovr_ElaTableView_Hover(this);
+    _keybindTableView = new Ovr_ElaTableView(this);
 
     // 表格配置
     _keybindTableView->setShowGrid(false);  // 显示网格线
@@ -367,15 +367,14 @@ void Keybind_Page::initConnect()
     connect(_writeButton, &ElaPushButton::clicked, _keybindController, &Keybind_Controller::writeConfigFile);
     connect(_replaceFunctionPushButton, &ElaPushButton::clicked, _keybindController, &Keybind_Controller::replaceKeybind);
 
-    // - TableEvent
-    connect(_keybindTableView, &Ovr_ElaTableView_Hover::selectIndexChang, _keybindController, &Keybind_Controller::selectKey);
-    //connect(_keybindTableView, &Ovr_ElaTableView_Hover::mouseReleased, _keybindController, &Keybind_Controller::selectKey);
     // TODO: 进一步重写鼠标事件以实现更好的交互体验
-    connect(_keybindTableView, &Ovr_ElaTableView_Hover::hoverIndexChang, _keybindController, &Keybind_Controller::hoverKey);
+    // - TableEvent
+    connect(_keybindTableView, &Ovr_ElaTableView::selectIndexChang, _keybindController, &Keybind_Controller::selectKey);
+    connect(_keybindTableView, &Ovr_ElaTableView::hoverIndexChang, _keybindController, &Keybind_Controller::hoverKey);
 
     // - TreeEvent
-
-    connect(_functionTreeView, &ElaTreeView::clicked, _keybindController, &Keybind_Controller::selectFunction);
+    connect(_functionTreeView, &Ovr_ElaTreeView::selectIndexChang, _keybindController, &Keybind_Controller::selectFunction);
+    connect(_functionTreeView, &Ovr_ElaTreeView::hoverIndexChang, _keybindController, &Keybind_Controller::hoverFunction);
 
     // [Signal-Slot]
 
