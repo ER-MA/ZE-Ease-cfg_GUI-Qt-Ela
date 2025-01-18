@@ -44,8 +44,6 @@ public slots:
     void selectFunction(const QModelIndex& index);
     void hoverFunction(const QModelIndex& index);
 
-public:
-
     // [DirectCall]
     // - CallPageModel
     void updateKeyInfo(); // 辅助函数，通知 PageModel 更新按键信息
@@ -70,6 +68,8 @@ public:
     //QJsonObject readJsonObj(const QString& filePath);
     //QJsonObject readJsonObj(const QFileInfo& fileInfo);
     //QJsonObject readJsonObj(const QResource& resource);
+
+public:
 
 private:
     // [Init]

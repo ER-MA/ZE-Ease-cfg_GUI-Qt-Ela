@@ -100,16 +100,6 @@ void Keybind_Controller::initConfigFile()
 
 // - PageEvent
 
-void Keybind_Controller::saveConfig()
-{
-
-}
-
-void Keybind_Controller::writeConfigFile()
-{
-
-}
-
 /*
 void Keybind_Controller::writeConfigFile()
 {
@@ -151,9 +141,30 @@ void Keybind_Controller::writeConfigFile()
 }
 */
 
+void Keybind_Controller::saveConfig()
+{
+    _keybindTableModel->appllyReplaceKeybindToDB();
+}
+
+void Keybind_Controller::writeConfigFile()
+{
+    _keybindTableModel->undoReplaceKeybind();
+}
+
 void Keybind_Controller::replaceKeybind()
 {
-
+    QModelIndex keyIndex = _keybindTableModel->getSelectedIndex();
+    QModelIndex funcIndex = _keybindTreeModel->getSelectedIndex();
+    if (!keyIndex.isValid()) {
+        qWarning("[Keybind_Controller::replaceKeybind] Invalid key index.");
+        return;
+    }
+    if (!funcIndex.isValid()) {
+        qWarning("[Keybind_Controller::replaceKeybind] Invalid function index.");
+        return;
+    }
+    QString funcID = _keybindTreeModel->getFunctionID(funcIndex).toString();
+    _keybindTableModel->replaceKeybind(keyIndex, funcID);
 }
 
 // - TableEvent

@@ -23,6 +23,8 @@
 #include "Keybind_TreeModel.h"
 #include "Keybind_Controller.h"
 
+#include "Enums.h"
+
 #include "T_TreeViewModel.h"
 
 #include "Keybind_Page.h"
@@ -254,6 +256,10 @@ void Keybind_Page::createKeybindWidget() // [按键绑定] 布局
     keybindHLayout->addWidget(_keybindTableView);
     keybindHLayout->addWidget(_keyFunctionEditWidget);
     keybindHLayout->addWidget(_functionSelectWidget);
+
+    keybindHLayout->setStretchFactor(_keybindTableView, 1);
+    keybindHLayout->setStretchFactor(_keyFunctionEditWidget, 1);
+    keybindHLayout->setStretchFactor(_functionSelectWidget, 1);
 }
 
 void Keybind_Page::createToolBarWidget() // [工具栏] ※
@@ -346,17 +352,17 @@ void Keybind_Page::initData()
 
 void Keybind_Page::initConnect()
 {
-    // 测试ElaMessageBar
-    connect(_saveButton, &ElaPushButton::clicked, this, [this]() {
-        // 显示一个成功提示
-        ElaMessageBar::success(ElaMessageBarType::TopRight, "成功", "操作成功完成！", 3000, this);
-        // 显示一个警告提示
-        ElaMessageBar::warning(ElaMessageBarType::TopLeft, "警告", "请注意，有潜在风险！", 3000, this);
-        // 显示一个信息提示
-        ElaMessageBar::information(ElaMessageBarType::BottomRight, "信息", "这是一条普通信息！", 3000, this);
-        // 显示一个错误提示
-        ElaMessageBar::error(ElaMessageBarType::BottomLeft, "错误", "操作失败，请重试！", 3000, this);
-    });
+    //// 测试ElaMessageBar
+    //connect(_saveButton, &ElaPushButton::clicked, this, [this]() {
+    //    // 显示一个成功提示
+    //    ElaMessageBar::success(ElaMessageBarType::TopRight, "成功", "操作成功完成！", 3000, this);
+    //    // 显示一个警告提示
+    //    ElaMessageBar::warning(ElaMessageBarType::TopLeft, "警告", "请注意，有潜在风险！", 3000, this);
+    //    // 显示一个信息提示
+    //    ElaMessageBar::information(ElaMessageBarType::BottomRight, "信息", "这是一条普通信息！", 3000, this);
+    //    // 显示一个错误提示
+    //    ElaMessageBar::error(ElaMessageBarType::BottomLeft, "错误", "操作失败，请重试！", 3000, this);
+    //});
 
 
 
@@ -412,6 +418,8 @@ void Keybind_Page::initConnect()
     connect(_keybindTableModel, &Keybind_TableModel::modelReset, this, [this]() {
         _keybindTableView->setCurrentIndex(_selectedKeybindIndex);
     });
+    connect(_keybindTableModel, &Keybind_TableModel::selectedIndexChanged, _keybindTableView, &Ovr_ElaTableView::setCurrentIndex);
+    connect(_keybindTableModel, &Keybind_TableModel::selectedIndexChanged, _keybindController, &Keybind_Controller::selectKey);
 
     // - TreeViewUI
 

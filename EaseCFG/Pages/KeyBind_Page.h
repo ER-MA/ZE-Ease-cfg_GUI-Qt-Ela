@@ -56,7 +56,7 @@ private:
     ElaText* _selectedKeyIntroLable;
     ElaText* _selectedKeyDescriptionLable;
     ElaText* _currentFunctionNameLable;
-    QModelIndex _selectedKeybindIndex; // 仅在表格刷新时更新
+    QModelIndex _selectedKeybindIndex; // 用于设置选中项
     QModelIndex _hoveredKeybindIndex; // 剩下几个未使用
     QModelIndex _selectedFunctionIndex;
     QModelIndex _hoveredFunctionIndex;

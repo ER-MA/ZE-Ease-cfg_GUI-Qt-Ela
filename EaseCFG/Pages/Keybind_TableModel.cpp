@@ -6,15 +6,12 @@ Keybind_TableModel::Keybind_TableModel(Keybind_DB* keybindDB, QObject* parent)
     : QAbstractTableModel(parent),
     _keybindDB(keybindDB)
 {
-    // 初始化数据
     initModelData();
     initHeaderData();
     initConnection();
 
-    // 可使用 setHeaderData 重新函数设置表头数据
-    // bool ret = setHeaderData(0, Qt::Horizontal, "呀哈哈", Qt::DisplayRole);
-    // qDebug() << "setHeaderData ret:" << ret;
-
+    updateKeyAppellationHashFromDB();
+    updateFunctionNameHashFromDB();
     updateModelData();
 }
 
@@ -23,95 +20,40 @@ Keybind_TableModel::~Keybind_TableModel()
     _modelData.clear();
 }
 
-// [ModelData]
-
-void Keybind_TableModel::setModelData(const QList<TableStructs::KeybindModelItem>& datas)
-{
-    beginResetModel(); // 触发 modelAboutToBeReset 信号
-
-    _modelData = datas;
-
-    endResetModel(); // 触发 modelReset 信号
-    //注意：reset model后，选中的item会失效，我们可以自己写保存和恢复选中项的逻辑
-    //如果表的行列数是固定的，只是数据变更了，我们可以用 dataChanged 信号来请求刷新。
-    //emit dataChanged(index(0,0),index(RowMax-1,ColMax-1),QVector<int>());
-}
-
-QList<TableStructs::KeybindModelItem> Keybind_TableModel::getModelData() const
-{
-    return _modelData;
-}
-
-// [RowData]
-
-bool Keybind_TableModel::updateRowData(int row, const TableStructs::KeybindModelItem& newData)
-{
-    // 修改行数据
-    if (row >= 0 && row < _modelData.count()) {
-        _modelData[row] = newData;
-        emit dataChanged(index(row, 0), index(row, 3), QVector<int>()); // 列数实际为 4，后两个列为前两列的对应ID。
-        return true;
-    }
-    return false;
-}
-
 // [ItemData]
 
 bool Keybind_TableModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-    // 设置单元格数据（保存 TableView 中修改的数据）
-    if (index.isValid() && role == Qt::EditRole) {
-        const int row = index.row();
+    if (!index.isValid() || index.row() >= rowCount() || index.column() >= columnCount()) {
+        return false;
+    }
+    if (role == Qt::EditRole) {
         switch (index.column()) {
-        case 0: _modelData[row].Key = value.toString(); break;
-        case 1: _modelData[row].Function = value.toString(); break;
+        case 0: _modelData[index.row()].KeyID = value.toString(); break;
+        case 1: _modelData[index.row()].FunctionID = value.toString(); break;
         }
-        emit dataChanged(index, index, QVector<int>());
+        emit dataChanged(index, index);
         return true;
     }
     return false;
 }
 
 QVariant Keybind_TableModel::data(const QModelIndex& index, int role) const {
-    // 返回单元格数据
-    if (!index.isValid()) {
+    if (!index.isValid() || index.row() >= rowCount() || index.column() >= columnCount()) {
         return QVariant();
     }
-    if (role == Qt::DisplayRole || role == Qt::EditRole) {
-        // 显示和编辑做同样处理
-        const int row = index.row();
+    if (role == Qt::DisplayRole) {
         switch (index.column()) {
-        case 0: return _modelData.at(row).Key;
-        case 1: return _modelData.at(row).Function;
+        case 0: return _keyAppellationHash.value(_modelData.at(index.row()).KeyID);
+        case 1: return _functionNameHash.value(_modelData.at(index.row()).FunctionID);
         }
     }
     return QVariant();
 }
 
-QVariant Keybind_TableModel::getKeyID(const QModelIndex& index) const
-{
-    // 返回按键ID ※
-    if (!index.isValid()) {
-        return QVariant();
-    }
-    const int row = index.row();
-    return _modelData.at(row).KeyID;
-}
-
-QVariant Keybind_TableModel::getFunctionID(const QModelIndex& index) const
-{
-    // 返回功能ID ※
-    if (!index.isValid()) {
-        return QVariant();
-    }
-    const int row = index.row();
-    return _modelData.at(row).FunctionID;
-}
-
 // [HeaderData]
 
 bool Keybind_TableModel::setHeaderData(int section, Qt::Orientation orientation, const QVariant& value, int role) {
-    // 设置表头数据
     if (orientation == Qt::Horizontal) {
         if (role == Qt::DisplayRole) {
             if (section >= 0 && section < _horHeaderData.count()) {
@@ -133,11 +75,10 @@ bool Keybind_TableModel::setHeaderData(int section, Qt::Orientation orientation,
 }
 
 QVariant Keybind_TableModel::headerData(int section, Qt::Orientation orientation, int role) const {
-    // 返回表头数据
     if (orientation == Qt::Horizontal) {
         if (role == Qt::DisplayRole) {
             if (section >= 0 && section < _horHeaderData.count()) {
-                return _horHeaderData.at(section);
+            return _horHeaderData.at(section);
             }
         }
     } else if (orientation == Qt::Vertical) {
@@ -153,7 +94,6 @@ QVariant Keybind_TableModel::headerData(int section, Qt::Orientation orientation
 // [Model]
 
 int Keybind_TableModel::rowCount(const QModelIndex& parent) const {
-    // 返回行数
     if (parent.isValid()) {
         return 0;
     }
@@ -161,11 +101,81 @@ int Keybind_TableModel::rowCount(const QModelIndex& parent) const {
 }
 
 int Keybind_TableModel::columnCount(const QModelIndex& parent) const {
-    // 返回列数
     if (parent.isValid()) {
         return 0;
     }
     return 2;
+}
+
+// custom functions
+
+// [ModelData]
+
+void Keybind_TableModel::setModelData(const QList<TableStructs::KeybindItem>& datas) {
+    beginResetModel();
+    _modelData = datas;
+    endResetModel();
+}
+
+QList<TableStructs::KeybindItem> Keybind_TableModel::getModelData() const
+{
+    return _modelData;
+}
+
+// [RowData]
+
+bool Keybind_TableModel::setRowData(int row, const TableStructs::KeybindItem& newData) {
+    if (row < 0 || row >= rowCount()) {
+        return false;
+    }
+    _modelData[row] = newData;
+    emit dataChanged(index(row, 0), index(row, columnCount() - 1));
+    return true;
+}
+
+TableStructs::KeybindItem Keybind_TableModel::getRowData(int row) const
+{
+    if (row < 0 || row >= rowCount()) {
+        return TableStructs::KeybindItem();
+    }
+    return _modelData.at(row);
+}
+
+QVariant Keybind_TableModel::getKeyID(const QModelIndex& index) {
+    if (!index.isValid() || index.row() >= rowCount() || index.column() >= columnCount()) {
+        return QVariant();
+    }
+    return _modelData.at(index.row()).KeyID;
+}
+
+QVariant Keybind_TableModel::getFunctionID(const QModelIndex& index) {
+    if (!index.isValid() || index.row() >= rowCount() || index.column() >= columnCount()) {
+        return QVariant();
+    }
+    return _modelData.at(index.row()).FunctionID;
+}
+
+// [Index]
+
+QModelIndex Keybind_TableModel::getIndexByKeyID(const QString& keyID) const
+{
+    for (int i = 0; i < rowCount(); i++) {
+        if (_modelData.at(i).KeyID == keyID) {
+            return index(i, 0);
+        }
+    }
+    return QModelIndex();
+}
+
+QList<QModelIndex> Keybind_TableModel::getIndexByFunctionID(const QString& functionID) const
+{
+    QList<QModelIndex> indexes;
+    for (int i = 0; i < rowCount(); i++) {
+        if (_modelData.at(i).FunctionID == functionID) {
+            indexes.append(index(i, 1));
+        }
+    }
+    return indexes;
 }
 
 // [init]
@@ -174,41 +184,44 @@ void Keybind_TableModel::initModelData() {
     // 初始化数据
     _modelData.clear();
     // _modelData.append(KeybindModelItem{"按键", "功能", "按键唯一标识符", "功能唯一标识符"});
-    _modelData.append(TableStructs::KeybindModelItem{"Y", "死亡重置", "y", "reset_effect_affected_death"});
-    _modelData.append(TableStructs::KeybindModelItem{"NumLock", "一键划刀(轻击)", "numlock", "keep_attack"});
-    _modelData.append(TableStructs::KeybindModelItem{"PgDn", "无功能(\"null\")", "pgdn", "null"});
-    _modelData.append(TableStructs::KeybindModelItem{"End", "无功能(\"null\")", "end", "null"});
-    _modelData.append(TableStructs::KeybindModelItem{"Q", "无功能(\"null\")", "q", "null"});
-    _modelData.append(TableStructs::KeybindModelItem{"W", "无功能(\"null\")", "w", "null"});
-    _modelData.append(TableStructs::KeybindModelItem{"E", "无功能(\"null\")", "e", "null"});
-    _modelData.append(TableStructs::KeybindModelItem{"[!] Null", "无功能(\"null\")", "null", "null"});
-    _modelData.append(TableStructs::KeybindModelItem{"[!] Null", "空功能(\" \")", "null", ""});
-    _modelData.append(TableStructs::KeybindModelItem{"[!] Null", "未知功能(\"\?\")", "null", "unknow"});
-    _modelData.append(TableStructs::KeybindModelItem{"[!] Empty", "无功能(\"null\")", "", "null"});
-    _modelData.append(TableStructs::KeybindModelItem{"[!] Empty", "空功能(\" \")", "", ""});
-    _modelData.append(TableStructs::KeybindModelItem{"[!] Empty", "未知功能(\"\?\")", "", "unknow"});
-    _modelData.append(TableStructs::KeybindModelItem{"[!] Unknow", "无功能(\"null\")", "unknow", "null"});
-    _modelData.append(TableStructs::KeybindModelItem{"[!] Unknow", "空功能(\" \")", "unknow", "" });
-    _modelData.append(TableStructs::KeybindModelItem{"[!] Unknow", "未知功能(\"\?\")", "unknow", "unknow"});
+    //_modelData.append(TableStructs::KeybindModelItem{"Y", "死亡重置", "y", "reset_effect_affected_death"});
+    //_modelData.append(TableStructs::KeybindModelItem{"NumLock", "一键划刀(轻击)", "numlock", "keep_attack"});
+    //_modelData.append(TableStructs::KeybindModelItem{"PgDn", "无功能(\"null\")", "pgdn", "null"});
+    //_modelData.append(TableStructs::KeybindModelItem{"End", "无功能(\"null\")", "end", "null"});
+    //_modelData.append(TableStructs::KeybindModelItem{"Q", "无功能(\"null\")", "q", "null"});
+    //_modelData.append(TableStructs::KeybindModelItem{"W", "无功能(\"null\")", "w", "null"});
+    //_modelData.append(TableStructs::KeybindModelItem{"E", "无功能(\"null\")", "e", "null"});
+    //_modelData.append(TableStructs::KeybindModelItem{"[!] Null", "无功能(\"null\")", "null", "null"});
+    //_modelData.append(TableStructs::KeybindModelItem{"[!] Null", "空功能(\" \")", "null", ""});
+    //_modelData.append(TableStructs::KeybindModelItem{"[!] Null", "未知功能(\"\?\")", "null", "unknow"});
+    //_modelData.append(TableStructs::KeybindModelItem{"[!] Empty", "无功能(\"null\")", "", "null"});
+    //_modelData.append(TableStructs::KeybindModelItem{"[!] Empty", "空功能(\" \")", "", ""});
+    //_modelData.append(TableStructs::KeybindModelItem{"[!] Empty", "未知功能(\"\?\")", "", "unknow"});
+    //_modelData.append(TableStructs::KeybindModelItem{"[!] Unknow", "无功能(\"null\")", "unknow", "null"});
+    //_modelData.append(TableStructs::KeybindModelItem{"[!] Unknow", "空功能(\" \")", "unknow", "" });
+    //_modelData.append(TableStructs::KeybindModelItem{"[!] Unknow", "未知功能(\"\?\")", "unknow", "unknow"});
+    _modelData.append(TableStructs::KeybindItem{ "等待", "等待" });
+    _modelData.append(TableStructs::KeybindItem{ "加载", "加载" });
+    _modelData.append(TableStructs::KeybindItem{ "...", "..." });
 }
 
 void Keybind_TableModel::initHeaderData()
 {
-    // 初始化水平表头数据
+    // 水平表头
     _horHeaderData.clear();
     _horHeaderData.append("按键");
     _horHeaderData.append("功能");
 
-    // 初始化垂直表头数据
+    // 垂直表头
     _verHeaderData.clear();
-    for (int i = 0; i < _modelData.count(); i++) {
+    for (int i = 0; i < rowCount(); i++) {
         _verHeaderData.append(QString::number(i + 1));
     }
 }
 
 void Keybind_TableModel::initConnection()
 {
-    connect(_keybindDB, &Keybind_DB::keyBindUpdated, this, &Keybind_TableModel::updateKeybindMapFromDB);
+    //connect(_keybindDB, &Keybind_DB::keyBindUpdated, this, &Keybind_TableModel::updateKeybindMapFromDB);
     connect(_keybindDB, &Keybind_DB::keyInfoUpdated, this, &Keybind_TableModel::updateKeyAppellationHashFromDB);
     connect(_keybindDB, &Keybind_DB::functionInfoUpdated, this, &Keybind_TableModel::updateFunctionNameHashFromDB);
 
@@ -217,67 +230,51 @@ void Keybind_TableModel::initConnection()
     connect(_keybindDB, &Keybind_DB::functionInfoUpdated, this, &Keybind_TableModel::updateModelData);
 }
 
-// 在 data() 函数中提取并返回_modelData 对应值
-// 在数据发生变化时，使用：
-//     beginResetModel(),
-//     endResetModel(),
-//     beginInsertRows(),
-//     endInsertRows(),
-//     beginRemoveRows(),
-//     endRemoveRows(),
-//     dataChanged()
-// 等信号通知视图更新。
 
 
+// [从数据库更新]
 
-void Keybind_TableModel::updateKeybindMapFromDB()
-{
-    _keybindMap = _keybindDB->getKeyBind();
-}
+//void Keybind_TableModel::updateKeybindMapFromDB()
+//{
+//    _keybindMap = _keybindDB->getKeyBind();
+//}
 
 void Keybind_TableModel::updateKeyAppellationHashFromDB()
 {
+    _keyAppellationHash.clear();
     _keyAppellationHash = _keybindDB->getKeyAppellation();
+    dataChanged(index(0, 0), index(rowCount() - 1, 0));
 }
 
 void Keybind_TableModel::updateFunctionNameHashFromDB()
 {
+    _functionNameHash.clear();
     _functionNameHash = _keybindDB->getFunctionName();
+    dataChanged(index(0, 1), index(rowCount() - 1, 1));
 }
 
 void Keybind_TableModel::updateModelData()
 {
+    _modelData.clear();
     _modelData = _keybindDB->getKeyBindModelData();
     setModelData(_modelData);
-
-    //// 备选方案
-    //QList<TableStructs::KeybindModelItem> modelData;
-    //// 根据_keybindMap按顺序填充modelData
-    //for (auto it = _keybindMap.begin(); it != _keybindMap.end(); ++it) {
-    //    QString key = _keyAppellationHash.value(it.key(), "未知按键");
-    //    QString function = _functionNameHash.value(it.value(), "未知功能");
-    //    modelData.append(TableStructs::KeybindModelItem{ key, function, it.key(), it.value() });
-    //}
-    //setModelData(modelData);
 }
 
-void Keybind_TableModel::setSelectedIndex(const QModelIndex& index)
-{
+
+
+void Keybind_TableModel::setSelectedIndex(const QModelIndex& index) {
     _selectedIndex = index;
 }
 
-void Keybind_TableModel::setHoveredIndex(const QModelIndex& index)
-{
+void Keybind_TableModel::setHoveredIndex(const QModelIndex& index) {
     _hoveredIndex = index;
 }
 
-QModelIndex Keybind_TableModel::getSelectedIndex() const
-{
+QModelIndex Keybind_TableModel::getSelectedIndex() const {
     return _selectedIndex;
 }
 
-QModelIndex Keybind_TableModel::getHoveredIndex() const
-{
+QModelIndex Keybind_TableModel::getHoveredIndex() const {
     return _hoveredIndex;
 }
 
@@ -291,3 +288,66 @@ QModelIndex Keybind_TableModel::getShowIndex() const
     }
     return QModelIndex();
 }
+
+bool Keybind_TableModel::replaceKeybind(const QModelIndex& keyIndex, const QString& functionID)
+{
+    if (!keyIndex.isValid() || keyIndex.row() >= rowCount() || keyIndex.column() >= columnCount()) {
+        return false;
+    }
+
+    TableStructs::KeybindItem item = _modelData.at(keyIndex.row());
+    if (item.FunctionID == functionID) {
+        return false;
+    }
+
+    _keybindUndoStack.push(item);
+    item.FunctionID = functionID;
+    _keybindHistoryQueue.enqueue(item);
+
+    setRowData(keyIndex.row(), item);
+    emit selectedIndexChanged(keyIndex);
+
+    return true;
+}
+
+bool Keybind_TableModel::undoReplaceKeybind()
+{
+    if (_keybindUndoStack.empty()) {
+        return false;
+    }
+
+    TableStructs::KeybindItem item = _keybindUndoStack.pop();
+    _keybindHistoryQueue.enqueue(item);
+
+    QModelIndex index = getIndexByKeyID(item.KeyID);
+    setRowData(index.row(), item);
+    emit selectedIndexChanged(index);
+
+    return true;
+}
+
+// TODO: 缺失错误处理！！！
+bool Keybind_TableModel::appllyReplaceKeybindToDB()
+{
+    // 预处理_keybindHistoryQueue，以避免重复替换
+    QMap<QString, TableStructs::KeybindItem> lastUpdates;
+
+    while (!_keybindHistoryQueue.empty()) {
+        TableStructs::KeybindItem item = _keybindHistoryQueue.dequeue();
+        lastUpdates[item.KeyID] = item; // 这将覆盖同一key_id的先前条目
+    }
+
+    // 遍历lastUpdates，应用替换
+    for (const TableStructs::KeybindItem& item : lastUpdates) {
+        if (!_keybindDB->replaceKeybind(item.KeyID, item.FunctionID)) {
+            _keybindHistoryQueue.clear();
+            updateModelData();
+            qWarning() << "[Keybind_TableModel::appllyReplaceKeybindToDB] replaceKeybind failed! " << item.KeyID <<  ", " << item.FunctionID;
+            qWarning() << "[Keybind_TableModel::appllyReplaceKeybindToDB] start to refresh model data!!!";
+            return false;
+        }
+    }
+
+    return true;
+}
+

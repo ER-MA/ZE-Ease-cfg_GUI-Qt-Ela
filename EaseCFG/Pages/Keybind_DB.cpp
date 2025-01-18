@@ -19,6 +19,18 @@ Keybind_DB::~Keybind_DB()
     closeDatabase(_csConfigDB);
 }
 
+
+bool Keybind_DB::beginTransaction() {
+    return true;
+}
+bool Keybind_DB::commitTransaction() {
+    return true;
+}
+bool Keybind_DB::rollbackTransaction() {
+    return true;
+}
+
+
 void Keybind_DB::initData()
 {
     // 初始化数据库文件路径
@@ -114,29 +126,16 @@ QHash<QString, CSConfigStructs::FunctionInfo> Keybind_DB::getFunctionInfo()
     return dataHash;
 }
 
-QList<TableStructs::KeybindModelItem> Keybind_DB::getKeyBindModelData()
+QList<TableStructs::KeybindItem> Keybind_DB::getKeyBindModelData()
 {
-    QList<TableStructs::KeybindModelItem> dataList;
-    QString sql =
-        "SELECT "
-        "    ki.real_appellation_cn, "
-        "    fi.name_cn, "
-        "    kb.key_id, "
-        "    kb.function_id "
-        "FROM "
-        "    key_bind AS kb "
-        "INNER JOIN "
-        "    key_info AS ki ON kb.key_id = ki.key_id "
-        "INNER JOIN "
-        "    function_info AS fi ON kb.function_id = fi.function_id";
+    QList<TableStructs::KeybindItem> dataList;
+    QString sql = "SELECT key_id, function_id FROM key_bind";
     QSqlQuery query(sql, _csConfigDB);
 
     while (query.next()) {
-        TableStructs::KeybindModelItem item;
-        item.Key = query.value(0).toString();
-        item.Function = query.value(1).toString();
-        item.KeyID = query.value(2).toString();
-        item.FunctionID = query.value(3).toString();
+        TableStructs::KeybindItem item;
+        item.KeyID = query.value("key_id").toString();
+        item.FunctionID = query.value("function_id").toString();
         dataList.append(item);
     }
 
@@ -158,8 +157,51 @@ QList<TableStructs::FunctionModelItem> Keybind_DB::getFunctionInfoModelData()
         item.ParentID = query.value("parent_id").toString();
         functionList.append(item);
     }
-
+    
     return functionList;
+}
+
+bool Keybind_DB::replaceKeybind(const QString& key_id, const QString& function_id)
+{
+    qDebug() << "[Keybind_DB::replaceKeybind] replace keybind: " << key_id << ", " << function_id;
+
+    // 检查数据库中的function_id是否与要替换的function_id相同
+    QString checkSql = "SELECT function_id FROM key_bind WHERE key_id = :key_id";
+    QSqlQuery checkQuery(_csConfigDB);
+    checkQuery.prepare(checkSql);
+    checkQuery.bindValue(":key_id", key_id);
+
+    if (!checkQuery.exec() || !checkQuery.first()) {
+        qWarning() << "[Keybind_DB::replaceKeybind] Failed to check existing functionid:" << checkQuery.lastError().text();
+        return false;
+    }
+
+    QString existingFunctionID = checkQuery.value("function_id").toString();
+
+    if (existingFunctionID == function_id) {
+        qDebug() << "[Keybind_DB::replaceKeybind] No update needed for key_id:" << key_id;
+        return true;
+    }
+
+    QString sql = "UPDATE key_bind SET function_id = :function_id WHERE key_id = :key_id";
+    QSqlQuery query(_csConfigDB);
+    query.prepare(sql);
+    query.bindValue(":function_id", function_id);
+    query.bindValue(":key_id", key_id);
+
+    // 执行SQL语句
+    if (!query.exec()) {
+        qWarning() << "[Keybind_DB::replaceKeybind] Failed to replace keybind:" << query.lastError().text();
+        return false;
+    }
+
+    // 检查是否有行被更新
+    if (query.numRowsAffected() == 0) {
+        qWarning() << "[Keybind_DB::replaceKeybind] No rows affected, key_id may not exist.";
+        return false;
+    }
+
+    return true;
 }
 
 

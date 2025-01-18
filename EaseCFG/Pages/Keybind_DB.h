@@ -25,6 +25,11 @@ signals:
     void keyInfoUpdated();
     void functionInfoUpdated();
 
+public slots:
+    bool beginTransaction();
+    bool commitTransaction();
+    bool rollbackTransaction();
+
 public:
     QMap<QString, QString> getKeyBind();
 
@@ -34,10 +39,10 @@ public:
     QHash<QString, QString> getFunctionName();
     QHash<QString, CSConfigStructs::FunctionInfo> getFunctionInfo();
 
-    QList<TableStructs::KeybindModelItem> getKeyBindModelData();
+    QList<TableStructs::KeybindItem> getKeyBindModelData();
     QList<TableStructs::FunctionModelItem> getFunctionInfoModelData();
 
-
+    bool replaceKeybind(const QString& key_id, const QString& function_id);
 
 private:
     void initData();

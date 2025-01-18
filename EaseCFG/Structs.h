@@ -5,6 +5,11 @@
 
 namespace TableStructs {
 
+    struct KeybindItem {
+        QString KeyID;
+        QString FunctionID;
+    };
+
     struct KeybindModelItem {
         QString Key;
         QString Function;
