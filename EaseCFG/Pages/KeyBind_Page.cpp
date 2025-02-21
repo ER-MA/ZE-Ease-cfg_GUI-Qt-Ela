@@ -184,7 +184,7 @@ void Keybind_Page::createKeyFunctionEditWidget() // [按键功能编辑] ※
     _mousePointFunctionLable = new ElaText(this);
     _mousePointFunctionLable->setText("请选择功能");
     _mousePointFunctionLable->setTextPixelSize(15);
-    _replaceFunctionPushButton = new ElaPushButton("替换当前功能", this);
+    _replaceFunctionPushButton = new ElaPushButton("替换", this);
 
     QWidget* replaceFunctionWidget = new QWidget(this);
     QHBoxLayout* replaceFunctionHLayout = new QHBoxLayout(replaceFunctionWidget);
@@ -272,6 +272,10 @@ void Keybind_Page::createToolBarWidget() // [工具栏] ※
         "KZ 模式" };
     modeComboBox->addItems(comboList);
 
+    _undoButton = new ElaToolButton(this);
+    _undoButton->setFixedSize(35, 35);
+    _undoButton->setIsTransparent(false);
+    _undoButton->setElaIcon(ElaIconType::Reply);
     _saveButton = new ElaPushButton(this);
     _saveButton->setText("保存");
     _writeButton = new ElaPushButton(this);
@@ -282,6 +286,7 @@ void Keybind_Page::createToolBarWidget() // [工具栏] ※
     toolBarHLayout->setContentsMargins(0, 0, 0, 0);
     toolBarHLayout->addWidget(modeComboBox);
     toolBarHLayout->addStretch();
+    toolBarHLayout->addWidget(_undoButton);
     toolBarHLayout->addWidget(_saveButton);
     toolBarHLayout->addWidget(_writeButton);
 }
@@ -369,6 +374,7 @@ void Keybind_Page::initConnect()
     // [EventSignal]
 
     // - PageEvevt
+    connect(_undoButton, &ElaPushButton::clicked, _keybindController, &Keybind_Controller::undoOperation);
     connect(_saveButton, &ElaPushButton::clicked, _keybindController, &Keybind_Controller::saveConfig);
     connect(_writeButton, &ElaPushButton::clicked, _keybindController, &Keybind_Controller::writeConfigFile);
     connect(_replaceFunctionPushButton, &ElaPushButton::clicked, _keybindController, &Keybind_Controller::replaceKeybind);

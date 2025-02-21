@@ -5,6 +5,7 @@
 
 #include "ElaTableView.h"
 #include "ElaTreeView.h"
+#include "ElaToolButton.h"
 #include "ElaPushButton.h"
 #include "ElaImageCard.h"
 
@@ -75,6 +76,7 @@ private:
     QWidget* _keyFunctionEditWidget;
     QWidget* _functionSelectWidget;
 
+    ElaToolButton* _undoButton;
     ElaPushButton* _saveButton;
     ElaPushButton* _writeButton;
     ElaPushButton* _replaceFunctionPushButton;

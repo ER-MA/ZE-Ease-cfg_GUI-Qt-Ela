@@ -29,8 +29,8 @@ public:
     QList<TreeNode*> buildTree();
 
 private:
-    QMap<QString, TreeNode*> nodesByFunctionID;
-    QMap<QString, QList<TreeNode*>> parentChildMap;
+    QHash<QString, TreeNode*> nodesByFunctionID;
+    QHash<QString, QList<TreeNode*>> parentChildMap;
     QList<TreeNode*> rootNodes;
 };
 

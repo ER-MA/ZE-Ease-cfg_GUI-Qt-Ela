@@ -54,11 +54,14 @@ public:
 
     // [Replace Keybind]
 
-    bool replaceKeybind(const QModelIndex& keyIndex, const QString& functionID); // 替换键位
-    bool undoReplaceKeybind(); // 撤销替换键位
-
-    // TODO: 缺失错误处理！！！
+    // 替换按键功能定为指定的功能
+    bool replaceKeybind(const QModelIndex& keyIndex, const QString& functionID);
+    // 撤销上一次的替换
+    bool undoReplaceKeybind();
+    // 将所有修改保存到数据库 (TODO: 缺失错误处理，有时间记得来加！！！)
     bool appllyReplaceKeybindToDB(); // 应用替换键位到数据库
+    // 检查是否还有尚未保存的替换键位
+    bool hasUnsavedReplaceKeybind() const; // 是否有尚未保存的替换键位
 
 signals:
     void selectedIndexChanged(const QModelIndex& index); // 选中单元格索引改变
@@ -69,19 +72,17 @@ public slots:
 private:
     void initModelData(); // 初始化数据存储
     void initHeaderData(); // 初始化表头数据
-    void initConnection(); // 初始化信号连接
+    void initConnection() const; // 初始化信号连接
 
-    //void updateKeybindMapFromDB(); // 更新键位映射表（弃置）
+    //void updateKeybindMapFromDB(); // 更新键位映射表（弃置，由updateModelData替代）
     void updateKeyAppellationHashFromDB(); // 更新键位释义映射表
     void updateFunctionNameHashFromDB(); // 更新功能名称映射表
-
     void updateModelData(); // 更新数据存储
 
-    //QMap<QString, QString> _keybindMap; // 键位映射表
     QHash<QString, QString> _keyAppellationHash; // 键位释义映射表
     QHash<QString, QString> _functionNameHash; // 功能名称映射表
-
     QList<TableStructs::KeybindItem> _modelData; // 数据存储
+
     QList<QString> _horHeaderData; // 水平表头数据
     QList<QString> _verHeaderData; // 垂直表头数据
 
@@ -90,7 +91,6 @@ private:
     QModelIndex _selectedIndex; // 选中单元格索引
     QModelIndex _hoveredIndex; // 鼠标悬停单元格索引
 
-    
     QStack<TableStructs::KeybindItem> _keybindUndoStack; // 替换键位撤销栈
     QQueue<TableStructs::KeybindItem> _keybindHistoryQueue; // 历史操作队列
 };

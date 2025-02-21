@@ -141,6 +141,11 @@ void Keybind_Controller::writeConfigFile()
 }
 */
 
+void Keybind_Controller::undoOperation()
+{
+    _keybindTableModel->undoReplaceKeybind();
+}
+
 void Keybind_Controller::saveConfig()
 {
     _keybindTableModel->appllyReplaceKeybindToDB();
@@ -148,7 +153,8 @@ void Keybind_Controller::saveConfig()
 
 void Keybind_Controller::writeConfigFile()
 {
-    _keybindTableModel->undoReplaceKeybind();
+    // 暂时用于测试函数
+    _keybindTableModel->hasUnsavedReplaceKeybind();
 }
 
 void Keybind_Controller::replaceKeybind()

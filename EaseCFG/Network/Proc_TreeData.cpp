@@ -9,8 +9,7 @@ Proc_TreeData::~Proc_TreeData()
 {
     qDeleteAll(rootNodes);
     rootNodes.clear();
-    nodesByFunctionID.clear();
-    parentChildMap.clear();
+    // 这里的清理语句有待考究
 }
 
 void Proc_TreeData::addNode(const QString& name, const QString& functionID, const QString& parentID) {

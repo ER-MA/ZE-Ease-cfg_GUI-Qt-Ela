@@ -20,6 +20,8 @@ Keybind_TableModel::~Keybind_TableModel()
     _modelData.clear();
 }
 
+// ovwerride
+
 // [ItemData]
 
 bool Keybind_TableModel::setData(const QModelIndex& index, const QVariant& value, int role)
@@ -183,23 +185,6 @@ QList<QModelIndex> Keybind_TableModel::getIndexByFunctionID(const QString& funct
 void Keybind_TableModel::initModelData() {
     // 初始化数据
     _modelData.clear();
-    // _modelData.append(KeybindModelItem{"按键", "功能", "按键唯一标识符", "功能唯一标识符"});
-    //_modelData.append(TableStructs::KeybindModelItem{"Y", "死亡重置", "y", "reset_effect_affected_death"});
-    //_modelData.append(TableStructs::KeybindModelItem{"NumLock", "一键划刀(轻击)", "numlock", "keep_attack"});
-    //_modelData.append(TableStructs::KeybindModelItem{"PgDn", "无功能(\"null\")", "pgdn", "null"});
-    //_modelData.append(TableStructs::KeybindModelItem{"End", "无功能(\"null\")", "end", "null"});
-    //_modelData.append(TableStructs::KeybindModelItem{"Q", "无功能(\"null\")", "q", "null"});
-    //_modelData.append(TableStructs::KeybindModelItem{"W", "无功能(\"null\")", "w", "null"});
-    //_modelData.append(TableStructs::KeybindModelItem{"E", "无功能(\"null\")", "e", "null"});
-    //_modelData.append(TableStructs::KeybindModelItem{"[!] Null", "无功能(\"null\")", "null", "null"});
-    //_modelData.append(TableStructs::KeybindModelItem{"[!] Null", "空功能(\" \")", "null", ""});
-    //_modelData.append(TableStructs::KeybindModelItem{"[!] Null", "未知功能(\"\?\")", "null", "unknow"});
-    //_modelData.append(TableStructs::KeybindModelItem{"[!] Empty", "无功能(\"null\")", "", "null"});
-    //_modelData.append(TableStructs::KeybindModelItem{"[!] Empty", "空功能(\" \")", "", ""});
-    //_modelData.append(TableStructs::KeybindModelItem{"[!] Empty", "未知功能(\"\?\")", "", "unknow"});
-    //_modelData.append(TableStructs::KeybindModelItem{"[!] Unknow", "无功能(\"null\")", "unknow", "null"});
-    //_modelData.append(TableStructs::KeybindModelItem{"[!] Unknow", "空功能(\" \")", "unknow", "" });
-    //_modelData.append(TableStructs::KeybindModelItem{"[!] Unknow", "未知功能(\"\?\")", "unknow", "unknow"});
     _modelData.append(TableStructs::KeybindItem{ "等待", "等待" });
     _modelData.append(TableStructs::KeybindItem{ "加载", "加载" });
     _modelData.append(TableStructs::KeybindItem{ "...", "..." });
@@ -219,7 +204,7 @@ void Keybind_TableModel::initHeaderData()
     }
 }
 
-void Keybind_TableModel::initConnection()
+void Keybind_TableModel::initConnection() const
 {
     //connect(_keybindDB, &Keybind_DB::keyBindUpdated, this, &Keybind_TableModel::updateKeybindMapFromDB);
     connect(_keybindDB, &Keybind_DB::keyInfoUpdated, this, &Keybind_TableModel::updateKeyAppellationHashFromDB);
@@ -233,11 +218,6 @@ void Keybind_TableModel::initConnection()
 
 
 // [从数据库更新]
-
-//void Keybind_TableModel::updateKeybindMapFromDB()
-//{
-//    _keybindMap = _keybindDB->getKeyBind();
-//}
 
 void Keybind_TableModel::updateKeyAppellationHashFromDB()
 {
@@ -260,7 +240,7 @@ void Keybind_TableModel::updateModelData()
     setModelData(_modelData);
 }
 
-
+// [Mouse Event]
 
 void Keybind_TableModel::setSelectedIndex(const QModelIndex& index) {
     _selectedIndex = index;
@@ -326,7 +306,6 @@ bool Keybind_TableModel::undoReplaceKeybind()
     return true;
 }
 
-// TODO: 缺失错误处理！！！
 bool Keybind_TableModel::appllyReplaceKeybindToDB()
 {
     // 预处理_keybindHistoryQueue，以避免重复替换
@@ -334,10 +313,10 @@ bool Keybind_TableModel::appllyReplaceKeybindToDB()
 
     while (!_keybindHistoryQueue.empty()) {
         TableStructs::KeybindItem item = _keybindHistoryQueue.dequeue();
-        lastUpdates[item.KeyID] = item; // 这将覆盖同一key_id的先前条目
+        lastUpdates[item.KeyID] = item; // 覆盖同一 key_id 的先前条目
     }
 
-    // 遍历lastUpdates，应用替换
+    // 遍历 lastUpdates，将替换写入数据库
     for (const TableStructs::KeybindItem& item : lastUpdates) {
         if (!_keybindDB->replaceKeybind(item.KeyID, item.FunctionID)) {
             _keybindHistoryQueue.clear();
@@ -349,5 +328,10 @@ bool Keybind_TableModel::appllyReplaceKeybindToDB()
     }
 
     return true;
+}
+
+bool Keybind_TableModel::hasUnsavedReplaceKeybind() const
+{
+    return !_keybindHistoryQueue.isEmpty();
 }
 
