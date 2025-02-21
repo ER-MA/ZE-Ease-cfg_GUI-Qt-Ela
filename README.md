@@ -4,6 +4,10 @@
 
 ![服务器列表界面](doc/GUI-ServerPage.png)
 
+## 按键绑定-界面预览
+
+![按键绑定界面](doc/GUI-KeybindPage.png)
+
 ## 软件功能一览
 
 - 服务器列表 
