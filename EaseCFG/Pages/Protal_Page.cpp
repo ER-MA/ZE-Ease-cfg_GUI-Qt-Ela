@@ -1,13 +1,19 @@
 #include "Protal_Page.h"
 
+#include <QDebug>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QDesktopServices>
+#include <QString>
+#include <QUrl>
 
 #include "ElaText.h"
 #include "ElaImageCard.h"
 #include "ElaAcrylicUrlCard.h"
 #include "ElaToolTip.h"
 #include "ElaScrollArea.h"
+#include "ElaPopularCard.h"
+#include "ElaFlowLayout.h"
 
 Protal_Page::Protal_Page(QWidget *parent) :
     Page_BasePage(parent)
@@ -21,12 +27,43 @@ void Protal_Page::InitializeUI()
 {
     setWindowTitle("Protal Page"); // 窗口标题
     setContentsMargins(2, 2, 0, 7);
+    setTitleVisible(false); // 隐藏标题栏
+    QWidget* centralWidget = new QWidget(this);
+    centralWidget->setWindowTitle("社区门户");
 
+    QVBoxLayout* centerVLayout = new QVBoxLayout(centralWidget);
+    centerVLayout->setContentsMargins(0, 0, 0, 0);
+    centerVLayout->addWidget(createTopComponent(this));
+    centerVLayout->addSpacing(10);
+    centerVLayout->addLayout(createMiddleComponent(this));
+    centerVLayout->addStretch();
 
-    // 标题卡片区域
-    ElaText* desText = new ElaText("欢迎来到CSGO社区集散地", this);
+    this->addCentralWidget(centralWidget, true, true, 0); // 第三个参数为：是否启用手势滚动
+}
+
+void Protal_Page::InitializeData()
+{
+
+}
+
+void Protal_Page::InitializeConnect()
+{
+
+}
+
+ElaImageCard* Protal_Page::createTopComponent(QWidget* parent)
+{
+    // - 背景
+    ElaImageCard* backgroundCard = new ElaImageCard(parent);
+    backgroundCard->setBorderRadius(10);
+    backgroundCard->setFixedHeight(320);
+    backgroundCard->setMaximumAspectRatio(1.7);
+    backgroundCard->setCardImage(QImage(":/Resource/Image/Home_Background.png"));
+
+    // - 标题
+    ElaText* desText = new ElaText("欢迎来到CSGO社区集散地", parent);
     desText->setTextPixelSize(18);
-    ElaText* titleText = new ElaText("社区主页", this);
+    ElaText* titleText = new ElaText("社区主页", parent);
     titleText->setTextPixelSize(35);
 
     QVBoxLayout* titleLayout = new QVBoxLayout();
@@ -34,12 +71,22 @@ void Protal_Page::InitializeUI()
     titleLayout->addWidget(desText);
     titleLayout->addWidget(titleText);
 
-    ElaImageCard* backgroundCard = new ElaImageCard(this);
-    backgroundCard->setBorderRadius(10);
-    backgroundCard->setFixedHeight(320);
-    backgroundCard->setMaximumAspectRatio(1.7);
-    backgroundCard->setCardImage(QImage(":/Resource/Image/Home_Background.png"));
+    // - 链接卡片
 
+    QWidget* cardScrollAreaWidget = new QWidget(parent);
+    cardScrollAreaWidget->setStyleSheet("background-color:transparent;");
+
+    ElaScrollArea* cardScrollArea = new ElaScrollArea(parent);
+    cardScrollArea->setWidgetResizable(true);
+    cardScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    cardScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    cardScrollArea->setIsGrabGesture(true, 0);  // 启用手势滚动
+    cardScrollArea->setIsOverShoot(Qt::Horizontal, true); // 允许水平过冲
+    cardScrollArea->setWidget(cardScrollAreaWidget);
+
+    QHBoxLayout* urlCardLayout = new QHBoxLayout();
+    urlCardLayout->setSpacing(15);
+    urlCardLayout->setContentsMargins(30, 0, 30, 10);
     QList<UrlCardParams> params = {
         {
             "ExG 社区",
@@ -112,57 +159,110 @@ void Protal_Page::InitializeUI()
             "访问B站主页"
         }
     };
-    QList<ElaAcrylicUrlCard*> urlCards = createUrlCards(this, params);
-
-    ElaScrollArea* cardScrollArea = new ElaScrollArea(this);
-    cardScrollArea->setWidgetResizable(true);
-    cardScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    cardScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    cardScrollArea->setIsGrabGesture(true, 0);  // 启用手势滚动
-    cardScrollArea->setIsOverShoot(Qt::Horizontal, true); // 允许水平过冲
-    cardScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // 显示滚动条
-    QWidget* cardScrollAreaWidget = new QWidget(this);
-    cardScrollAreaWidget->setStyleSheet("background-color:transparent;");
-    cardScrollArea->setWidget(cardScrollAreaWidget);
-    QHBoxLayout* urlCardLayout = new QHBoxLayout();
-    urlCardLayout->setSpacing(15);
-    urlCardLayout->setContentsMargins(30, 0, 30, 20);
+    QList<ElaAcrylicUrlCard*> urlCards = createUrlCards(parent, params);
     for (auto card : urlCards) {
         urlCardLayout->addWidget(card);
     }
     urlCardLayout->addStretch();
+
     QVBoxLayout* cardScrollAreaWidgetLayout = new QVBoxLayout(cardScrollAreaWidget);
     cardScrollAreaWidgetLayout->setContentsMargins(0, 0, 0, 0);
     cardScrollAreaWidgetLayout->addStretch();
     cardScrollAreaWidgetLayout->addLayout(urlCardLayout);
 
+    // 标题卡片区域
     QVBoxLayout* backgroundLayout = new QVBoxLayout(backgroundCard);
     backgroundLayout->setContentsMargins(0, 0, 0, 0);
     backgroundLayout->addLayout(titleLayout);
     backgroundLayout->addWidget(cardScrollArea);
 
-
-    setTitleVisible(false); // 隐藏标题栏
-    QWidget* centralWidget = new QWidget(this);
-    centralWidget->setWindowTitle("Protal Page111");
-
-    QVBoxLayout* centerVLayout = new QVBoxLayout(centralWidget);
-    centerVLayout->setContentsMargins(0, 0, 0, 0);
-    centerVLayout->addWidget(backgroundCard);
-    centerVLayout->addSpacing(20);
-    centerVLayout->addStretch();
-
-    this->addCentralWidget(centralWidget, true, true, 0); // 第三个参数为：是否启用手势滚动
+    return backgroundCard;
 }
 
-void Protal_Page::InitializeData()
+QVBoxLayout* Protal_Page::createMiddleComponent(QWidget* parent)
 {
+    // - 标题
+    ElaText* flowText = new ElaText("开启你的社区旅途", parent);
+    flowText->setTextPixelSize(20);
+    QHBoxLayout* flowTextLayout = new QHBoxLayout();
+    flowTextLayout->setContentsMargins(20, 0, 0, 0);
+    flowTextLayout->addWidget(flowText);
 
-}
+    // - 推荐卡片
+    QList<PopularCardParams> params = {
+        {
+            "服务器列表",
+            "👉 点我寻找服务器",
+            "本地工具",
+            ":/Resource/Image/control/ListView.png",
+            "在这里选择你喜欢的服务器，一键加入游戏。支持地图查询和订阅哦！",
+            "跳转",
+            ":/Resource/Image/IARC/IARC_12+.svg.png",
+            [this]() {
+                Q_EMIT pageServerListNavigation();
+            }
+        },
+        {
+            "按键绑定",
+            "💪 想成为高手吗？点我",
+            "本地工具",
+            ":/Resource/Image/control/AppBarSeparator.png",
+            "目前最为强大的CSGO按键绑定工具，提供了多数社区的所有常用和进阶功能。傻瓜式配置，简单易用。",
+            "跳转",
+            ":/Resource/Image/IARC/IARC_12+.svg.png",
+            [this]() {
+                Q_EMIT pageKeyBindNavigation();
+            }
+        },
+        {
+            "联系作者",
+            "💬 有什么疑问？点这",
+            "网页链接",
+            ":/Resource/Image/control/AutomationProperties.png",
+            "有什么疑问或者建议吗？欢迎来我B站主页与我联系。",
+            "前往",
+            ":/Resource/Image/IARC/IARC_12+.svg.png",
+            QUrl("https://space.bilibili.com/624753909")
+        },
+        {
+            "加入我们",
+            "⭐ 裘裘了！点个Start吧",
+            "网页链接",
+            ":/Resource/Image/control/Flyout.png",
+            "我们需要你的帮助！欢迎加入我们，一起完善它。这是Github仓库链接，本项目完全开源哦~",
+            "前往",
+            ":/Resource/Image/IARC/IARC_12+.svg.png",
+            QUrl("https://github.com/ER-MA/ZE-Ease-cfg_GUI-Qt-Ela")
+        },
+        {
+            "Placeholder",
+            "🌐 subtitle",
+            "Tips",
+            ":/Resource/Image/control/AppBarButton.png",
+            "Detail text...",
+            "Button",
+            ":/Resource/Image/IARC/IARC_18+.svg.png",
+            [this]() {
+                qDebug() << "[PopularCard:Placeholder] Clicked";
+            }
+        }
+    };
+    QList<ElaPopularCard*> popCards = createPopularCards(parent, params);
 
-void Protal_Page::InitializeConnect()
-{
+    ElaFlowLayout* flowLayout = new ElaFlowLayout(0, 5, 5);
+    flowLayout->setContentsMargins(25, 0, 0, 0);
+    flowLayout->setIsAnimation(true);
+    for (auto card : popCards) {
+        flowLayout->addWidget(card);
+    }
 
+    // 推荐卡片区域
+    QVBoxLayout* middleLayout = new QVBoxLayout();
+    middleLayout->setContentsMargins(0, 0, 0, 0);
+    middleLayout->addLayout(flowTextLayout);
+    middleLayout->addLayout(flowLayout);
+
+    return middleLayout;
 }
 
 QList<ElaAcrylicUrlCard*> Protal_Page::createUrlCards(QWidget* parent, const QList<UrlCardParams>& params)
@@ -196,6 +296,50 @@ QList<ElaAcrylicUrlCard*> Protal_Page::createUrlCards(QWidget* parent, const QLi
         // 添加悬浮提示
         ElaToolTip* tooltip = new ElaToolTip(card);
         tooltip->setToolTip(param.tooltip);
+
+        cards.append(card);
+    }
+
+    return cards;
+}
+
+QList<ElaPopularCard*> Protal_Page::createPopularCards(QWidget* parent, const QList<PopularCardParams>& params)
+{
+    QList<ElaPopularCard*> cards;
+
+    for (const auto& param : params) {
+        ElaPopularCard* card = new ElaPopularCard(parent);
+
+        qDebug() << "创建卡片：" << param.title;
+        // 设置基础参数
+        card->setBorderRadius(8);
+        card->setTitle(param.title);
+        card->setSubTitle(param.subtitle);
+        card->setInteractiveTips(param.interactiveTips);
+        card->setDetailedText(param.detailedText);
+        card->setCardButtontext(param.buttonText);
+        card->setCardPixmap(QPixmap(param.imagePath));
+        card->setCardFloatPixmap(QPixmap(param.floatImagePath));
+
+        // 设置交互行为
+        std::visit([card, parent](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
+
+            if constexpr (std::is_same_v<T, std::function<void()>>) {
+                // 通用回调模式
+                QObject::connect(card, &ElaPopularCard::popularCardButtonClicked, parent, arg);
+                QObject::connect(card, &ElaPopularCard::popularCardClicked, parent, arg);
+            }
+            else if constexpr (std::is_same_v<T, QUrl>) {
+                // 直接打开URL
+                QObject::connect(card, &ElaPopularCard::popularCardButtonClicked, parent, [url = arg]() {
+                    QDesktopServices::openUrl(url);
+                });
+                QObject::connect(card, &ElaPopularCard::popularCardClicked, parent, [url = arg]() {
+                    QDesktopServices::openUrl(url);
+                });
+            }
+        }, param.action);
 
         cards.append(card);
     }

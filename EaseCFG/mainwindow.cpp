@@ -27,8 +27,6 @@ MainWindow::MainWindow(QWidget* parent)
     initCloseDialog();  // 退出窗口配置
     initConnections();  // 连接信号槽
 
-    updateCurrentPage(_serverListPageKey);  // 修复初始化的Page不会触发navigationNodeClicked信号的问题
-
     testFunc();  // 测试函数
 }
 
@@ -127,52 +125,37 @@ void MainWindow::initConnections()
 
     // 用户卡片被点击时
     connect(this, &MainWindow::userInfoCardClicked, this, [=]() {
-        this->navigation(_serverListPageKey);
+        this->navigation(_protalPageKey);
     });
     // 导航栏页面或页脚节点被点击时触发的信号
     connect(this, &ElaWindow::navigationNodeClicked, this, [=](ElaNavigationType::NavigationNodeType nodeType, QString nodeKey) {
-        //qDebug() << "nodeType：" << nodeType << "，nodeKey：" << nodeKey;
-        if (_protalPageKey == nodeKey)
-        {
-            //qDebug() << "[MainWindow] 切换到主页页面";
-            updateCurrentPage(_protalPageKey);
-        }
-        if (_promotionPageKey == nodeKey)
-        {
-            //qDebug() << "[MainWindow] 切换到推广页面";
-            updateCurrentPage(_promotionPageKey);
-        }
-        if (_serverListPageKey == nodeKey)
-        {
-            //qDebug() << "[MainWindow] 切换到服务器页面";
-            updateCurrentPage(_serverListPageKey);
-        }
-        if (_keyBindPageKey == nodeKey)
-        {
-            //qDebug() << "[MainWindow] 切换到按键绑定页面";
-            updateCurrentPage(_keyBindPageKey);
-        }
+        updateCurrentPage(nodeKey);  // 更新当前页面
+
         if (_aboutPageKey == nodeKey)
         {
-            //qDebug() << "[MainWindow] 切换到关于页面";
-            updateCurrentPage(_aboutPageKey);
+            // 关于页面被点击时
             _aboutPage->setFixedSize(400, 400);
-            QRect rect = this->geometry(); // 包括标题栏和边框
-            //QRect rect = this->rect(); // 仅客户区
+            QRect rect = this->geometry(); // 包括标题栏和边框（还可使用rect()仅客户区）
             int x = this->x() + (rect.width() - _aboutPage->width()) / 2;
             int y = this->y() + (rect.height() - _aboutPage->height()) / 2;
             _aboutPage->move(x, y); // 设置关于页面的位置，位于窗口中心
             _aboutPage->show();
         }
-        if (_settingPageKey == nodeKey)
-        {
-            //qDebug() << "[MainWindow] 切换到设置页面";
-            updateCurrentPage(_settingPageKey);
-        }
     });
 
-    this->navigation("");
-
+    this->navigation(_protalPageKey); // 初始化导航到主页
+    /* 待链接信号：
+    Q_SIGNAL void pageProtalNavigation();
+    Q_SIGNAL void pagePromotionNavigation();
+    Q_SIGNAL void pageServerListNavigation();
+    Q_SIGNAL void pageKeyBindNavigation();
+    Q_SIGNAL void pageSettingNavigation();
+    */
+    connect(_protalPage, &Protal_Page::pageProtalNavigation, this, [=]() {this->navigation(_protalPageKey); });
+    connect(_protalPage, &Protal_Page::pagePromotionNavigation, this, [=]() {this->navigation(_promotionPageKey); });
+    connect(_protalPage, &Protal_Page::pageServerListNavigation, this, [=]() {this->navigation(_serverListPageKey); });
+    connect(_protalPage, &Protal_Page::pageKeyBindNavigation, this, [=]() {this->navigation(_keyBindPageKey); });
+    connect(_protalPage, &Protal_Page::pageSettingNavigation, this, [=]() {this->navigation(_settingPageKey); });
 
     // 注册事件
     qDebug() << "[MainWindow::initConnections] 已注册的事件列表:" << ElaEventBus::getInstance()->getRegisteredEventsName();
@@ -182,12 +165,8 @@ void MainWindow::initConnections()
 // 更新所处页面
 void MainWindow::updateCurrentPage(QString pageKey)
 {
-    // 仅当pageKey有效时才进行处理
-    if (pageKey == _serverListPageKey || pageKey == _keyBindPageKey || pageKey == _settingPageKey)
-    {
-        qDebug() << "[MainWindow::updateCurrentPage] 页面" << pageKey << "为当前主窗口";
-        emit currentPageChanged(pageKey);
-    }
+   qDebug() << "[MainWindow::updateCurrentPage] 页面" << pageKey << "为当前主窗口";
+   emit currentPageChanged(pageKey);
 }
 
 void MainWindow::testFunc()
