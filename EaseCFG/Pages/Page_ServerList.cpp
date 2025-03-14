@@ -30,10 +30,8 @@ Page_ServerList::~Page_ServerList()
 void Page_ServerList::initUI()
 {
     setWindowTitle("Server List");  // 窗口标题
-    //setTitleVisible(false);  // 隐藏标题栏
+    setTitleVisible(true);  // 标题栏是否可见
     setContentsMargins(20, 20, 20, 7);
-
-    createCustomWidget("选择服务器后加入游戏，或复制服务器地址自行输入控制台加入游戏");
 
 
     // toolBarWidget(工具栏)
@@ -98,7 +96,7 @@ void Page_ServerList::initUI()
     _serverTableView->setSelectionMode(QAbstractItemView::SingleSelection);  // 设置为仅单行选择
     _serverTableView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);  // 大小策略为扩展
     connect(_serverTableView, &ElaTableView::tableViewShow, this, [=]() {
-        _serverTableView->setColumnWidth(0, 100);
+        _serverTableView->setColumnWidth(0, 135);
         _serverTableView->setColumnWidth(1, 300);
         _serverTableView->setColumnWidth(2, 300);
         _serverTableView->setColumnWidth(3, 100);
@@ -106,6 +104,7 @@ void Page_ServerList::initUI()
 
 
     // centralWidget(中心窗口)
+    createCustomWidget("选择服务器后加入游戏，或复制服务器地址自行输入控制台加入游戏");
     QWidget* centralWidget = new QWidget(this);
     centralWidget->setWindowTitle("加入服务器");
     this->addCentralWidget(centralWidget, true, false, 0);

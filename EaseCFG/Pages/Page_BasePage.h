@@ -1,7 +1,8 @@
-#ifndef PAGE_BASEPAGE_H
-#define PAGE_BASEPAGE_H
+#ifndef PAGE_BASE_PAGE_H
+#define PAGE_BASE_PAGE_H
 
 #include <ElaScrollPage.h>
+
 
 class QVBoxLayout;
 class Page_BasePage : public ElaScrollPage
@@ -11,15 +12,9 @@ public:
     explicit Page_BasePage(QWidget* parent = nullptr);
     ~Page_BasePage();
 
-private:
-    QString subTitle;
-    QString description;
-    void setSubTitleText(QString subTitle);
-    void setDescText(QString description);
-
 protected:
-    void createCustomWidget(QString description = "This is a Description");
-    //virtual void paintEvent(QPaintEvent* event) override;
+    void createCustomWidget(QString descriptionText);
 };
 
-#endif // Page_BasePage_H
+
+#endif // PAGE_BASE_PAGE_H

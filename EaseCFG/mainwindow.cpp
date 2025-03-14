@@ -8,6 +8,9 @@
 #include "ElaContentDialog.h"
 #include "ElaEventBus.h"
 #include "ElaLog.h"
+
+#include "Protal_Page.h"
+#include "Promotion_Page.h"
 #include "Page_ServerList.h"
 #include "Keybind_Page.h"
 #include "T_About.h"
@@ -74,13 +77,20 @@ void MainWindow::initWindow()
 void MainWindow::initContent()
 {
     // 左侧导航栏主栏目
+    _protalPage = new Protal_Page(this);
+    _promotionPage = new Promotion_Page(this);
     _serverListPage = new Page_ServerList(this);
     _keyBindPage = new Keybind_Page(this);
 
+    addPageNode("主页", _protalPage, ElaIconType::House);
+    addPageNode("推广", _promotionPage, ElaIconType::GlobePointer);
     addPageNode("服务器", _serverListPage, ElaIconType::Server);
     addPageNode("按键绑定", _keyBindPage, ElaIconType::Keyboard);
 
-    _serverListPageKey = _serverListPage->property("ElaPageKey").toString();  // 获取页面的唯一标识符
+    // 获取页面的唯一标识符（用于导航栏和页脚节点的标识）
+    _protalPageKey = _protalPage->property("ElaPageKey").toString();
+    _promotionPageKey = _promotionPage->property("ElaPageKey").toString();
+    _serverListPageKey = _serverListPage->property("ElaPageKey").toString();
     _keyBindPageKey = _keyBindPage->property("ElaPageKey").toString();
 
     // 左侧导航栏底栏目
@@ -122,6 +132,16 @@ void MainWindow::initConnections()
     // 导航栏页面或页脚节点被点击时触发的信号
     connect(this, &ElaWindow::navigationNodeClicked, this, [=](ElaNavigationType::NavigationNodeType nodeType, QString nodeKey) {
         //qDebug() << "nodeType：" << nodeType << "，nodeKey：" << nodeKey;
+        if (_protalPageKey == nodeKey)
+        {
+            //qDebug() << "[MainWindow] 切换到主页页面";
+            updateCurrentPage(_protalPageKey);
+        }
+        if (_promotionPageKey == nodeKey)
+        {
+            //qDebug() << "[MainWindow] 切换到推广页面";
+            updateCurrentPage(_promotionPageKey);
+        }
         if (_serverListPageKey == nodeKey)
         {
             //qDebug() << "[MainWindow] 切换到服务器页面";

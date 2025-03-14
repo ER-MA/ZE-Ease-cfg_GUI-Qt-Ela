@@ -34,6 +34,7 @@ signals:
 public slots:
     // [EventSlot]
     // - PageEvent
+    void testOperation(); // 测试操作
     void undoOperation(); // 撤销操作
     void saveConfig(); // 保存配置文件
     void writeConfigFile(); // 写入配置文件

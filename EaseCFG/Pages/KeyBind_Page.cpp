@@ -45,10 +45,7 @@ Keybind_Page::~Keybind_Page()
 void Keybind_Page::initUI()
 {
     setWindowTitle("Key Bind"); // 窗口标题
-    //setTitleVisible(false); // 隐藏标题栏
     setContentsMargins(20, 20, 20, 7);
-
-    createCustomWidget("你可以在这里为按键分配功能; 你还可以添加多套按键配置, 以便游戏内随时切换 (v0.9)");
 
     // CentralWidget
     // ├── ToolBarWidget
@@ -272,6 +269,9 @@ void Keybind_Page::createToolBarWidget() // [工具栏] ※
         "KZ 模式" };
     modeComboBox->addItems(comboList);
 
+    _testButton = new ElaToolButton(this);
+    _testButton->setFixedSize(35, 35);
+    _testButton->setElaIcon(ElaIconType::Bug);
     _undoButton = new ElaToolButton(this);
     _undoButton->setFixedSize(35, 35);
     _undoButton->setIsTransparent(false);
@@ -286,6 +286,7 @@ void Keybind_Page::createToolBarWidget() // [工具栏] ※
     toolBarHLayout->setContentsMargins(0, 0, 0, 0);
     toolBarHLayout->addWidget(modeComboBox);
     toolBarHLayout->addStretch();
+    toolBarHLayout->addWidget(_testButton);
     toolBarHLayout->addWidget(_undoButton);
     toolBarHLayout->addWidget(_saveButton);
     toolBarHLayout->addWidget(_writeButton);
@@ -293,8 +294,10 @@ void Keybind_Page::createToolBarWidget() // [工具栏] ※
 
 void Keybind_Page::setupCentralWidget() // [中心窗口] 布局
 {
+    setTitleVisible(true); // 标题栏是否可见
+    createCustomWidget("你可以在这里为按键分配功能; 你还可以添加多套按键配置, 以便游戏内随时切换 (v0.9)");
     QWidget* centralWidget = new QWidget(this);
-    centralWidget->setWindowTitle("按键配置");
+    centralWidget->setWindowTitle("按键绑定");
     this->addCentralWidget(centralWidget, true, false, 0);
     QVBoxLayout* centerVLayout = new QVBoxLayout(centralWidget);
     centerVLayout->setContentsMargins(0, 0, 0, 0);
@@ -336,6 +339,7 @@ void Keybind_Page::initData()
     _keybindTableModel = new Keybind_TableModel(_keybindDB, this);
     _keybindPageModel = new Keybind_PageModel(_keybindDB, this);
     _keybindTreeModel = new Keybind_TreeModel(_keybindDB, this);
+    _cfgFileProcessor = new Proc_CFGFile(_keybindDB, this);
 
     _keybindTableView->setModel(_keybindTableModel); // 设置表格模型
     applyTableModelDepenedentSettings(); // 进一步设置表格样式
@@ -374,6 +378,7 @@ void Keybind_Page::initConnect()
     // [EventSignal]
 
     // - PageEvevt
+    connect(_testButton, &ElaPushButton::clicked, _keybindController, &Keybind_Controller::testOperation);
     connect(_undoButton, &ElaPushButton::clicked, _keybindController, &Keybind_Controller::undoOperation);
     connect(_saveButton, &ElaPushButton::clicked, _keybindController, &Keybind_Controller::saveConfig);
     connect(_writeButton, &ElaPushButton::clicked, _keybindController, &Keybind_Controller::writeConfigFile);
@@ -391,11 +396,6 @@ void Keybind_Page::initConnect()
     // [Signal-Slot]
 
     // - PageUI
-    connect(_keybindController, &Keybind_Controller::keyInfoUpdated, this, [this](QString StandardName, QString Description, QString Name) {
-        _selectedKeyNameLable->setText(StandardName);
-        _selectedKeyIntroLable->setText("(" + Description + ")");
-        _currentFunctionNameLable->setText(Name);
-    });
 
     connect(_keybindPageModel, &Keybind_PageModel::keybindInfoUpdated, this, [this](QString keyAppellation, QString keyLabelContent, QString keyDescription, QString functionName) {
         _selectedKeyNameLable->setText(keyAppellation);

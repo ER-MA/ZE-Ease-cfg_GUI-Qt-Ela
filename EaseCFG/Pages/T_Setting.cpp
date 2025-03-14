@@ -20,8 +20,6 @@ T_Setting::T_Setting(QWidget* parent)
 {
     setContentsMargins(20, 20, 20, 7);
 
-    createCustomWidget("修改软件主题，调整软件默认设置");
-
     // 预览窗口标题
     ElaWindow* window = dynamic_cast<ElaWindow*>(parent);
     setWindowTitle("软件设置");
@@ -131,8 +129,11 @@ T_Setting::T_Setting(QWidget* parent)
         window->setNavigationBarDisplayMode(ElaNavigationType::Auto);
     });
 
+
+    setTitleVisible(true); // 标题栏是否可见
+    createCustomWidget("修改软件主题，调整软件默认设置");
     QWidget* centralWidget = new QWidget(this);
-    centralWidget->setWindowTitle("Setting");
+    centralWidget->setWindowTitle("设置");
     QVBoxLayout* centerLayout = new QVBoxLayout(centralWidget);
     centerLayout->addSpacing(30);
     centerLayout->addWidget(themeText);

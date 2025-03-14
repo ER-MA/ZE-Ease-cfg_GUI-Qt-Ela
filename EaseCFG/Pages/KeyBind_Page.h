@@ -17,6 +17,7 @@
 #include "Keybind_TableModel.h"
 #include "Keybind_TreeModel.h"
 #include "Keybind_Controller.h"
+#include "Proc_CFGFile.h"
 
 class ElaComboBox;
 class Keybind_Page : public Page_BasePage
@@ -69,6 +70,8 @@ private:
     ElaText* _functionDetailsNoteTitleLabel;
     ElaText* _functionDetailsNoteLabel;
 
+    Proc_CFGFile* _cfgFileProcessor;
+
     Ovr_ElaTableView* _keybindTableView;
     Ovr_ElaTreeView* _functionTreeView;
     QWidget* _toolBarWidget;
@@ -76,6 +79,7 @@ private:
     QWidget* _keyFunctionEditWidget;
     QWidget* _functionSelectWidget;
 
+    ElaToolButton* _testButton;
     ElaToolButton* _undoButton;
     ElaPushButton* _saveButton;
     ElaPushButton* _writeButton;

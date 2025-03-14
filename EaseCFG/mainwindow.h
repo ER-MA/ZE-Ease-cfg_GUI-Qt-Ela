@@ -7,6 +7,8 @@
 #include "ElaWindow.h"
 
 
+class Protal_Page;
+class Promotion_Page;
 class Page_ServerList;
 class Keybind_Page;
 class T_About;
@@ -32,11 +34,15 @@ signals: // 信号
     void currentPageChanged(QString pageKey);
 
 private:
+    Protal_Page* _protalPage{nullptr};
+    Promotion_Page* _promotionPage{nullptr};
     Keybind_Page* _keyBindPage{nullptr};
     Page_ServerList* _serverListPage{nullptr};
     T_About* _aboutPage{nullptr};
     T_Setting* _settingPage{nullptr};
 
+    QString _protalPageKey{""};
+    QString _promotionPageKey{""};
     QString _serverListPageKey{""};
     QString _keyBindPageKey{""};
     QString _aboutPageKey{""};

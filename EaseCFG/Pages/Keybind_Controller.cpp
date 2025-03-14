@@ -141,6 +141,11 @@ void Keybind_Controller::writeConfigFile()
 }
 */
 
+void Keybind_Controller::testOperation()
+{
+    qDebug("[Keybind_Controller::testOperation] Triggered test operation.");
+}
+
 void Keybind_Controller::undoOperation()
 {
     _keybindTableModel->undoReplaceKeybind();
