@@ -1,0 +1,54 @@
+{
+    "popularCards": [
+        {
+            "title": "服务器列表",
+            "subtitle": "👉 点我寻找服务器",
+            "interactiveTips": "本地工具",
+            "imagePath": ":/Resource/Image/control/ListView.png",
+            "detailText": "在这里选择你喜欢的服务器，一键加入游戏。支持地图查询和订阅哦！",
+            "buttonText": "跳转",
+            "floatImagePath": ":/Resource/Image/IARC/IARC_12+.svg.png",
+            "navigationTo": "Page_ServerList"
+        },
+        {
+            "title": "按键绑定",
+            "subtitle": "💪 想成为高手吗？点我",
+            "interactiveTips": "本地工具",
+            "imagePath": ":/Resource/Image/control/AppBarSeparator.png",
+            "detailText": "目前最为强大的CSGO按键绑定工具，提供了多数社区的所有常用和进阶功能。傻瓜式配置，简单易用。",
+            "buttonText": "跳转",
+            "floatImagePath": ":/Resource/Image/IARC/IARC_12+.svg.png",
+            "navigationTo": "Page_KeyBind"
+        },
+        {
+            "title": "联系作者",
+            "subtitle": "💬 有什么疑问？点这",
+            "interactiveTips": "网页链接",
+            "imagePath": ":/Resource/Image/control/AutomationProperties.png",
+            "detailText": "有什么疑问或者建议吗？欢迎来我B站主页与我联系。",
+            "buttonText": "前往",
+            "floatImagePath": ":/Resource/Image/IARC/IARC_12+.svg.png",
+            "openUrl": "https://space.bilibili.com/624753909"
+        },
+        {
+            "title": "加入我们",
+            "subtitle": "⭐ 裘裘了！点个Start吧",
+            "interactiveTips": "网页链接",
+            "imagePath": ":/Resource/Image/control/Flyout.png",
+            "detailText": "我们需要你的帮助！欢迎加入我们，一起完善它。这是Github仓库链接，本项目完全开源哦~",
+            "buttonText": "前往",
+            "floatImagePath": ":/Resource/Image/IARC/IARC_12+.svg.png",
+            "openUrl": "https://github.com/ER-MA/ZE-Ease-cfg_GUI-Qt-Ela"
+        },
+        {
+            "title": "Placeholder",
+            "subtitle": "🌐 subtitle",
+            "interactiveTips": "Tips",
+            "imagePath": ":/Resource/Image/control/AppBarButton.png",
+            "detailText": "Detail text...",
+            "buttonText": "Button",
+            "floatImagePath": ":/Resource/Image/IARC/IARC_18+.svg.png",
+            "doNothing": ""
+        }
+    ]
+}

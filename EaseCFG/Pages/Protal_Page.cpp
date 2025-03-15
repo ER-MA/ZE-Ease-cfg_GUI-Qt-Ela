@@ -3,27 +3,34 @@
 #include <QDebug>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QDesktopServices>
 #include <QString>
+#include <QMouseEvent>
 #include <QUrl>
+#include <QDesktopServices>
 
+#include "ElaTheme.h"
 #include "ElaText.h"
+#include "ElaMenu.h"
+#include "ElaIcon.h"
 #include "ElaImageCard.h"
 #include "ElaAcrylicUrlCard.h"
 #include "ElaToolTip.h"
 #include "ElaScrollArea.h"
 #include "ElaPopularCard.h"
 #include "ElaFlowLayout.h"
+#include "ElaNavigationRouter.h"
+
+#include "ContextMenu_Base.h"
 
 Protal_Page::Protal_Page(QWidget *parent) :
     Page_BasePage(parent)
 {
-    InitializeUI();
-    InitializeData();
-    InitializeConnect();
+    initializeUI();
+    initializeData();
+    initializeConnect();
 }
 
-void Protal_Page::InitializeUI()
+void Protal_Page::initializeUI()
 {
     setWindowTitle("Protal Page"); // 窗口标题
     setContentsMargins(2, 2, 0, 7);
@@ -39,14 +46,17 @@ void Protal_Page::InitializeUI()
     centerVLayout->addStretch();
 
     this->addCentralWidget(centralWidget, true, true, 0); // 第三个参数为：是否启用手势滚动
+
+    _contextMenu = createContextMenu(this); // 创建右键菜单
+
 }
 
-void Protal_Page::InitializeData()
+void Protal_Page::initializeData()
 {
 
 }
 
-void Protal_Page::InitializeConnect()
+void Protal_Page::initializeConnect()
 {
 
 }
@@ -216,7 +226,7 @@ QVBoxLayout* Protal_Page::createMiddleComponent(QWidget* parent)
         },
         {
             "联系作者",
-            "💬 有什么疑问？点这",
+            "💭 有什么疑问？点这",
             "网页链接",
             ":/Resource/Image/control/AutomationProperties.png",
             "有什么疑问或者建议吗？欢迎来我B站主页与我联系。",
@@ -345,4 +355,108 @@ QList<ElaPopularCard*> Protal_Page::createPopularCards(QWidget* parent, const QL
     }
 
     return cards;
+}
+
+ElaMenu* Protal_Page::createContextMenu(QWidget* parent)
+{
+    // 菜单
+    ElaMenu* contextMenu = new ElaMenu(parent);
+
+    ElaMenu* test1Menu = contextMenu->addMenu(ElaIconType::Bug, "FirstMenu1");
+    test1Menu->addAction("SecondAction1");
+    test1Menu->addAction("SecondAction2");
+
+    ElaMenu* test13Menu = test1Menu->addMenu(ElaIconType::BanBug, "SecondMenu3");
+    test13Menu->addAction("ThirdAction1");
+    test13Menu->addAction("ThirdAction2");
+    test13Menu->addAction("ThirdAction3");
+
+    ElaMenu* test2Menu = contextMenu->addMenu(ElaIconType::BugSlash, "FirstMenu2");
+    test2Menu->addAction("SecondAction1");
+    test2Menu->addAction("SecondAction2");
+    test2Menu->addAction("SecondAction3");
+    test2Menu->addAction("SecondAction4");
+
+    // QKeySequence key = QKeySequence(Qt::CTRL | Qt::Key_S);
+
+    contextMenu->addSeparator();
+    contextMenu->addElaIconAction(ElaIconType::BoxCheck, "排序方式", QKeySequence::Save);
+    contextMenu->addElaIconAction(ElaIconType::ArrowRotateRight, "刷新");
+    QAction* action = contextMenu->addElaIconAction(ElaIconType::ArrowRotateLeft, "撤销");
+    connect(action, &QAction::triggered, this, [=]() {
+        ElaNavigationRouter::getInstance()->navigationRouteBack();
+    });
+
+    contextMenu->addElaIconAction(ElaIconType::Copy, "复制");
+    contextMenu->addElaIconAction(ElaIconType::ArrowUpToArc, "置顶窗口");
+    // 软件工具 - 主题切换
+    QAction* themeSwtich = contextMenu->addElaIconAction(
+        eTheme->getThemeMode() == ElaThemeType::Light ? ElaIconType::MoonStars : ElaIconType::SunBright,
+        eTheme->getThemeMode() == ElaThemeType::Light ? "夜间主题" : "日间主题" // 动态初始化
+    );
+    connect(eTheme, &ElaTheme::themeModeChanged, this, [=]() {
+        const bool isLight = (eTheme->getThemeMode() == ElaThemeType::Light);
+        themeSwtich->setIcon(ElaIcon::getInstance()->getElaIcon(isLight ? ElaIconType::MoonStars : ElaIconType::SunBright));
+        themeSwtich->setText(isLight ? "夜间主题" : "日间主题");
+    });
+    connect(themeSwtich, &QAction::triggered, this, [=]() {
+        const bool isLight = (eTheme->getThemeMode() == ElaThemeType::Light);
+        eTheme->setThemeMode(isLight ? ElaThemeType::Dark : ElaThemeType::Light);
+    });
+
+    contextMenu->addSeparator(); // --------
+
+    // 功能跳转 >
+    ElaMenu* navigateOtherPages = contextMenu->addMenu(ElaIconType::ArrowRightToBracket, "功能跳转");
+    // 功能跳转 - 社区门户
+    QAction* navigateProtal = navigateOtherPages->addElaIconAction(ElaIconType::House, "社区门户");
+    connect(navigateProtal, &QAction::triggered, this, [=]() {
+        Q_EMIT pageProtalNavigation();
+    });
+    // 功能跳转 - 推广工具
+    QAction* navigatePromotion = navigateOtherPages->addElaIconAction(ElaIconType::GlobePointer, "推广工具");
+    connect(navigatePromotion, &QAction::triggered, this, [=]() {
+        Q_EMIT pagePromotionNavigation();
+    });
+    // 功能跳转 - 服务器列表
+    QAction* navigateServerList = navigateOtherPages->addElaIconAction(ElaIconType::Server, "服务器列表");
+    connect(navigateServerList, &QAction::triggered, this, [=]() {
+        Q_EMIT pageServerListNavigation();
+    });
+    // 功能跳转 - 按键绑定
+    QAction* navigateKeyBind = navigateOtherPages->addElaIconAction(ElaIconType::Keyboard, "按键绑定");
+    connect(navigateKeyBind, &QAction::triggered, this, [=]() {
+        Q_EMIT pageKeyBindNavigation();
+    });
+    // 功能跳转 - 软件设置
+    QAction* navigateSetting = contextMenu->addElaIconAction(ElaIconType::GearComplex, "软件设置");
+    connect(navigateSetting, &QAction::triggered, this, [=]() {
+        Q_EMIT pageSettingNavigation();
+    });
+
+    ContextMenu_Base* testMenu = new ContextMenu_Base(this);
+    testMenu->createNavigateMenu(contextMenu);
+
+    return contextMenu;
+}
+
+void Protal_Page::mouseReleaseEvent(QMouseEvent* event)
+{
+    switch (event->button())
+    {
+    case Qt::RightButton:
+    {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        _contextMenu->popup(event->globalPosition().toPoint());
+#else
+        _contextMenu->popup(event->globalPos());
+#endif
+        break;
+    }
+    default:
+    {
+        break;
+    }
+    }
+    ElaScrollPage::mouseReleaseEvent(event);
 }

@@ -1,0 +1,74 @@
+{
+    "urlCards": [
+        {
+            "title": "ExG 社区",
+            "subtitle": "中国 GMOD / CS2 娱乐服务器",
+            "imagePath": ":/Resource/Image/CommunityMaterial/ExG_Logo.webp",
+            "url": "https://darkrp.cn/",
+            "tooltip": "在浏览器中访问 ExG 社区主页"
+        },
+        {
+            "title": "Fys 风云社",
+            "subtitle": "暂无简介",
+            "imagePath": ":/Resource/Image/CommunityMaterial/FyS_Logo.png",
+            "url": "https://fyscs.com/",
+            "tooltip": "在浏览器中访问 Fys 风云社主页"
+        },
+        {
+            "title": "MoeUB 社区",
+            "subtitle": "成立于2012年的老牌社区，主打 CSGO 僵尸逃跑 等服务器",
+            "imagePath": ":/Resource/Image/CommunityMaterial/MoeUB_Logo.svg",
+            "url": "https://csgo.moeub.cn/",
+            "tooltip": "在浏览器中访问 MoeUB 社区主页"
+        },
+        {
+            "title": "僵尸乐园",
+            "subtitle": "建立于2007年初，一直致力为玩家提供模式丰富的CS起源/CS:GO服务器",
+            "imagePath": ":/Resource/Image/CommunityMaterial/ZED_Logo_KirisameMarisa.png",
+            "url": "https://zombieden.cn/",
+            "tooltip": "在浏览器中访问 Zombie Den 僵尸乐园主页"
+        },
+        {
+            "title": "星社区",
+            "subtitle": "暂无简介",
+            "imagePath": ":/Resource/Image/CommunityMaterial/HoshiStar_Logo.png",
+            "url": "https://www.hoshics.com/",
+            "tooltip": "在浏览器中访问 Hoshi-Star 星社区主页"
+        },
+        {
+            "title": "起源方舟",
+            "subtitle": "暂无简介",
+            "imagePath": ":/Resource/Image/CommunityMaterial/SourceArk_Logo.png",
+            "url": "http://s2ark.com/",
+            "tooltip": "在浏览器中访问 Source Ark 起源方舟主页"
+        },
+        {
+            "title": "CNGOKZ",
+            "subtitle": "欢迎加入CNGOKZ大家庭，也许是最纯净的KZ社区私服",
+            "imagePath": ":/Resource/Image/CommunityMaterial/CNGOKZ_Logo.jpg",
+            "url": "https://cngokz.com/",
+            "tooltip": "在浏览器中访问 CNGOKZ 社区主页"
+        },
+        {
+            "title": "X 社区",
+            "subtitle": "【X】社区是一个以娱乐为主的CSGO社区服务器",
+            "imagePath": ":/Resource/Image/CommunityMaterial/93X_Logo.jpg",
+            "url": "https://bbs.upkk.com/",
+            "tooltip": "在浏览器中访问 UPKK 社区论坛"
+        },
+        {
+            "title": "GitHub仓库",
+            "subtitle": "访问软件源码",
+            "imagePath": ":/Resource/Image/github.png",
+            "url": "https://github.com/ER-MA/ZE-Ease-cfg_GUI-Qt-Ela",
+            "tooltip": "跳转到 GitHub 仓库"
+        },
+        {
+            "title": "作者主页",
+            "subtitle": "联系开发者",
+            "imagePath": ":/Resource/Image/Avatar-xujd_p3-128.jpg",
+            "url": "https://space.bilibili.com/624753909",
+            "tooltip": "访问B站主页"
+        }
+    ]
+}

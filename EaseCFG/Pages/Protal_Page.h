@@ -41,9 +41,14 @@ struct PopularCardParams {
 
 
 class Page_BasePage;
+class QWidget;
+class QVBoxLayout;
+class QMouseEvent;
+class ElaMenu;
 class ElaAcrylicUrlCard;
 class ElaImageCard;
 class ElaPopularCard;
+class ContextMenu_Base;
 class Protal_Page : public Page_BasePage
 {
     Q_OBJECT
@@ -60,13 +65,19 @@ protected:
     QList<ElaAcrylicUrlCard*> createUrlCards(QWidget* parent, const QList<UrlCardParams>& params);
     QList<ElaPopularCard*> createPopularCards(QWidget* parent, const QList<PopularCardParams>& params);
 
+    virtual void mouseReleaseEvent(QMouseEvent* event);
+
 private:
-    void InitializeUI();
-    void InitializeData();
-    void InitializeConnect();
+    void initializeUI();
+    void initializeData();
+    void initializeConnect();
+
+    ElaMenu* createContextMenu(QWidget* parent);
 
     ElaImageCard* createTopComponent(QWidget* parent);
     QVBoxLayout* createMiddleComponent(QWidget* parent);
+
+    ElaMenu* _contextMenu;
 };
 
 
