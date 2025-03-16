@@ -74,30 +74,24 @@ void MainWindow::initWindow()
 
 void MainWindow::initContent()
 {
-    // 左侧导航栏主栏目
+    QString tempKey;
+
     _protalPage = new Protal_Page(this);
     _promotionPage = new Promotion_Page(this);
     _serverListPage = new Page_ServerList(this);
     _keyBindPage = new Keybind_Page(this);
+    _settingPage = new T_Setting(this);
 
     addPageNode("主页", _protalPage, ElaIconType::House);
     addPageNode("推广", _promotionPage, ElaIconType::GlobePointer);
     addPageNode("服务器", _serverListPage, ElaIconType::Server);
     addPageNode("按键绑定", _keyBindPage, ElaIconType::Keyboard);
+    addFooterNode("设置", _settingPage, tempKey, 0, ElaIconType::GearComplex);
 
-    // 获取页面的唯一标识符（用于导航栏和页脚节点的标识）
-    _protalPageKey = _protalPage->property("ElaPageKey").toString();
-    _promotionPageKey = _promotionPage->property("ElaPageKey").toString();
-    _serverListPageKey = _serverListPage->property("ElaPageKey").toString();
-    _keyBindPageKey = _keyBindPage->property("ElaPageKey").toString();
-
-    // 左侧导航栏底栏目
     addFooterNode("关于", nullptr, _aboutPageKey, 0, ElaIconType::User);
     _aboutPage = new T_About();
     _aboutPage->hide();
 
-    _settingPage = new T_Setting(this);
-    addFooterNode("设置", _settingPage, _settingPageKey, 0, ElaIconType::GearComplex);
 
 }
 
@@ -125,8 +119,9 @@ void MainWindow::initConnections()
 
     // 用户卡片被点击时
     connect(this, &MainWindow::userInfoCardClicked, this, [=]() {
-        this->navigation(_protalPageKey);
+        this->navigation(getPageKey(_protalPage));
     });
+
     // 导航栏页面或页脚节点被点击时触发的信号
     connect(this, &ElaWindow::navigationNodeClicked, this, [=](ElaNavigationType::NavigationNodeType nodeType, QString nodeKey) {
         updateCurrentPage(nodeKey);  // 更新当前页面
@@ -143,19 +138,9 @@ void MainWindow::initConnections()
         }
     });
 
-    this->navigation(_protalPageKey); // 初始化导航到主页
-    /* 待链接信号：
-    Q_SIGNAL void pageProtalNavigation();
-    Q_SIGNAL void pagePromotionNavigation();
-    Q_SIGNAL void pageServerListNavigation();
-    Q_SIGNAL void pageKeyBindNavigation();
-    Q_SIGNAL void pageSettingNavigation();
-    */
-    connect(_protalPage, &Protal_Page::pageProtalNavigation, this, [=]() {this->navigation(_protalPageKey); });
-    connect(_protalPage, &Protal_Page::pagePromotionNavigation, this, [=]() {this->navigation(_promotionPageKey); });
-    connect(_protalPage, &Protal_Page::pageServerListNavigation, this, [=]() {this->navigation(_serverListPageKey); });
-    connect(_protalPage, &Protal_Page::pageKeyBindNavigation, this, [=]() {this->navigation(_keyBindPageKey); });
-    connect(_protalPage, &Protal_Page::pageSettingNavigation, this, [=]() {this->navigation(_settingPageKey); });
+    this->navigation(getPageKey(_protalPage)); // 初始化导航到主页
+
+    emit sendAllPageKeys(getAllPageKeys()); // 发送所有页面的key（必要！右键菜单需要用到，请在所有页面完成初始化后再发送信号）
 
     // 注册事件
     qDebug() << "[MainWindow::initConnections] 已注册的事件列表:" << ElaEventBus::getInstance()->getRegisteredEventsName();
@@ -165,21 +150,51 @@ void MainWindow::initConnections()
 // 更新所处页面
 void MainWindow::updateCurrentPage(QString pageKey)
 {
-   qDebug() << "[MainWindow::updateCurrentPage] 页面" << pageKey << "为当前主窗口";
-   emit currentPageChanged(pageKey);
+    _currentPageKey = pageKey;
+    emit currentPageChanged(_currentPageKey);
+    qDebug() << "[MainWindow::updateCurrentPage] 页面" << _currentPageKey << "为当前主窗口";
 }
 
 void MainWindow::testFunc()
 {
-    //QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    //db.setDatabaseName("testdb");
 
-    //if (!db.open()) {
-    //    qDebug() << "[MainWindow::testFunc] 无法建立与数据库的连接";
-    //    return;
-    //}
-    //else {
-    //    qDebug() << "[MainWindow::testFunc] 已建立与数据库的连接";
-    //}
+}
 
+QString MainWindow::getPageKey(QObject* page)
+{
+    if (page == nullptr)
+    {
+        return "";
+    }
+    return page->property("ElaPageKey").toString();
+}
+
+QMap<QString, QString> MainWindow::getAllPageKeys()
+{
+    QMap<QString, QString> pageKeys;
+
+    pageKeys.insert("Protal_Page", getPageKey(_protalPage));
+    pageKeys.insert("Promotion_Page", getPageKey(_promotionPage));
+    pageKeys.insert("ServerList_Page", getPageKey(_serverListPage));
+    pageKeys.insert("KeyBind_Page", getPageKey(_keyBindPage));
+    pageKeys.insert("Setting_Page", getPageKey(_settingPage));
+
+    return pageKeys;
+}
+
+void MainWindow::navigateToPage(QString pageKey)
+{
+    this->navigation(pageKey);
+}
+
+// Slot:
+void MainWindow::handleNavigationRequest(const QString& pageKey)
+{
+    navigateToPage(pageKey);
+}
+
+void MainWindow::handleGetAllPageKeysRrequest()
+{
+    emit sendAllPageKeys(getAllPageKeys());
+    qDebug() << "[MainWindow::handleGetAllPageKeysRrequest] pageKeys: " << getAllPageKeys();
 }

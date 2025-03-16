@@ -1,4 +1,5 @@
 #include "Protal_Page.h"
+#include "mainwindow.h"
 
 #include <QDebug>
 #include <QVBoxLayout>
@@ -22,8 +23,9 @@
 
 #include "ContextMenu_Base.h"
 
-Protal_Page::Protal_Page(QWidget *parent) :
-    Page_BasePage(parent)
+Protal_Page::Protal_Page(MainWindow* mainWindow, QWidget* parent) :
+    Page_BasePage(parent),
+    _mainWindowPtr(mainWindow)
 {
     initializeUI();
     initializeData();
@@ -208,9 +210,10 @@ QVBoxLayout* Protal_Page::createMiddleComponent(QWidget* parent)
             "在这里选择你喜欢的服务器，一键加入游戏。支持地图查询和订阅哦！",
             "跳转",
             ":/Resource/Image/IARC/IARC_12+.svg.png",
-            [this]() {
-                Q_EMIT pageServerListNavigation();
-            }
+            //[this]() {
+            //    Q_EMIT pageServerListNavigation();
+            //}
+            QUrl("https://space.bilibili.com/624753909")
         },
         {
             "按键绑定",
@@ -220,9 +223,10 @@ QVBoxLayout* Protal_Page::createMiddleComponent(QWidget* parent)
             "目前最为强大的CSGO按键绑定工具，提供了多数社区的所有常用和进阶功能。傻瓜式配置，简单易用。",
             "跳转",
             ":/Resource/Image/IARC/IARC_12+.svg.png",
-            [this]() {
-                Q_EMIT pageKeyBindNavigation();
-            }
+            //[this]() {
+            //    Q_EMIT pageKeyBindNavigation();
+            //}
+            QUrl("https://space.bilibili.com/624753909")
         },
         {
             "联系作者",
@@ -388,15 +392,21 @@ ElaMenu* Protal_Page::createContextMenu(QWidget* parent)
     });
 
     contextMenu->addElaIconAction(ElaIconType::Copy, "复制");
-    contextMenu->addElaIconAction(ElaIconType::ArrowUpToArc, "置顶窗口");
+    // 软件工具 - 置顶窗口
+    QAction* topWindow = contextMenu->addElaIconAction(ElaIconType::ArrowUpToArc, "置顶窗口");
+    connect(contextMenu, &ElaMenu::menuShow, this, [=]() {
+        bool isStayTop = _mainWindowPtr->getIsStayTop();
+        topWindow->setIcon(isStayTop ? ElaIcon::getInstance()->getElaIcon(ElaIconType::ArrowDownFromArc) : ElaIcon::getInstance()->getElaIcon(ElaIconType::ArrowUpToArc));
+        topWindow->setText(isStayTop ? "取消置顶" : "置顶窗口");
+    });
+    connect(topWindow, &QAction::triggered, this, [=]() {
+        _mainWindowPtr->setIsStayTop(!_mainWindowPtr->getIsStayTop());
+    });
     // 软件工具 - 主题切换
-    QAction* themeSwtich = contextMenu->addElaIconAction(
-        eTheme->getThemeMode() == ElaThemeType::Light ? ElaIconType::MoonStars : ElaIconType::SunBright,
-        eTheme->getThemeMode() == ElaThemeType::Light ? "夜间主题" : "日间主题" // 动态初始化
-    );
-    connect(eTheme, &ElaTheme::themeModeChanged, this, [=]() {
-        const bool isLight = (eTheme->getThemeMode() == ElaThemeType::Light);
-        themeSwtich->setIcon(ElaIcon::getInstance()->getElaIcon(isLight ? ElaIconType::MoonStars : ElaIconType::SunBright));
+    QAction* themeSwtich = contextMenu->addElaIconAction(ElaIconType::MoonStars, "夜间主题");
+    connect(contextMenu, &ElaMenu::menuShow, this, [=]() {
+        bool isLight = (eTheme->getThemeMode() == ElaThemeType::Light);
+        themeSwtich->setIcon(isLight ? ElaIcon::getInstance()->getElaIcon(ElaIconType::MoonStars) : ElaIcon::getInstance()->getElaIcon(ElaIconType::SunBright));
         themeSwtich->setText(isLight ? "夜间主题" : "日间主题");
     });
     connect(themeSwtich, &QAction::triggered, this, [=]() {
@@ -406,35 +416,10 @@ ElaMenu* Protal_Page::createContextMenu(QWidget* parent)
 
     contextMenu->addSeparator(); // --------
 
-    // 功能跳转 >
-    ElaMenu* navigateOtherPages = contextMenu->addMenu(ElaIconType::ArrowRightToBracket, "功能跳转");
-    // 功能跳转 - 社区门户
-    QAction* navigateProtal = navigateOtherPages->addElaIconAction(ElaIconType::House, "社区门户");
-    connect(navigateProtal, &QAction::triggered, this, [=]() {
-        Q_EMIT pageProtalNavigation();
-    });
-    // 功能跳转 - 推广工具
-    QAction* navigatePromotion = navigateOtherPages->addElaIconAction(ElaIconType::GlobePointer, "推广工具");
-    connect(navigatePromotion, &QAction::triggered, this, [=]() {
-        Q_EMIT pagePromotionNavigation();
-    });
-    // 功能跳转 - 服务器列表
-    QAction* navigateServerList = navigateOtherPages->addElaIconAction(ElaIconType::Server, "服务器列表");
-    connect(navigateServerList, &QAction::triggered, this, [=]() {
-        Q_EMIT pageServerListNavigation();
-    });
-    // 功能跳转 - 按键绑定
-    QAction* navigateKeyBind = navigateOtherPages->addElaIconAction(ElaIconType::Keyboard, "按键绑定");
-    connect(navigateKeyBind, &QAction::triggered, this, [=]() {
-        Q_EMIT pageKeyBindNavigation();
-    });
-    // 功能跳转 - 软件设置
-    QAction* navigateSetting = contextMenu->addElaIconAction(ElaIconType::GearComplex, "软件设置");
-    connect(navigateSetting, &QAction::triggered, this, [=]() {
-        Q_EMIT pageSettingNavigation();
-    });
-
     ContextMenu_Base* testMenu = new ContextMenu_Base(this);
+    connect(testMenu, &ContextMenu_Base::navigationRequest, _mainWindowPtr, &MainWindow::handleNavigationRequest);
+    connect(testMenu, &ContextMenu_Base::getAllPageKeysRequest, _mainWindowPtr, &MainWindow::handleGetAllPageKeysRrequest);
+    connect(_mainWindowPtr, &MainWindow::sendAllPageKeys, testMenu, &ContextMenu_Base::receiveAllPageKeys);
     testMenu->createNavigateMenu(contextMenu);
 
     return contextMenu;

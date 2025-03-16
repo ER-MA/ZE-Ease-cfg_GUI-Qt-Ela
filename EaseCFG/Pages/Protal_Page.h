@@ -41,6 +41,7 @@ struct PopularCardParams {
 
 
 class Page_BasePage;
+class MainWindow;
 class QWidget;
 class QVBoxLayout;
 class QMouseEvent;
@@ -53,13 +54,7 @@ class Protal_Page : public Page_BasePage
 {
     Q_OBJECT
 public:
-    explicit Protal_Page(QWidget* parent = nullptr);
-Q_SIGNALS:
-    Q_SIGNAL void pageProtalNavigation();
-    Q_SIGNAL void pagePromotionNavigation();
-    Q_SIGNAL void pageServerListNavigation();
-    Q_SIGNAL void pageKeyBindNavigation();
-    Q_SIGNAL void pageSettingNavigation();
+    explicit Protal_Page(MainWindow* mainWindow, QWidget* parent = nullptr);
 
 protected:
     QList<ElaAcrylicUrlCard*> createUrlCards(QWidget* parent, const QList<UrlCardParams>& params);
@@ -71,6 +66,8 @@ private:
     void initializeUI();
     void initializeData();
     void initializeConnect();
+
+    MainWindow* _mainWindowPtr;
 
     ElaMenu* createContextMenu(QWidget* parent);
 
