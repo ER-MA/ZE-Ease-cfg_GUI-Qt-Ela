@@ -29,6 +29,7 @@ struct PopularCardParams {
     // 交互行为配置（使用 std::variant 存储多种类型）
     std::variant<
         std::function<void()>,  // 通用回调
+        QString,                // 导航到指定页面名称
         QUrl                    // 直接打开URL
     > action;
 };

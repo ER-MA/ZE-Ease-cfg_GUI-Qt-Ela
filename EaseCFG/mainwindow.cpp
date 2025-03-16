@@ -194,9 +194,9 @@ void MainWindow::navigateToPage(QString pageName)
 }
 
 // Slot:
-void MainWindow::handleNavigationRequest(const QString& pageKey)
+void MainWindow::handleNavigationRequest(const QString& pageName)
 {
-    navigateToPage(pageKey);
+    navigateToPage(pageName);
 }
 
 void MainWindow::handleGetAllPageKeysRrequest()

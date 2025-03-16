@@ -1,6 +1,9 @@
 #include "Protal_Page.h"
 #include "mainwindow.h"
 
+#include "Page_ServerList.h"
+#include "Keybind_Page.h"
+
 #include <QDebug>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -216,10 +219,7 @@ QVBoxLayout* Protal_Page::createMiddleComponent(QWidget* parent)
             "在这里选择你喜欢的服务器，一键加入游戏。支持地图查询和订阅哦！",
             "跳转",
             ":/Resource/Image/IARC/IARC_12+.svg.png",
-            //[this]() {
-            //    Q_EMIT pageServerListNavigation();
-            //}
-            QUrl("https://space.bilibili.com/624753909")
+            QString(Page_ServerList::pageName())
         },
         {
             "按键绑定",
@@ -229,10 +229,7 @@ QVBoxLayout* Protal_Page::createMiddleComponent(QWidget* parent)
             "目前最为强大的CSGO按键绑定工具，提供了多数社区的所有常用和进阶功能。傻瓜式配置，简单易用。",
             "跳转",
             ":/Resource/Image/IARC/IARC_12+.svg.png",
-            //[this]() {
-            //    Q_EMIT pageKeyBindNavigation();
-            //}
-            QUrl("https://space.bilibili.com/624753909")
+            QString(Keybind_Page::pageName())
         },
         {
             "联系作者",
@@ -342,13 +339,22 @@ QList<ElaPopularCard*> Protal_Page::createPopularCards(QWidget* parent, const QL
         card->setCardFloatPixmap(QPixmap(param.floatImagePath));
 
         // 设置交互行为
-        std::visit([card, parent](auto&& arg) {
+        std::visit([this, card, parent](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
 
             if constexpr (std::is_same_v<T, std::function<void()>>) {
                 // 通用回调模式
                 QObject::connect(card, &ElaPopularCard::popularCardButtonClicked, parent, arg);
                 QObject::connect(card, &ElaPopularCard::popularCardClicked, parent, arg);
+            }
+            else if constexpr (std::is_same_v<T, QString>) {
+                // 触发导航到指定页面
+                QObject::connect(card, &ElaPopularCard::popularCardButtonClicked, parent, [this, pageName = arg]() {
+                    _mainWindowPtr->handleNavigationRequest(pageName);
+                });
+                QObject::connect(card, &ElaPopularCard::popularCardClicked, parent, [this, pageName = arg]() {
+                    _mainWindowPtr->handleNavigationRequest(pageName);
+                });
             }
             else if constexpr (std::is_same_v<T, QUrl>) {
                 // 直接打开URL

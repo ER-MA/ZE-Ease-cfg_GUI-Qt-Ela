@@ -27,7 +27,7 @@ signals: // 信号
     void sendAllPageKeys(QMap<QString, QString> pageKey);
 
 public slots: // 槽函数
-    void handleNavigationRequest(const QString& pageKey);
+    void handleNavigationRequest(const QString& pageName);
     void handleGetAllPageKeysRrequest();
 
 private:
