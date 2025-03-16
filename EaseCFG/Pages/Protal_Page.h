@@ -56,6 +56,8 @@ class Protal_Page : public Page_BasePage
 public:
     explicit Protal_Page(MainWindow* mainWindow, QWidget* parent = nullptr);
 
+    static const QString& pageName();
+
 protected:
     QList<ElaAcrylicUrlCard*> createUrlCards(QWidget* parent, const QList<UrlCardParams>& params);
     QList<ElaPopularCard*> createPopularCards(QWidget* parent, const QList<PopularCardParams>& params);

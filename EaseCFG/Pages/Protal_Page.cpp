@@ -32,6 +32,12 @@ Protal_Page::Protal_Page(MainWindow* mainWindow, QWidget* parent) :
     initializeConnect();
 }
 
+const QString& Protal_Page::pageName()
+{
+    static QString pageName("Protal");
+    return pageName;
+}
+
 void Protal_Page::initializeUI()
 {
     setWindowTitle("Protal Page"); // 窗口标题
@@ -363,64 +369,27 @@ QList<ElaPopularCard*> Protal_Page::createPopularCards(QWidget* parent, const QL
 
 ElaMenu* Protal_Page::createContextMenu(QWidget* parent)
 {
-    // 菜单
-    ElaMenu* contextMenu = new ElaMenu(parent);
+    // 右键菜单
+    ContextMenu_Base* contextMenu = new ContextMenu_Base(parent);
 
-    ElaMenu* test1Menu = contextMenu->addMenu(ElaIconType::Bug, "FirstMenu1");
-    test1Menu->addAction("SecondAction1");
-    test1Menu->addAction("SecondAction2");
-
-    ElaMenu* test13Menu = test1Menu->addMenu(ElaIconType::BanBug, "SecondMenu3");
-    test13Menu->addAction("ThirdAction1");
-    test13Menu->addAction("ThirdAction2");
-    test13Menu->addAction("ThirdAction3");
-
-    ElaMenu* test2Menu = contextMenu->addMenu(ElaIconType::BugSlash, "FirstMenu2");
-    test2Menu->addAction("SecondAction1");
-    test2Menu->addAction("SecondAction2");
-    test2Menu->addAction("SecondAction3");
-    test2Menu->addAction("SecondAction4");
-
-    // QKeySequence key = QKeySequence(Qt::CTRL | Qt::Key_S);
-
+    contextMenu->createCommonToolMenu(contextMenu);
+    
     contextMenu->addSeparator();
-    contextMenu->addElaIconAction(ElaIconType::BoxCheck, "排序方式", QKeySequence::Save);
-    contextMenu->addElaIconAction(ElaIconType::ArrowRotateRight, "刷新");
-    QAction* action = contextMenu->addElaIconAction(ElaIconType::ArrowRotateLeft, "撤销");
-    connect(action, &QAction::triggered, this, [=]() {
-        ElaNavigationRouter::getInstance()->navigationRouteBack();
-    });
+    // QKeySequence key = QKeySequence(Qt::CTRL | Qt::Key_S);
+    contextMenu->addElaIconAction(ElaIconType::BoxCheck, "保存", QKeySequence::Save);
+    contextMenu->addElaIconAction(ElaIconType::ArrowRotateLeft, "撤销", QKeySequence::Undo);
+    contextMenu->addElaIconAction(ElaIconType::ArrowRotateRight, "刷新", QKeySequence::Refresh);
 
     contextMenu->addElaIconAction(ElaIconType::Copy, "复制");
-    // 软件工具 - 置顶窗口
-    QAction* topWindow = contextMenu->addElaIconAction(ElaIconType::ArrowUpToArc, "置顶窗口");
-    connect(contextMenu, &ElaMenu::menuShow, this, [=]() {
-        bool isStayTop = _mainWindowPtr->getIsStayTop();
-        topWindow->setIcon(isStayTop ? ElaIcon::getInstance()->getElaIcon(ElaIconType::ArrowDownFromArc) : ElaIcon::getInstance()->getElaIcon(ElaIconType::ArrowUpToArc));
-        topWindow->setText(isStayTop ? "取消置顶" : "置顶窗口");
-    });
-    connect(topWindow, &QAction::triggered, this, [=]() {
-        _mainWindowPtr->setIsStayTop(!_mainWindowPtr->getIsStayTop());
-    });
-    // 软件工具 - 主题切换
-    QAction* themeSwtich = contextMenu->addElaIconAction(ElaIconType::MoonStars, "夜间主题");
-    connect(contextMenu, &ElaMenu::menuShow, this, [=]() {
-        bool isLight = (eTheme->getThemeMode() == ElaThemeType::Light);
-        themeSwtich->setIcon(isLight ? ElaIcon::getInstance()->getElaIcon(ElaIconType::MoonStars) : ElaIcon::getInstance()->getElaIcon(ElaIconType::SunBright));
-        themeSwtich->setText(isLight ? "夜间主题" : "日间主题");
-    });
-    connect(themeSwtich, &QAction::triggered, this, [=]() {
-        const bool isLight = (eTheme->getThemeMode() == ElaThemeType::Light);
-        eTheme->setThemeMode(isLight ? ElaThemeType::Dark : ElaThemeType::Light);
-    });
 
     contextMenu->addSeparator(); // --------
 
-    ContextMenu_Base* testMenu = new ContextMenu_Base(this);
-    connect(testMenu, &ContextMenu_Base::navigationRequest, _mainWindowPtr, &MainWindow::handleNavigationRequest);
-    connect(testMenu, &ContextMenu_Base::getAllPageKeysRequest, _mainWindowPtr, &MainWindow::handleGetAllPageKeysRrequest);
-    connect(_mainWindowPtr, &MainWindow::sendAllPageKeys, testMenu, &ContextMenu_Base::receiveAllPageKeys);
-    testMenu->createNavigateMenu(contextMenu);
+    contextMenu->createUnversalToolMenu(contextMenu);
+
+    contextMenu->addSeparator(); // --------
+
+
+    contextMenu->createNavigateMenu(contextMenu);
 
     return contextMenu;
 }

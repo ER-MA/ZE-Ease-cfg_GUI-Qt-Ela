@@ -22,6 +22,12 @@ Page_BasePage::~Page_BasePage()
 {
 }
 
+const QString& Page_BasePage::pageName()
+{
+    static QString pageName("BasePage");
+    return pageName;
+}
+
 void Page_BasePage::createCustomWidget(QString descriptionText)
 {
     // 顶部元素

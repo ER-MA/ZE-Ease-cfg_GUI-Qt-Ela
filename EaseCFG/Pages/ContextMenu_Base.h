@@ -9,14 +9,15 @@ class ContextMenu_Base : public ElaMenu
     Q_OBJECT
 
 public:
-    explicit ContextMenu_Base(QWidget* parent = nullptr);
+    explicit ContextMenu_Base(QWidget* parent);
     ~ContextMenu_Base();
 
     MainWindow* getMainWindow();
 
-    void createUnversalToolMenu(ElaMenu* parentMenu = nullptr);
-
-    void createNavigateMenu(ElaMenu* parentMenu = nullptr);
+    void createTestMenu(ElaMenu* parentMenu);
+    void createCommonToolMenu(ElaMenu* parentMenu);
+    void createUnversalToolMenu(ElaMenu* parentMenu);
+    void createNavigateMenu(ElaMenu* parentMenu);
 
 signals:
     void navigationRequest(const QString& pageName);
@@ -24,16 +25,11 @@ signals:
 public slots:
     void receiveAllPageKeys(const QMap<QString, QString>& pageKeys);
 
-Q_SIGNALS:
-    Q_SIGNAL void pageProtalNavigation();
-    Q_SIGNAL void pagePromotionNavigation();
-    Q_SIGNAL void pageServerListNavigation();
-    Q_SIGNAL void pageKeyBindNavigation();
-    Q_SIGNAL void pageSettingNavigation();
-
 protected:
 
 private:
+    void connectionWithMainWindow();
+
     QMap<QString, QString> _pageKeys;
 };
 

@@ -14,6 +14,12 @@ Promotion_Page::Promotion_Page(QWidget *parent) :
     InitializeConnect();
 }
 
+const QString& Promotion_Page::pageName()
+{
+    static QString pageName("Promotion");
+    return pageName;
+}
+
 void Promotion_Page::InitializeUI()
 {
     setWindowTitle("Promotion Page"); // 窗口标题

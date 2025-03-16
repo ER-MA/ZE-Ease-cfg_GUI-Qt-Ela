@@ -153,3 +153,9 @@ T_Setting::T_Setting(QWidget* parent)
 T_Setting::~T_Setting()
 {
 }
+
+const QString& T_Setting::pageName()
+{
+    static QString pageName("Setting");
+    return pageName;
+}

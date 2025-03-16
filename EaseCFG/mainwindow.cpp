@@ -173,18 +173,24 @@ QMap<QString, QString> MainWindow::getAllPageKeys()
 {
     QMap<QString, QString> pageKeys;
 
-    pageKeys.insert("Protal_Page", getPageKey(_protalPage));
-    pageKeys.insert("Promotion_Page", getPageKey(_promotionPage));
-    pageKeys.insert("ServerList_Page", getPageKey(_serverListPage));
-    pageKeys.insert("KeyBind_Page", getPageKey(_keyBindPage));
-    pageKeys.insert("Setting_Page", getPageKey(_settingPage));
+    pageKeys.insert(_protalPage->pageName(), getPageKey(_protalPage));
+    pageKeys.insert(_promotionPage->pageName(), getPageKey(_promotionPage));
+    pageKeys.insert(_serverListPage->pageName(), getPageKey(_serverListPage));
+    pageKeys.insert(_keyBindPage->pageName(), getPageKey(_keyBindPage));
+    pageKeys.insert(_settingPage->pageName(), getPageKey(_settingPage));
+
+    qDebug() << "[MainWindow::getAllPageKeys] 所有页面的key: " << pageKeys;
 
     return pageKeys;
 }
 
-void MainWindow::navigateToPage(QString pageKey)
+void MainWindow::navigateToPage(QString pageName)
 {
-    this->navigation(pageKey);
+    if (pageName.isEmpty() || pageName == Page_BasePage::pageName())
+    {
+        return;
+    }
+    this->navigation(getAllPageKeys()[pageName]);
 }
 
 // Slot:

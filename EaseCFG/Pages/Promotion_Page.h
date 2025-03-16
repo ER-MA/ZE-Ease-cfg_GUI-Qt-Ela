@@ -11,6 +11,8 @@ class Promotion_Page : public Page_BasePage
 public:
     Q_INVOKABLE explicit Promotion_Page(QWidget* parent = nullptr);
 
+    static const QString& pageName();
+
 protected:
 
 

@@ -12,6 +12,8 @@ public:
     explicit Page_BasePage(QWidget* parent = nullptr);
     ~Page_BasePage();
 
+    static const QString& pageName();
+
 protected:
     void createCustomWidget(QString descriptionText);
 };

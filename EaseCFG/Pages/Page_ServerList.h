@@ -19,6 +19,9 @@ class Page_ServerList : public Page_BasePage
 public:
     explicit Page_ServerList(QWidget* parent = nullptr);
     ~Page_ServerList();
+
+    static const QString& pageName();
+
     void initUI();
     void initData();
     void initConnect();

@@ -27,6 +27,12 @@ Page_ServerList::~Page_ServerList()
 
 }
 
+const QString& Page_ServerList::pageName()
+{
+    static QString pageName("ServerList");
+    return pageName;
+}
+
 void Page_ServerList::initUI()
 {
     setWindowTitle("Server List");  // 窗口标题

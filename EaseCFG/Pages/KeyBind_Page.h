@@ -27,6 +27,8 @@ public:
     Q_INVOKABLE explicit Keybind_Page(QWidget* parent = nullptr);
     ~Keybind_Page();
 
+    static const QString& pageName();
+
 protected:
 
 

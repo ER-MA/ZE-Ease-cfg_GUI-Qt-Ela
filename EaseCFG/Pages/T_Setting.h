@@ -12,6 +12,8 @@ public:
     Q_INVOKABLE explicit T_Setting(QWidget* parent = nullptr);
     ~T_Setting();
 
+    static const QString& pageName();
+
 private:
     ElaComboBox* _themeComboBox{nullptr};
     ElaToggleSwitch* _micaSwitchButton{nullptr};

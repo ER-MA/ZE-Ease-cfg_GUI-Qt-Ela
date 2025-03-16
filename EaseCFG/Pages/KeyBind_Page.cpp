@@ -42,6 +42,12 @@ Keybind_Page::~Keybind_Page()
 
 };
 
+const QString& Keybind_Page::pageName()
+{
+    static QString pageName("Keybind");
+    return pageName;
+}
+
 void Keybind_Page::initUI()
 {
     setWindowTitle("Key Bind"); // 窗口标题
