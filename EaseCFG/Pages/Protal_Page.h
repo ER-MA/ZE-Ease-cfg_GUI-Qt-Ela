@@ -50,7 +50,6 @@ class ElaMenu;
 class ElaAcrylicUrlCard;
 class ElaImageCard;
 class ElaPopularCard;
-class ContextMenu_Base;
 class Protal_Page : public Page_BasePage
 {
     Q_OBJECT

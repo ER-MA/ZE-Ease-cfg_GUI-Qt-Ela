@@ -2,6 +2,7 @@
 #include <QHeaderView>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QMouseEvent>
 
 #include "ElaComboBox.h"
 #include "ElaPushButton.h"
@@ -11,6 +12,7 @@
 
 #include "Model_ServerTable.h"
 #include "Server_DataFetcher.h"
+#include "ContextMenu_Base.h"
 
 #include "Page_ServerList.h"
 
@@ -20,6 +22,8 @@ Page_ServerList::Page_ServerList(QWidget *parent)
     initUI();
     initData();
     initConnect();
+
+    _contextMenu = createContextMenu(this);
 }
 
 Page_ServerList::~Page_ServerList()
@@ -180,3 +184,50 @@ void Page_ServerList::onSelectionChanged()
 }
 
 
+
+ElaMenu* Page_ServerList::createContextMenu(QWidget* parent)
+{
+    // 右键菜单
+    ContextMenu_Base* contextMenu = new ContextMenu_Base(parent);
+
+    contextMenu->createCommonToolMenu(contextMenu);
+
+    contextMenu->addSeparator();
+    // QKeySequence key = QKeySequence(Qt::CTRL | Qt::Key_S);
+    contextMenu->addElaIconAction(ElaIconType::BoxCheck, "保存", QKeySequence::Save);
+    contextMenu->addElaIconAction(ElaIconType::ArrowRotateLeft, "撤销", QKeySequence::Undo);
+    contextMenu->addElaIconAction(ElaIconType::ArrowRotateRight, "刷新", QKeySequence::Refresh);
+
+    contextMenu->addElaIconAction(ElaIconType::Copy, "复制");
+
+    contextMenu->addSeparator(); // --------
+
+    contextMenu->createUnversalToolMenu(contextMenu);
+
+    contextMenu->addSeparator(); // --------
+
+    contextMenu->createNavigateMenu(contextMenu);
+
+    return contextMenu;
+}
+
+void Page_ServerList::mouseReleaseEvent(QMouseEvent* event)
+{
+    switch (event->button())
+    {
+    case Qt::RightButton:
+    {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        _contextMenu->popup(event->globalPosition().toPoint());
+#else
+        _contextMenu->popup(event->globalPos());
+#endif
+        break;
+    }
+    default:
+    {
+        break;
+    }
+    }
+    ElaScrollPage::mouseReleaseEvent(event);
+}

@@ -3,8 +3,19 @@
 
 #include "Page_BasePage.h"
 
+struct PromotionCardParams {
+    QString cardTitle;
+    QString promotionTitle;
+    QString title;
+    QString subTitle;
+    QPixmap cardPixmap;
+};
 
 class Page_BasePage;
+class QMouseEvent;
+class ElaMenu;
+class ElaPromotionCard;
+class ElaPromotionView;
 class Promotion_Page : public Page_BasePage
 {
     Q_OBJECT
@@ -14,12 +25,19 @@ public:
     static const QString& pageName();
 
 protected:
+    virtual void mouseReleaseEvent(QMouseEvent* event);
 
+    ElaPromotionCard* createPromotionCard(QWidget* parent, const PromotionCardParams& param);
+    ElaPromotionView* createPromotionView(QWidget* parent, const QList<PromotionCardParams>& params);
+    ElaPromotionView* createPromotionView(QWidget* parent, const QList<ElaPromotionCard*>& promotionCards);
 
 private:
     void InitializeUI();
     void InitializeData();
     void InitializeConnect();
+
+    ElaMenu* createContextMenu(QWidget* parent);
+    ElaMenu* _contextMenu;
 };
 
 

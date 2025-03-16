@@ -394,7 +394,6 @@ ElaMenu* Protal_Page::createContextMenu(QWidget* parent)
 
     contextMenu->addSeparator(); // --------
 
-
     contextMenu->createNavigateMenu(contextMenu);
 
     return contextMenu;

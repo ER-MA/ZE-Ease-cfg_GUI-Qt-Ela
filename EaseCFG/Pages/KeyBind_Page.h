@@ -30,7 +30,7 @@ public:
     static const QString& pageName();
 
 protected:
-
+    virtual void mouseReleaseEvent(QMouseEvent* event);
 
 private:
     void initUI();
@@ -90,6 +90,9 @@ private:
     ElaImageCard* _functionImagePreview;
 
     Keybind_Controller* _keybindController;
+
+    ElaMenu* createContextMenu(QWidget* parent);
+    ElaMenu* _contextMenu;
 };
 
 

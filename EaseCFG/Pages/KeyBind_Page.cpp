@@ -16,6 +16,7 @@
 
 #include "Ovr_ElaTreeView.h"
 #include "Ovr_ElaTableView.h"
+#include "ContextMenu_Base.h"
 
 #include "Keybind_DB.h"
 #include "Keybind_PageModel.h"
@@ -70,6 +71,8 @@ void Keybind_Page::initUI()
     createKeybindWidget();
     createToolBarWidget();
     setupCentralWidget();
+
+    _contextMenu = createContextMenu(this);
 }
 
 void Keybind_Page::createFunctionImagePreview() // [功能预览] ※
@@ -436,3 +439,52 @@ void Keybind_Page::initConnect()
     // - TreeViewUI
 
 };
+
+
+
+ElaMenu* Keybind_Page::createContextMenu(QWidget* parent)
+{
+    // 右键菜单
+    ContextMenu_Base* contextMenu = new ContextMenu_Base(parent);
+
+    contextMenu->createCommonToolMenu(contextMenu);
+
+    contextMenu->addSeparator();
+    // QKeySequence key = QKeySequence(Qt::CTRL | Qt::Key_S);
+    contextMenu->addElaIconAction(ElaIconType::BoxCheck, "保存", QKeySequence::Save);
+    contextMenu->addElaIconAction(ElaIconType::ArrowRotateLeft, "撤销", QKeySequence::Undo);
+    contextMenu->addElaIconAction(ElaIconType::ArrowRotateRight, "刷新", QKeySequence::Refresh);
+
+    contextMenu->addElaIconAction(ElaIconType::Copy, "复制");
+
+    contextMenu->addSeparator(); // --------
+
+    contextMenu->createUnversalToolMenu(contextMenu);
+
+    contextMenu->addSeparator(); // --------
+
+    contextMenu->createNavigateMenu(contextMenu);
+
+    return contextMenu;
+}
+
+void Keybind_Page::mouseReleaseEvent(QMouseEvent* event)
+{
+    switch (event->button())
+    {
+    case Qt::RightButton:
+    {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        _contextMenu->popup(event->globalPosition().toPoint());
+#else
+        _contextMenu->popup(event->globalPos());
+#endif
+        break;
+    }
+    default:
+    {
+        break;
+    }
+    }
+    ElaScrollPage::mouseReleaseEvent(event);
+}

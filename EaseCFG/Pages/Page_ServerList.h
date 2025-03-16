@@ -33,6 +33,9 @@ public slots:
     void isCurrentPage(QString pageKey);
     void onSelectionChanged();
 
+protected:
+    virtual void mouseReleaseEvent(QMouseEvent* event);
+
 private:
     // 成员变量
     ElaComboBox* _serverComboBox;
@@ -48,6 +51,8 @@ private:
     int _currentSelectedCol = -1;
     bool _isRestoringSelection = false;
 
+    ElaMenu* createContextMenu(QWidget* parent);
+    ElaMenu* _contextMenu;
 };
 
 
