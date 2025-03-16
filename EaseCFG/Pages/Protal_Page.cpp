@@ -49,11 +49,161 @@ void Protal_Page::initializeUI()
     QWidget* centralWidget = new QWidget(this);
     centralWidget->setWindowTitle("社区门户");
 
+    // 推荐卡片- 社区入门
+    // https://steamcommunity.com/sharedfiles/filedetails/?l=tchinese&id=2797474811
+    QList<PopularCardParams> beginnerParams = {
+        {
+            "新手入门",
+            "👉 不知道什么是ZE？看这",
+            "网页链接",
+            ":/Resource/Image/control/WebView.png",
+            "僵尸逃跑英文原名为zombie escape，简称为ze，由最早的cs1.5生化模式插件演变而来，至今已有十余年的历史",
+            "前往",
+            ":/Resource/Image/IARC/IARC_12+.svg.png",
+            QUrl("https://bbs.moeub.cn/thread-14-1-1.html")
+        },
+        {
+            "加入社区",
+            "👉 以ExG为例，玩转社区",
+            "网页链接",
+            ":/Resource/Image/control/MediaPlayerElement.png",
+            "CS2社区服EXG入坑教程（面对新手向） | 这两天遇见了非常多的萌新，希望这个视频可以帮助到他们",
+            "前往",
+            ":/Resource/Image/IARC/IARC_12+.svg.png",
+            QUrl("https://www.bilibili.com/video/BV11VAXeREtG/")
+        },
+        {
+            "模式入门",
+            "👉 ZE、跳刀、KZ、滑翔",
+            "网页链接",
+            ":/Resource/Image/control/MediaPlayerElement.png",
+            "【CSGO-ZE萌新必看！入门僵尸逃跑.跳刀.KZ.滑翔.全面教程】 | 暂无简介",
+            "前往",
+            ":/Resource/Image/IARC/IARC_12+.svg.png",
+            QUrl("https://www.bilibili.com/video/BV1yB4y1A75e/")
+        },
+        {
+            "进阶教程",
+            "👉 断后、指挥、尸王教学",
+            "网页链接",
+            ":/Resource/Image/control/MediaPlayerElement.png",
+            "【ze速成培训班】断后篇（入门教学） | 这个系列打算出三期，断后篇，指挥篇，尸王篇，如果反响还不错那我还会接着做下去",
+            "前往",
+            ":/Resource/Image/IARC/IARC_12+.svg.png",
+            QUrl("https://www.bilibili.com/video/BV1i5411A75v/")
+        },
+        {
+            "成为高手",
+            "👉 ZE地图进阶进阶技巧",
+            "网页链接",
+            ":/Resource/Image/control/MediaPlayerElement.png",
+
+            "一些ZE地图小技巧#END | 暂无简介",
+            "前往",
+            ":/Resource/Image/IARC/IARC_12+.svg.png",
+            QUrl("https://www.bilibili.com/video/BV1Uz421z7n8/")
+        },
+        {
+            "了解背后",
+            "👉 僵尸逃跑模式发展史",
+            "网页链接",
+            ":/Resource/Image/control/MediaPlayerElement.png",
+            "【长达15年之久！僵尸逃跑模式发展史】 | 觉得视频做的好，请不要忘记一键3连+关注，感谢你的观看与支持！！！",
+            "前往",
+            ":/Resource/Image/IARC/IARC_12+.svg.png",
+            QUrl("https://www.bilibili.com/video/BV1zi4y1K7gq/")
+        },
+        {
+            "进阶玩法",
+            "👉 高级配置：CFG 详解",
+            "网页链接",
+            ":/Resource/Image/control/WebView.png",
+            "Configuration file (or CFG) is a  Source games text file used to execute a newline-delimited list of console commands to the Developer Console.",
+            "前往",
+            ":/Resource/Image/IARC/IARC_12+.svg.png",
+            QUrl("https://developer.valvesoftware.com/wiki/CFG")
+        },
+        {
+            "添加卡片",
+            "🌐 自定义属于你的主页",
+            "Add",
+            ":/Resource/Image/control/AppBarButton.png",
+            "你有更好的教学卡片吗？想要分享给更多人吗？点我添加吧！",
+            "AddCard",
+            ":/Resource/Image/IARC/IARC_18+.svg.png",
+            [this]() {
+                qDebug() << "[PopularCard:Placeholder] AddCard Clicked";
+            }
+        }
+    };
+    // 推荐卡片- 基础工具
+    QList<PopularCardParams> baseToolParams = {
+        {
+            "服务器列表",
+            "👉 点我寻找服务器",
+            "本地工具",
+            ":/Resource/Image/control/ListView.png",
+            "在这里选择你喜欢的服务器，一键加入游戏。支持地图查询和订阅哦！",
+            "跳转",
+            ":/Resource/Image/IARC/IARC_12+.svg.png",
+            QString(Page_ServerList::pageName())
+        },
+        {
+            "按键绑定",
+            "💪 想成为高手吗？点我",
+            "本地工具",
+            ":/Resource/Image/control/AppBarSeparator.png",
+            "目前最为强大的CSGO按键绑定工具，提供了多数社区的所有常用和进阶功能。傻瓜式配置，简单易用。",
+            "跳转",
+            ":/Resource/Image/IARC/IARC_12+.svg.png",
+            QString(Keybind_Page::pageName())
+        }
+    };
+    // 推荐卡片- 关于我们
+    QList<PopularCardParams> aboutUsParams = {
+        {
+            "联系作者",
+            "💭 有什么疑问？点这",
+            "网页链接",
+            ":/Resource/Image/control/AutomationProperties.png",
+            "有什么疑问或者建议吗？欢迎来我B站主页与我联系。",
+            "前往",
+            ":/Resource/Image/IARC/IARC_12+.svg.png",
+            QUrl("https://space.bilibili.com/624753909")
+        },
+        {
+            "加入我们",
+            "⭐ 裘裘了！点个Start吧",
+            "网页链接",
+            ":/Resource/Image/control/Flyout.png",
+            "我们需要你的帮助！欢迎加入我们，一起完善它。这是Github仓库链接，本项目完全开源哦~",
+            "前往",
+            ":/Resource/Image/IARC/IARC_12+.svg.png",
+            QUrl("https://github.com/ER-MA/ZE-Ease-cfg_GUI-Qt-Ela")
+        },
+        {
+            "Placeholder",
+            "🌐 subtitle",
+            "Tips",
+            ":/Resource/Image/control/AppBarButton.png",
+            "Detail text...",
+            "Button",
+            ":/Resource/Image/IARC/IARC_18+.svg.png",
+            [this]() {
+                qDebug() << "[PopularCard:Placeholder] Clicked";
+            }
+        }
+    };
+
     QVBoxLayout* centerVLayout = new QVBoxLayout(centralWidget);
     centerVLayout->setContentsMargins(0, 0, 0, 0);
     centerVLayout->addWidget(createTopComponent(this));
     centerVLayout->addSpacing(10);
-    centerVLayout->addLayout(createMiddleComponent(this));
+    centerVLayout->addLayout(createPopularCardComponent(this, "开启你的社区旅途", beginnerParams));
+    centerVLayout->addSpacing(10);
+    centerVLayout->addLayout(createPopularCardComponent(this, "这里提供实用的工具", baseToolParams));
+    centerVLayout->addSpacing(10);
+    centerVLayout->addLayout(createPopularCardComponent(this, "关于我们", aboutUsParams));
     centerVLayout->addStretch();
 
     this->addCentralWidget(centralWidget, true, true, 0); // 第三个参数为：是否启用手势滚动
@@ -200,71 +350,17 @@ ElaImageCard* Protal_Page::createTopComponent(QWidget* parent)
     return backgroundCard;
 }
 
-QVBoxLayout* Protal_Page::createMiddleComponent(QWidget* parent)
+QVBoxLayout* Protal_Page::createPopularCardComponent(QWidget* parent, const QString& title, const QList<PopularCardParams>& popularCardParams)
 {
     // - 标题
-    ElaText* flowText = new ElaText("开启你的社区旅途", parent);
+    ElaText* flowText = new ElaText(title, parent);
     flowText->setTextPixelSize(20);
     QHBoxLayout* flowTextLayout = new QHBoxLayout();
     flowTextLayout->setContentsMargins(20, 0, 0, 0);
     flowTextLayout->addWidget(flowText);
 
-    // - 推荐卡片
-    QList<PopularCardParams> params = {
-        {
-            "服务器列表",
-            "👉 点我寻找服务器",
-            "本地工具",
-            ":/Resource/Image/control/ListView.png",
-            "在这里选择你喜欢的服务器，一键加入游戏。支持地图查询和订阅哦！",
-            "跳转",
-            ":/Resource/Image/IARC/IARC_12+.svg.png",
-            QString(Page_ServerList::pageName())
-        },
-        {
-            "按键绑定",
-            "💪 想成为高手吗？点我",
-            "本地工具",
-            ":/Resource/Image/control/AppBarSeparator.png",
-            "目前最为强大的CSGO按键绑定工具，提供了多数社区的所有常用和进阶功能。傻瓜式配置，简单易用。",
-            "跳转",
-            ":/Resource/Image/IARC/IARC_12+.svg.png",
-            QString(Keybind_Page::pageName())
-        },
-        {
-            "联系作者",
-            "💭 有什么疑问？点这",
-            "网页链接",
-            ":/Resource/Image/control/AutomationProperties.png",
-            "有什么疑问或者建议吗？欢迎来我B站主页与我联系。",
-            "前往",
-            ":/Resource/Image/IARC/IARC_12+.svg.png",
-            QUrl("https://space.bilibili.com/624753909")
-        },
-        {
-            "加入我们",
-            "⭐ 裘裘了！点个Start吧",
-            "网页链接",
-            ":/Resource/Image/control/Flyout.png",
-            "我们需要你的帮助！欢迎加入我们，一起完善它。这是Github仓库链接，本项目完全开源哦~",
-            "前往",
-            ":/Resource/Image/IARC/IARC_12+.svg.png",
-            QUrl("https://github.com/ER-MA/ZE-Ease-cfg_GUI-Qt-Ela")
-        },
-        {
-            "Placeholder",
-            "🌐 subtitle",
-            "Tips",
-            ":/Resource/Image/control/AppBarButton.png",
-            "Detail text...",
-            "Button",
-            ":/Resource/Image/IARC/IARC_18+.svg.png",
-            [this]() {
-                qDebug() << "[PopularCard:Placeholder] Clicked";
-            }
-        }
-    };
-    QList<ElaPopularCard*> popCards = createPopularCards(parent, params);
+    
+    QList<ElaPopularCard*> popCards = createPopularCards(parent, popularCardParams);
 
     ElaFlowLayout* flowLayout = new ElaFlowLayout(0, 5, 5);
     flowLayout->setContentsMargins(25, 0, 0, 0);

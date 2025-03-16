@@ -62,6 +62,8 @@ protected:
     QList<ElaAcrylicUrlCard*> createUrlCards(QWidget* parent, const QList<UrlCardParams>& params);
     QList<ElaPopularCard*> createPopularCards(QWidget* parent, const QList<PopularCardParams>& params);
 
+    QVBoxLayout* createPopularCardComponent(QWidget* parent, const QString& title, const QList<PopularCardParams>& popularCardParams);
+
     virtual void mouseReleaseEvent(QMouseEvent* event);
 
 private:
@@ -74,7 +76,6 @@ private:
     ElaMenu* createContextMenu(QWidget* parent);
 
     ElaImageCard* createTopComponent(QWidget* parent);
-    QVBoxLayout* createMiddleComponent(QWidget* parent);
 
     ElaMenu* _contextMenu;
 };
