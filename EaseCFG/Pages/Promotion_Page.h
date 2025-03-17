@@ -27,6 +27,11 @@ public:
 protected:
     virtual void mouseReleaseEvent(QMouseEvent* event);
 
+    QVBoxLayout* createVideoCardComponent(QWidget* parent, const QString& title, const QList<PromotionCardParams>& videoCardParams);
+
+    ElaPromotionCard* createVideoPromotionCard(QWidget* parent, const PromotionCardParams& param);
+    QList<ElaPromotionCard*> createVideoPromotionCard(QWidget* parent, const QList<PromotionCardParams>& params);
+
     ElaPromotionCard* createPromotionCard(QWidget* parent, const PromotionCardParams& param);
     ElaPromotionView* createPromotionView(QWidget* parent, const QList<PromotionCardParams>& params);
     ElaPromotionView* createPromotionView(QWidget* parent, const QList<ElaPromotionCard*>& promotionCards);

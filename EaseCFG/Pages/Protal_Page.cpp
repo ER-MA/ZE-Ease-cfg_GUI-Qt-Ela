@@ -423,7 +423,6 @@ QList<ElaPopularCard*> Protal_Page::createPopularCards(QWidget* parent, const QL
     for (const auto& param : params) {
         ElaPopularCard* card = new ElaPopularCard(parent);
 
-        qDebug() << "创建卡片：" << param.title;
         // 设置基础参数
         card->setBorderRadius(8);
         card->setTitle(param.title);
