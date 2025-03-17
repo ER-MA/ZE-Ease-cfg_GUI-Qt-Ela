@@ -8,7 +8,6 @@
 #include "T_Setting.h"
 
 #include "ElaMenu.h"
-#include "ElaIcon.h"
 #include "ElaTheme.h"
 #include "ElaNavigationRouter.h"
 
@@ -79,30 +78,33 @@ void ContextMenu_Base::createCommonToolMenu(ElaMenu* parentMenu)
 
 void ContextMenu_Base::createUnversalToolMenu(ElaMenu* parentMenu)
 {
+    // 创建通用工具菜单
     MainWindow* mainWindow = getMainWindow();
     if (!mainWindow) {
         return;
     }
-    // 创建通用工具菜单// 软件工具 - 置顶窗口
-    QAction* topWindow = parentMenu->addElaIconAction(ElaIconType::ArrowUpToArc, "置顶窗口");
-    connect(parentMenu, &ElaMenu::menuShow, topWindow, [=]() {
-        bool isStayTop = mainWindow->getIsStayTop();
-        topWindow->setIcon(isStayTop ? ElaIcon::getInstance()->getElaIcon(ElaIconType::ArrowDownFromArc) : ElaIcon::getInstance()->getElaIcon(ElaIconType::ArrowUpToArc));
-        topWindow->setText(isStayTop ? "取消置顶" : "置顶窗口");
-    });
-    connect(topWindow, &QAction::triggered, this, [=]() {
+    // 软件工具 - 窗口置顶
+    QAction* topWindowAction = new QAction("窗口置顶", parentMenu);
+    connect(topWindowAction, &QAction::triggered, this, [=]() {
         mainWindow->setIsStayTop(!mainWindow->getIsStayTop());
     });
-    // 软件工具 - 主题切换
-    QAction* themeSwtich = parentMenu->addElaIconAction(ElaIconType::MoonStars, "夜间主题");
-    connect(parentMenu, &ElaMenu::menuShow, themeSwtich, [=]() {
-        bool isLight = (eTheme->getThemeMode() == ElaThemeType::Light);
-        themeSwtich->setIcon(isLight ? ElaIcon::getInstance()->getElaIcon(ElaIconType::MoonStars) : ElaIcon::getInstance()->getElaIcon(ElaIconType::SunBright));
-        themeSwtich->setText(isLight ? "夜间主题" : "日间主题");
+    parentMenu->addAction(topWindowAction);
+    connect(parentMenu, &ElaMenu::menuShow, topWindowAction, [=]() {
+        bool isStayTop = mainWindow->getIsStayTop();
+        topWindowAction->setProperty("ElaIconType", isStayTop ? QChar((unsigned short)ElaIconType::ArrowDownFromArc) : QChar((unsigned short)ElaIconType::ArrowUpToArc));
+        topWindowAction->setText(isStayTop ? "取消置顶" : "置顶窗口");
     });
-    connect(themeSwtich, &QAction::triggered, this, [=]() {
+    // 软件工具 - 主题切换
+    QAction* themsSwitchAction = new QAction("主题切换", parentMenu);
+    connect(themsSwitchAction, &QAction::triggered, this, [=]() {
         const bool isLight = (eTheme->getThemeMode() == ElaThemeType::Light);
         eTheme->setThemeMode(isLight ? ElaThemeType::Dark : ElaThemeType::Light);
+    });
+    parentMenu->addAction(themsSwitchAction);
+    connect(parentMenu, &ElaMenu::menuShow, themsSwitchAction, [=]() {
+        bool isLight = (eTheme->getThemeMode() == ElaThemeType::Light);
+        themsSwitchAction->setProperty("ElaIconType", isLight ? QChar((unsigned short)ElaIconType::MoonStars) : QChar((unsigned short)ElaIconType::SunBright));
+        themsSwitchAction->setText(isLight ? "夜间主题" : "日间主题");
     });
 }
 
