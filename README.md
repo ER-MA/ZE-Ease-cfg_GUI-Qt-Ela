@@ -1,5 +1,12 @@
 # ZE-Ease-cfg_GUI-Qt-Ela
 
+==================================================
+
+**【此版本已停止更新】**
+最新重构版请移步：[Sturgeon Launcher（鲟鱼启动器）](https://github.com/ER-MA/SturgeonLauncher)
+
+==================================================
+
 ## 服务器列表-界面预览
 
 ![服务器列表界面](doc/GUI-ServerPage.png)
@@ -29,5 +36,7 @@
         - 神秘功能，规划中
 
 ## 依赖
+
+- [[ZE-Ease](https://github.com/ER-MA/ZE-Ease)](`.cfg` 配置文件库)
 
 - [[ElaWidgetTools](https://github.com/Liniyous/ElaWidgetTools)](基于QT-Widget开发的FluentUI风格的组件库)
